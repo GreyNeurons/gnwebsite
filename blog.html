@@ -38,6 +38,46 @@
 
       <header class="card-header">
         <p class="card-header-title has-text-white">
+          2 Apr 2022 Beware when you use target="_blank" next time
+        </p>
+      </header>
+
+      <div class="content mx-6">
+        <p>Setting target attribute of anchor tag to '_blank' is quite common when you want 
+        to open the link in a new tab of the browser. What is not commonly understood is this
+        can lead to a vulnerability known as <a class="has-text-info" href="https://en.wikipedia.org/wiki/Tabnabbing" target="_blank" rel="noopener noreferrer">tabnabbing</a>. 
+        </p>
+        <p>You can easily avoid this potential vulnerability
+        by adding a <b>rel</b> attribute to anchor tag and setting it to <b>"noreferrer noopener"</b>
+        </p>  
+        So next time you write a code which looks like
+            <xmp>
+              <a href="https://www.greyneuronconsulting.com" target="_blank">Grey Neurons consulting</a>
+            </xmp>  
+        
+            take an extra moment and don't forget to add the rel attribute
+            <xmp>
+              <a href="https://www.greyneuronconsulting.com" target="_blank" rel="noopener noreferrer">Grey Neurons consulting</a>
+            </xmp>
+        
+      </div>
+
+      <div class="block mx-3">
+        <span class = 'tag'>HTML</span>
+        <span class = 'tag'>Software Engineering</span>
+        <span class = 'tag'>cyber security</span>
+        <span class = 'tag'>cyber security</span>
+        <span class = 'tag'>Tip</span>
+                      
+        <hr>
+      </div>
+      
+    </div>
+
+    <div class='block has-text-left has-background-dark has-text-white mx-6'>
+
+      <header class="card-header">
+        <p class="card-header-title has-text-white">
           1 Apr 2022 Audit your web page
         </p>
       </header>
@@ -47,19 +87,21 @@
         javascripts, several images. You do not know if the webpage is SEO friendly. 
         Your customer suddenly throws a new requirement at you -> web App needs to be optimized 
         so it can run on a 3g network without any hiccups & wants to audit your web pages.
-
+        <br>
+        <p>
         No need to sweat !!! 
         <a class="has-text-info" target="_blank" rel="noopener noreferrer" 
         href="https://developers.google.com/web/tools/lighthouse" >Lighthouse</a> 
         is an open source tool that can be run from your chrome 
         browser to audit any webpages for performance, accessibility, SEO friendliness & web best practices
-
+        </p>  
 
       </div>
 
       <div class="block mx-3">
         <span class = 'tag'>HTML</span>
         <span class = 'tag'>Software Engineering</span>
+        <span class = 'tag'>Tools</span>
         <hr>
       </div>
       
