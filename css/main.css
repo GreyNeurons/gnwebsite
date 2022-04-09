@@ -18,3 +18,9 @@ hr.gn-main {
   .is-wisdom{
     color: #ffe08a !important;
   }
+
+  xmp.code-border {border-style: dotted;}
+
+  .blog-content {mx-6;}
+
+  

@@ -34,10 +34,10 @@
         </ul>
     </nav>
 
-    <div class='block has-text-left has-background-dark has-text-white mx-6'>
+    <div class='block has-text-left has-background-dark has-text-light mx-6'>
 
       <header class="card-header">
-        <p class="card-header-title has-text-white">
+        <p class="card-header-title has-text-primary">
           2 Apr 2022 Beware when you use target="_blank" next time
         </p>
       </header>
@@ -51,13 +51,15 @@
         by adding a <b>rel</b> attribute to anchor tag and setting it to <b>"noreferrer noopener"</b>
         </p>  
         So next time you write a code which looks like
-            <xmp>
+            
+            <xmp class="code-border">
               <a href="https://www.greyneuronconsulting.com" target="_blank">Grey Neurons consulting</a>
             </xmp>  
         
             take an extra moment and don't forget to add the rel attribute
-            <xmp>
-              <a href="https://www.greyneuronconsulting.com" target="_blank" rel="noopener noreferrer">Grey Neurons consulting</a>
+            <xmp class="code-border">
+              <a href="https://www.greyneuronconsulting.com" target="_blank" rel="noopener noreferrer">
+                Grey Neurons consulting</a>
             </xmp>
         
       </div>
@@ -66,34 +68,35 @@
         <span class = 'tag'>HTML</span>
         <span class = 'tag'>Software Engineering</span>
         <span class = 'tag'>cyber security</span>
-        <span class = 'tag'>cyber security</span>
         <span class = 'tag'>Tip</span>
                       
-        <hr>
+        <hr class="gn-section">
       </div>
       
     </div>
 
-    <div class='block has-text-left has-background-dark has-text-white mx-6'>
+    <div class='block has-text-left has-background-dark has-text-light mx-6'>
 
       <header class="card-header">
-        <p class="card-header-title has-text-white">
+        <p class="card-header-title  has-text-primary">
           1 Apr 2022 Audit your web page
         </p>
       </header>
 
       <div class="content mx-6">
-        You have developed your webpage. Knowingly / unknowlingly you have added various 
+        
+        <p>You have developed your webpage. Knowingly / unknowlingly you have added various 
         javascripts, several images. You do not know if the webpage is SEO friendly. 
         Your customer suddenly throws a new requirement at you -> web App needs to be optimized 
         so it can run on a 3g network without any hiccups & wants to audit your web pages.
-        <br>
-        <p>
-        No need to sweat !!! 
+        </p>
+
+        <p>No need to sweat !!! 
         <a class="has-text-info" target="_blank" rel="noopener noreferrer" 
         href="https://developers.google.com/web/tools/lighthouse" >Lighthouse</a> 
         is an open source tool that can be run from your chrome 
-        browser to audit any webpages for performance, accessibility, SEO friendliness & web best practices
+        browser to audit any webpages for performance, accessibility, 
+        SEO friendliness & web best practices.
         </p>  
 
       </div>
@@ -102,15 +105,15 @@
         <span class = 'tag'>HTML</span>
         <span class = 'tag'>Software Engineering</span>
         <span class = 'tag'>Tools</span>
-        <hr>
+        <hr class="gn-section">
       </div>
       
     </div>
 
-    <div class='block has-text-left has-background-dark has-text-white mx-6'>
+    <div class='block has-text-left has-background-dark has-text-light mx-6'>
 
       <header class="card-header">
-        <p class="card-header-title has-text-white">
+        <p class="card-header-title has-text-primary">
           31 March 2022 Handling Errors Functional programming way
         </p>
 
@@ -131,20 +134,20 @@
         <span class = 'tag'>Functional programming</span>
         <span class = 'tag'>Java</span>
         <span class = 'tag'>Rust</span>
-        <hr>
+        <hr class="gn-section">
 
       </div>
       
     </div>
 
-    <div class='block has-text-left has-background-dark has-text-white mx-6'>
+    <div class='block has-text-left has-background-dark has-text-light mx-6'>
       <header class="card-header">
-        <p class="card-header-title has-text-white">
+        <p class="card-header-title has-text-primary">
           27 March 2022 Reality of Software Engineering
         </p>
       </header>
       <div class="card-content">
-          <div class = "block has-text-white">
+          <div class = "block has-text-light">
 
             The software practitioners from today's age would agree not much has changed 
             in terms of software development. New programming languages, frameworks & libraries 
@@ -152,30 +155,30 @@
             quality problems continue to be same as what it was 30 - 40 years ago. 
           </div>
 
-          <div class = "block has-text-white mx-6">
+          <div class = "block has-text-light mx-6">
               "The gap between the best software engineering practice and the average practice 
               is very wide - perhaps wider than in any other engineering discipline. 
               A tool that disseminates good practice would be important" - Fred Brooks
               
           </div>
 
-          <div class = "block has-text-white mx-6">
+          <div class = "block has-text-light mx-6">
             "A system is never finished being 
             developed until it ceases to be used.” — Jerry Weinberg  
           </div>
 
-          <div class = "block has-text-white mx-6">
+          <div class = "block has-text-light mx-6">
             “The first 90% of the code accounts for the first 
             90% of the development time. The remaining 10% of the code accounts 
             for the other 90% of the development time.” — Tom Cargill 
           </div>
 
-          <div class = "block has-text-white mx-6">
+          <div class = "block has-text-light mx-6">
             “As a rule, software systems do not work well until they have been used, 
             and have failed repeatedly, in real applications.”— Dave Parnas
           </div>
 
-          <div class = "block has-text-white mx-6">
+          <div class = "block has-text-light mx-6">
             “No amount of testing can prove a software right, a single test can 
             prove a software wrong.”— Amir Ghahrai
           </div>
@@ -185,7 +188,7 @@
             then we pray.”— Anonymous
           </div>
 
-          <div class = "block has-text-white mx-6">
+          <div class = "block has-text-light mx-6">
             “Software built up over years from millions of lines of code, 
             branching, unfolding & intertwining comes to behave more like an 
             organism than a machine.” - Anonymous
@@ -194,14 +197,14 @@
 
       <div class="block mx-3">
         <span class = 'tag'> Software Engineering</span>
-        <hr>
+        <hr class="gn-section">
 
       </div>
     </div>
 
-    <div class='block has-text-left has-background-dark has-text-white mx-6'>
+    <div class='block has-text-left has-background-dark has-text-light mx-6'>
       <header class="card-header">
-        <p class="card-header-title has-text-white">
+        <p class="card-header-title has-text-primary">
           20 March 2022  Elixir case study
         </p>
       </header>
@@ -216,14 +219,14 @@
         <span class = 'tag'>Elixir</span>&NonBreakingSpace;
         <span class = 'tag'>Erlang</span>&NonBreakingSpace;
         <span class = 'tag'>Functional programming</span>&NonBreakingSpace;
-        <hr>
+        <hr class="gn-section">
 
       </div>
     </div>
 
-    <div class='block has-text-left has-text-white mx-6'>
+    <div class='block has-text-left has-text-light mx-6'>
       <header class="card-header">
-        <p class="card-header-title has-text-white">
+        <p class="card-header-title has-text-primary">
           13 March 2022 History & Future of Erlang
         </p>  
       
@@ -257,7 +260,7 @@
         <span class = 'tag'>Elixir</span>&NonBreakingSpace;
         <span class = 'tag'>Erlang</span>&NonBreakingSpace;
         <span class = 'tag'>Functional programming</span>&NonBreakingSpace;
-        <hr>
+        <hr class="gn-section">
 
       </div>
     </div>
