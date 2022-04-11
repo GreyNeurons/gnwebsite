@@ -19,8 +19,11 @@ hr.gn-main {
     color: #ffe08a !important;
   }
 
+
   xmp.code-border {border-style: dotted;}
 
-  .blog-content {mx-6;}
+  .has-text-link-dark {
+    color: #1D9BF0 !important;
+  }
 
   
