@@ -25,5 +25,10 @@ hr.gn-main {
   .has-text-link-dark {
     color: #1D9BF0 !important;
   }
-
   
+  .content blockquote {
+    background-color: grey;
+    border-left: 5px solid #dbdbdb;
+    color : whitesmoke;
+    padding: 1.25em 1.5em;
+  }
