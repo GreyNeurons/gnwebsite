@@ -32,3 +32,9 @@ hr.gn-main {
     color : whitesmoke;
     padding: 1.25em 1.5em;
   }
+  
+  section.banner {
+    height : 90px;
+    width : 728px;
+  }
+  
