@@ -38,3 +38,8 @@ hr.gn-main {
     width : 728px;
   }
   
+  a {
+    color: #1D9BF0 !important;
+    cursor: pointer;
+    text-decoration: none;
+  }

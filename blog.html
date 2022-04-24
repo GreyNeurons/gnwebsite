@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" background-color : "black" lang="en">
+<html class="no-js" lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -11,9 +11,9 @@
   focusing on backend and frontend. ">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta property="og:title" content="">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
+  <meta property="og:title" content="Grey Neurons consulting Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blog.html">
   <meta property="og:image" content="">
 
   <link rel="manifest" href="site.webmanifest">
@@ -38,10 +38,127 @@
 
     <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-          <li class="is-dark"><a class="has-text-link-dark" href="/">Home</a></li>
-          <li class="is-active"><a class="has-text-link-dark" href="#" aria-current="page">Blog</a></li>
+          <li class="is-dark"><a  href="/">Home</a></li>
+          <li class="is-active"><a  href="#" aria-current="page">Blog</a></li>
         </ul>
     </nav>
+
+    <div id = "23042022" class='block has-text-left has-background-dark has-text-light mx-6'>
+
+      <header class="card-header">
+        <p class="card-header-title has-text-primary">
+          Introduction to Java records
+        </p>  
+      </header>
+
+      <div class="content mx-6">
+        <p> The biggest criticism on Java is the large amount of boilerplate code it 
+          forces one to write. Python and newer languages like Kotlin seem to score over 
+          Java on this front..
+        </p>
+
+        <p>
+          Boilerplate code is not always bad. Sometimes verbose code is easy to understand 
+          and maintain especially if you are working with relative junior team members 
+          with a high churn rate.
+
+        </p>
+        <p>
+          However one case where boilerplate code is pure waste is when you have a java 
+          class with nothing more then half a dozen or more getter/setter. 
+          To make it worst, in a large project worth it’s salt you would be have 
+          dozens of classes like this.
+        </p>
+
+        <p>
+          Java Records a new feature in JDK 14 onwards comes to rescue. 
+          Each of the boilerplate data class described above now can be define in one 
+          single line. This is fantastic addition to Java and in our opinion will go down as 
+          a pathbreaking feature in history of Java.
+        </p>
+
+        <p>
+          <div class="columns has-text-left">
+            <div class="column is-half">
+              <span class="has-text-danger">Sample Java code without records</span>
+              <xmp class ="code-border is-family-monospace">
+      public class Customer{
+
+        private String FirstName;
+        private String LastName;
+        private String Addr1;
+        private String Addr2;
+        private String City;
+        
+        public String getFirstName()
+        {
+            return this.FirstName;
+        }
+        
+        public void setLastName(String lName)
+        {
+        
+        }
+        
+        /*** getter setters for each of fields. 
+        More the fields , more the
+        getter setters leading to frustration 
+        by verbosity
+          * **/
+    }
+            </xmp>
+            </div>
+            <div class="column">
+              <span class="has-text-success">Sample Java code using new records</span>
+            <xmp class ="code-border is-family-monospace">
+    public record Customer(String FirstName,
+            String LastName,
+            String Addr1,
+            String Addr2,
+            String City
+          ) {}
+            </xmp>
+            </div>
+          </div>
+        </p>
+        <p>
+          So if you have are working on a project that uses Java 14 or higher & your java class seems to 
+          have a lot of getter / setters, it is time for you to Java records.
+          
+          Here are some resources if you want to check out java records in detail 
+          <li>
+          <a  
+          href="https://blogs.oracle.com/javamagazine/post/records-come-to-java#anchor_9">
+          Java records overview by Oracle
+          </a>.
+          </li>
+          <li>
+            <a href ="https://www.youtube.com/watch?v=gJ9DYC-jswo">
+              Most viewed/liked Youtube video on Java Records
+            </a>
+          </li>
+          <li>
+            <a href="https://openjdk.java.net/jeps/395">Official specs</a>
+          </li>
+        </p>
+        </div>
+  
+      <div class="block mx-3">
+        <div class="columns">
+          <div class="column is-four-fifths">
+            <span class = 'tag'>Java</span>
+            <span class = 'tag'>Refactoring</span>
+          </div>
+          <div class="column">
+            <span class ='has-text-right'>
+              <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+            </span>
+          </div>
+        </div>
+
+        <hr class="gn-section">
+      </div>
+    </div>
 
     <div id = "16042022" class='block has-text-left has-background-dark has-text-light mx-6'>
 
@@ -128,7 +245,7 @@
       </header>
 
       <div class="content mx-6">
-        <p> <a class="has-text-link-dark" href="https://www.amazon.com/Tribe-Hackers-Cybersecurity-Advice-World-ebook/dp/B07VPLR1DS/" target="_blank" rel="noopener noreferrer">
+        <p> <a href="https://www.amazon.com/Tribe-Hackers-Cybersecurity-Advice-World-ebook/dp/B07VPLR1DS/" target="_blank" rel="noopener noreferrer">
           Tribe of hackers</a> book is a collection of interviews with 70 cyber security experts. 
           Interview questions asked to these cyber security experts is standard.
           Questions cover wide topics related to cyber security from cybersecurity tools/technolgies, processes 
@@ -190,7 +307,7 @@
       <div class="content mx-6">
         <p>Setting target attribute of anchor tag to '_blank' is quite common when you want 
         to open the link in a new tab of the browser. What is not commonly understood is this
-        can lead to a vulnerability known as <a class="has-text-link-dark" href="https://en.wikipedia.org/wiki/Tabnabbing" target="_blank" rel="noopener noreferrer">tabnabbing</a>. 
+        can lead to a vulnerability known as <a  href="https://en.wikipedia.org/wiki/Tabnabbing" target="_blank" rel="noopener noreferrer">tabnabbing</a>. 
         </p>
         <p>You can easily avoid this potential vulnerability
         by adding a <b>rel</b> attribute to anchor tag and setting it to <b>"noreferrer noopener"</b>
@@ -240,7 +357,7 @@
         </p>
 
         <p>No need to sweat !!! 
-        <a class="has-text-link-dark" target="_blank" rel="noopener noreferrer" 
+        <a  target="_blank" rel="noopener noreferrer" 
         href="https://developers.google.com/web/tools/lighthouse" >Lighthouse</a> 
         is an open source tool that can be run from your chrome 
         browser to audit any webpages for performance, accessibility, 
@@ -275,7 +392,7 @@
         How gracefully you handle errors in your code differentiates a professional 
         coder from a rookie programmer. All the modern language give capabilties like try catch 
         to handle error conditions. 
-        In this <a class="has-text-link-dark" target="_blank" rel="noopener noreferrer" 
+        In this <a  target="_blank" rel="noopener noreferrer" 
         href="https://blog.frankel.ch/error-handling/?utm_source=pocket_mylist">article</a> , author looks at handling errors using traditional
         constructs like try & catch in languages like Java, Python, Rust but then more importantly 
         discusses how error handling can achieved using functional programming concepts. 
@@ -341,7 +458,7 @@
       <div class="content mx-6">
         <img src="img/projectproduct.png" alt="Project vs Product mindset" width="500" height="600">
         <br>
-        <small><a class="has-text-link-dark" href="https://www.aihr.com/blog/hr-trends">referred from aihr.com</a></small>
+        <small><a  href="https://www.aihr.com/blog/hr-trends">referred from aihr.com</a></small>
       </div>
 
       <div class="block mx-3">
@@ -437,7 +554,7 @@
       <div class="card-content">
         
         <div class="block"> Erlang was invented at Ericssion by 
-        <a class="has-text-link-dark" target="_blank" rel="noopener noreferrer" 
+        <a  target="_blank" rel="noopener noreferrer" 
         href="https://en.wikipedia.org/wiki/Joe_Armstrong_(programmer)">Joe armstrong</a> 
         & others to specifically meet the 
         then telecom giants requirements to have a highly scalabable/concurrent fault tolerant
