@@ -1,0 +1,128 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GreyNeurons Blog - Nano refactoring</title>
+  <meta name="description" content="How developers can implement refactoring strategy">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Grey Neurons Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blog.html">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bulma.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Grey Neurons Blog" />
+  <meta name="twitter:site" content="@GreyNeurons" />
+
+</head>
+
+<body class ="has-background-dark has-text-centered is-family-primary">
+
+  <div class = "section">
+
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li class="is-dark"><a  href="/">Home</a></li>
+        <li class="is-dark"><a  href="/blog.html">Blogs</a></li>
+        <li class="is-active"><a  href="#" aria-current="page">Nano Refactoring</a></li>
+      </ul>
+    </nav>
+
+    <div id = "16042022" class='block has-text-left has-background-dark has-text-light mx-6'>
+
+        <header class="card-header">
+          <p class="card-header-title has-text-primary">
+            Nano Refactoring — Leave the campground cleaner than you found it
+          </p>  
+        </header>
+  
+        <div class="content mx-6">
+          <p> The Boy Scouts of America have a simple rule — ‘Leave the campground 
+            cleaner than you found it’*.
+          </p>
+  
+          <p>
+          Applying this to context of software development especially for a large complex 
+          legacy code base, what essentially it means when you get to modifying a legacy 
+          code base for a specific bug fix, can we do some quick refactoring around 
+          the code you are modifying. I call this as <strong>‘Nano Refactoring’</strong>.
+  
+          </p>
+  
+          <p> 
+            The campground for Nano Refactoring is the ‘function’ being modified for 
+            specific bug fix. The type of clean up done under Nano Refactoring must fit 
+            into ‘Low Effort &amp; Low Risk’ category such as
+            <p>
+              <li>
+                Appropriate commenting (add/remove/modify).
+              </li>
+              <li>
+                Rename any local variables per guidelines.
+              </li>
+              <li>
+                Removal of duplicate variables etc.
+              </li>
+              <li>
+                Additional assert, try catch for better error handling.
+              </li>
+  
+            </p>
+            <p>
+              These nano refactoring efforts looked in isolation can be dismissed as 
+              trivial but the aggregation of these marginal gains can be significant 
+              in the long run. If each function/class/module was cleaned up by 1% every day, 
+              at the end of one year you would have 37% of your code base cleaned up almost 
+              with no addition efforts or risks.
+            </p>  
+            <p>
+              <img src = "https://jamesclear.com/wp-content/uploads/2015/08/tiny-gains-graph-960x960.jpg" alt="Incremental improvement" width="500" height="600">
+            </p>
+            <p>
+              <small>
+              + Boy Scouts rule above from Robert C Martin’s book Clean Code <br>
+              ++ The Power of Tiny Gains from James Clears book Atomic Habits
+              </small>
+            </p>
+          </p>
+          </div>
+    
+        <div class="block mx-3">
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <span class = 'tag'>Software Engineering</span>
+              <span class = 'tag'>Refactoring</span>
+            </div>
+            <div class="column">
+              <span class ='has-text-right'>
+                <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+              </span>
+            </div>
+          </div>
+  
+          <hr class="gn-section">
+        </div>
+    </div>
+
+  </div>
+ 
+
+  <a title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+  <script async src="//static.getclicky.com/101362676.js"></script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+
+</body>
+
+</html>

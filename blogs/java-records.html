@@ -1,0 +1,169 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GreyNeurons Blog - Java records</title>
+  <meta name="description" content="Introduction to Java records ">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Grey Neurons Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blog.html">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bulma.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Grey Neurons consulting Blog" />
+  <meta name="twitter:site" content="@GreyNeurons" />
+
+</head>
+
+<body class ="has-background-dark has-text-centered is-family-primary">
+
+  <div class = "section">
+
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li class="is-dark"><a  href="/">Home</a></li>
+          <li class="is-dark"><a  href="/blog.html">Blogs</a></li>
+          <li class="is-active"><a  href="#" aria-current="page">Java Records</a></li>
+        </ul>
+    </nav>
+
+    <div id = "23042022" class='block has-text-left has-background-dark has-text-light mx-6'>
+
+        <header class="card-header">
+          <p class="card-header-title has-text-primary">
+            Introduction to Java records
+          </p>  
+        </header>
+  
+        <div class="content mx-6">
+          <p> The biggest criticism on Java is the large amount of boilerplate code it 
+            forces one to write. Python and newer languages like Kotlin seem to score over 
+            Java on this front..
+          </p>
+  
+          <p>
+            Boilerplate code is not always bad. Sometimes verbose code is easy to understand 
+            and maintain especially if you are working with relative junior team members 
+            with a high churn rate.
+  
+          </p>
+          <p>
+            However one case where boilerplate code is pure waste is when you have a java 
+            class with nothing more then half a dozen or more getter/setter. 
+            To make it worst, in a large project worth it’s salt you would be have 
+            dozens of classes like this.
+          </p>
+  
+          <p>
+            Java Records a new feature in JDK 14 onwards comes to rescue. 
+            Each of the boilerplate data class described above now can be define in one 
+            single line. This is fantastic addition to Java and in our opinion will go down as 
+            a pathbreaking feature in history of Java.
+          </p>
+  
+          <p>
+            <div class="columns has-text-left">
+              <div class="column is-half">
+                <span class="has-text-danger">Sample Java code without records</span>
+                <xmp class ="code-border is-family-monospace">
+        public class Customer{
+  
+          private String FirstName;
+          private String LastName;
+          private String Addr1;
+          private String Addr2;
+          private String City;
+          
+          public String getFirstName()
+          {
+              return this.FirstName;
+          }
+          
+          public void setLastName(String lName)
+          {
+          
+          }
+          
+          /*** getter setters for each of fields. 
+          More the fields , more the
+          getter setters leading to frustration 
+          by verbosity
+            * **/
+      }
+              </xmp>
+              </div>
+              <div class="column">
+                <span class="has-text-success">Sample Java code using new records</span>
+              <xmp class ="code-border is-family-monospace">
+      public record Customer(String FirstName,
+              String LastName,
+              String Addr1,
+              String Addr2,
+              String City
+            ) {}
+              </xmp>
+              </div>
+            </div>
+          </p>
+          <p>
+            So if you have are working on a project that uses Java 14 or higher & your java class seems to 
+            have a lot of getter / setters, it is time for you to Java records.
+            
+            Here are some resources if you want to check out java records in detail 
+            <li>
+            <a  
+            href="https://blogs.oracle.com/javamagazine/post/records-come-to-java#anchor_9">
+            Java records overview by Oracle
+            </a>.
+            </li>
+            <li>
+              <a href ="https://www.youtube.com/watch?v=gJ9DYC-jswo">
+                Most viewed/liked Youtube video on Java Records
+              </a>
+            </li>
+            <li>
+              <a href="https://openjdk.java.net/jeps/395">Official specs</a>
+            </li>
+          </p>
+          </div>
+    
+        <div class="block mx-3">
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <span class = 'tag'>Java</span>
+              <span class = 'tag'>Refactoring</span>
+            </div>
+            <div class="column">
+              <span class ='has-text-right'>
+                <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+              </span>
+            </div>
+          </div>
+  
+          <hr class="gn-section">
+        </div>
+      </div>
+
+  </div>
+ 
+
+  <a title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+  <script async src="//static.getclicky.com/101362676.js"></script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+
+</body>
+
+</html>

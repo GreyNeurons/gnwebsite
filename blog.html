@@ -43,569 +43,223 @@
         </ul>
     </nav>
 
-    <div id = "23042022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Introduction to Java records
-        </p>  
-      </header>
-
-      <div class="content mx-6">
-        <p> The biggest criticism on Java is the large amount of boilerplate code it 
-          forces one to write. Python and newer languages like Kotlin seem to score over 
-          Java on this front..
-        </p>
-
-        <p>
-          Boilerplate code is not always bad. Sometimes verbose code is easy to understand 
-          and maintain especially if you are working with relative junior team members 
-          with a high churn rate.
-
-        </p>
-        <p>
-          However one case where boilerplate code is pure waste is when you have a java 
-          class with nothing more then half a dozen or more getter/setter. 
-          To make it worst, in a large project worth it’s salt you would be have 
-          dozens of classes like this.
-        </p>
-
-        <p>
-          Java Records a new feature in JDK 14 onwards comes to rescue. 
-          Each of the boilerplate data class described above now can be define in one 
-          single line. This is fantastic addition to Java and in our opinion will go down as 
-          a pathbreaking feature in history of Java.
-        </p>
-
-        <p>
-          <div class="columns has-text-left">
-            <div class="column is-half">
-              <span class="has-text-danger">Sample Java code without records</span>
-              <xmp class ="code-border is-family-monospace">
-      public class Customer{
-
-        private String FirstName;
-        private String LastName;
-        private String Addr1;
-        private String Addr2;
-        private String City;
-        
-        public String getFirstName()
-        {
-            return this.FirstName;
-        }
-        
-        public void setLastName(String lName)
-        {
-        
-        }
-        
-        /*** getter setters for each of fields. 
-        More the fields , more the
-        getter setters leading to frustration 
-        by verbosity
-          * **/
-    }
-            </xmp>
+    <div class = "block">
+      
+      <div class ="columns mx-6">
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                Java Records - Escape the verbosity
+              </div>
             </div>
-            <div class="column">
-              <span class="has-text-success">Sample Java code using new records</span>
-            <xmp class ="code-border is-family-monospace">
-    public record Customer(String FirstName,
-            String LastName,
-            String Addr1,
-            String Addr2,
-            String City
-          ) {}
-            </xmp>
+            <div class="card-content">
+              <p class='is-success'>
+                Verbosity is not bad but too much of it can be a productivity killer. Starting Jav 14, you have options to escape the verbosity by using a new feature called Java Records.
+              </p>
+          
             </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/java-records.html">Read ...</a>
+                </span>
+              </p>
           </div>
-        </p>
-        <p>
-          So if you have are working on a project that uses Java 14 or higher & your java class seems to 
-          have a lot of getter / setters, it is time for you to Java records.
+      
+        </div>
+
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                Elixir is the future of Erlang
+              </div>
+            </div>
+            <div class="card-content">
+              <p class='is-success'>
+                This Blog gives you a brief history of both Erlang and Elixir.
+                It also talks about the strengths of both the languages & how the future of both languages is converging.
+              </p>
           
-          Here are some resources if you want to check out java records in detail 
-          <li>
-          <a  
-          href="https://blogs.oracle.com/javamagazine/post/records-come-to-java#anchor_9">
-          Java records overview by Oracle
-          </a>.
-          </li>
-          <li>
-            <a href ="https://www.youtube.com/watch?v=gJ9DYC-jswo">
-              Most viewed/liked Youtube video on Java Records
-            </a>
-          </li>
-          <li>
-            <a href="https://openjdk.java.net/jeps/395">Official specs</a>
-          </li>
-        </p>
-        </div>
-  
-      <div class="block mx-3">
-        <div class="columns">
-          <div class="column is-four-fifths">
-            <span class = 'tag'>Java</span>
-            <span class = 'tag'>Refactoring</span>
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/elixir-is-future-of-erlang.html">Read ...</a>
+                </span>
+              </p>
           </div>
-          <div class="column">
-            <span class ='has-text-right'>
-              <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-            </span>
-          </div>
+      
         </div>
 
-        <hr class="gn-section">
       </div>
-    </div>
 
-    <div id = "16042022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Nano Refactoring — Leave the campground cleaner than you found it
-        </p>  
-      </header>
-
-      <div class="content mx-6">
-        <p> The Boy Scouts of America have a simple rule — ‘Leave the campground 
-          cleaner than you found it’*.
-        </p>
-
-        <p>
-        Applying this to context of software development especially for a large complex 
-        legacy code base, what essentially it means when you get to modifying a legacy 
-        code base for a specific bug fix, can we do some quick refactoring around 
-        the code you are modifying. I call this as <strong>‘Nano Refactoring’</strong>.
-
-        </p>
-
-        <p> 
-          The campground for Nano Refactoring is the ‘function’ being modified for 
-          specific bug fix. The type of clean up done under Nano Refactoring must fit 
-          into ‘Low Effort &amp; Low Risk’ category such as
-          <p>
-            <li>
-              Appropriate commenting (add/remove/modify).
-            </li>
-            <li>
-              Rename any local variables per guidelines.
-            </li>
-            <li>
-              Removal of duplicate variables etc.
-            </li>
-            <li>
-              Additional assert, try catch for better error handling.
-            </li>
-
-          </p>
-          <p>
-            These nano refactoring efforts looked in isolation can be dismissed as 
-            trivial but the aggregation of these marginal gains can be significant 
-            in the long run. If each function/class/module was cleaned up by 1% every day, 
-            at the end of one year you would have 37% of your code base cleaned up almost 
-            with no addition efforts or risks.
-          </p>  
-          <p>
-            <img src = "https://jamesclear.com/wp-content/uploads/2015/08/tiny-gains-graph-960x960.jpg" alt="Incremental improvement" width="500" height="600">
-          </p>
-          <p>
-            <small>
-            + Boy Scouts rule above from Robert C Martin’s book Clean Code <br>
-            ++ The Power of Tiny Gains from James Clears book Atomic Habits
-            </small>
-          </p>
-        </p>
-        </div>
-  
-      <div class="block mx-3">
-        <div class="columns">
-          <div class="column is-four-fifths">
-            <span class = 'tag'>Software Engineering</span>
-            <span class = 'tag'>Refactoring</span>
-          </div>
-          <div class="column">
-            <span class ='has-text-right'>
-              <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-            </span>
-          </div>
-        </div>
-
-        <hr class="gn-section">
-      </div>
-    </div>
-
-    <div id = "04042022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Keytake aways from Tribe of Hackers
-        </p>  
-      </header>
-
-      <div class="content mx-6">
-        <p> 
-        <a href="https://www.amazon.com/Tribe-Hackers-Cybersecurity-Advice-World/dp/1119643376?crid=I1ALY2KIQO10&keywords=tribe+of+hackers&qid=1650870509&s=books&sprefix=tribe+of+hackers%2Cstripbooks%2C281&sr=1-1&linkCode=li2&tag=greyneurons09-20&linkId=2cc87ad4a4701695a21d649cba87a7c8&language=en_US&ref_=as_li_ss_il" target="_blank"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=1119643376&Format=_SL160_&ID=AsinImage&MarketPlace=US&ServiceVersion=20070822&WS=1&tag=greyneurons09-20&language=en_US" ></a><img src="https://ir-na.amazon-adsystem.com/e/ir?t=greyneurons09-20&language=en_US&l=li2&o=1&a=1119643376" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-        </p>
-        <p>  
-          Tribe of Hackers is a collection of interviews with 70 cyber security experts. 
-          Interview questions asked to these cyber security experts is standard.
-          Questions cover wide topics related to cyber security from cybersecurity tools/technolgies, processes 
-          to making careers in cybersecurity.
-        </p>
-        <p>
-          if you had to jot down the most common advise given by these 70 odd experts, 
-          it would really come down to following 
-          <p>
+      <div class="columns mx-6">
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                Tribe of Hackers 
+              </div>
+            </div>
+            <div class="card-content">
+              <p class='is-success'>
+                Tribe of hackers is collection of interviews with 70 + cybersecurity professionals.
+                Interview questions were same & a very common sensical pattern can be derived from the answers.
+              </p>
           
-            For Individuals, you need to do following 
-            <li>Use strong password ( min 16 digits, alphanumeric + special characters ).</li>
-            <li>Do not repeat passwords across sites.</li>
-            <li>Use password manager ( it takes care of both of the above items ).</li>
-            <li>Use VPN.</li>
-          </p>
-
-          <p>
-            For Organizations, resoundingly the advice is 
-            <li>Focus on people then tools ( Training budget / Tools budget may be a good metrics to track )</li>  
-          </p>
-
-        </p>
-
-        <p> 
-          Obviosly insane focus on buying more tools , technologies is not helping any one 
-          because tools do end up creating tons and tons of data with very minimal ways to auto remediate the situation.
-          Tool implementation eats up so much budget which results in reduced budget for staffing and training.
-        </p>
-
-        <p>
-          At Grey Neurons we never discount the human angle be it cybersecurity or software development.
-          Through our decades of experience building successful teams and software products, we can blend
-          the peopleware and productware in right proposition for successful outcomes. 
-        </p>
-
-        </div>
-
-      <div class="block mx-3">
-        <span class = 'tag'>cyber security</span>
-        <span class = 'tag'>Books</span>
-        <p class="has-text-centered">
-          <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-
-        </p>                      
-        <hr class="gn-section">
-      </div>
-      
-    </div>
-
-    <div id = "02042022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Beware when you use target="_blank" next time
-        </p>  
-      </header>
-
-      <div class="content mx-6">
-        <p>Setting target attribute of anchor tag to '_blank' is quite common when you want 
-        to open the link in a new tab of the browser. What is not commonly understood is this
-        can lead to a vulnerability known as <a  href="https://en.wikipedia.org/wiki/Tabnabbing" target="_blank" rel="noopener noreferrer">tabnabbing</a>. 
-        </p>
-        <p>You can easily avoid this potential vulnerability
-        by adding a <b>rel</b> attribute to anchor tag and setting it to <b>"noreferrer noopener"</b>
-        </p>  
-        So next time you write a code which looks like
-            
-            <xmp class="code-border">
-              <a href="https://www.greyneuronconsulting.com" target="_blank">Grey Neurons consulting</a>
-            </xmp>  
-        
-            take an extra moment and don't forget to add the rel attribute
-            <xmp class="code-border">
-              <a href="https://www.greyneuronconsulting.com" target="_blank" rel="noopener noreferrer">
-                Grey Neurons consulting</a>
-            </xmp>
-        
-      </div>
-
-      <div class="block mx-3">
-        <span class = 'tag'>HTML</span>
-        <span class = 'tag'>Software Engineering</span>
-        <span class = 'tag'>cyber security</span>
-        <span class = 'tag'>Tips</span>
-        <p class="has-text-centered">
-          <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-
-        </p>                      
-        <hr class="gn-section">
-      </div>
-      
-    </div>
-
-    <div id="01042022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-      <header class="card-header">
-        <p class="card-header-title  has-text-primary">
-          Audit your web page
-        </p>
-      </header>
-
-      <div class="content mx-6">
-        
-        <p>You have developed your webpage. Knowingly / unknowlingly you have added various 
-        javascripts, several images. You do not know if the webpage is SEO friendly. 
-        Your customer suddenly throws a new requirement at you -> web App needs to be optimized 
-        so it can run on a 3g network without any hiccups & wants to audit your web pages.
-        </p>
-
-        <p>No need to sweat !!! 
-        <a  target="_blank" rel="noopener noreferrer" 
-        href="https://developers.google.com/web/tools/lighthouse" >Lighthouse</a> 
-        is an open source tool that can be run from your chrome 
-        browser to audit any webpages for performance, accessibility, 
-        SEO friendliness & web best practices.
-        </p>  
-
-      </div>
-
-      <div class="block mx-3">
-        <span class = 'tag'>HTML</span>
-        <span class = 'tag'>Software Engineering</span>
-        <span class = 'tag'>Tools</span>
-        <p class="has-text-centered">
-          <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-        </p>        
-        <hr class="gn-section">
-      </div>
-      
-    </div>
-
-    <div id = "31032022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Handling Errors Functional programming way
-        </p>
-
-      </header>
- 
-      <div class="content mx-6">
-        
-        How gracefully you handle errors in your code differentiates a professional 
-        coder from a rookie programmer. All the modern language give capabilties like try catch 
-        to handle error conditions. 
-        In this <a  target="_blank" rel="noopener noreferrer" 
-        href="https://blog.frankel.ch/error-handling/?utm_source=pocket_mylist">article</a> , author looks at handling errors using traditional
-        constructs like try & catch in languages like Java, Python, Rust but then more importantly 
-        discusses how error handling can achieved using functional programming concepts. 
-      </div>
-
-      <div class="block mx-3">
-        <span class = 'tag'>Functional programming</span>
-        <span class = 'tag'>Java</span>
-        <span class = 'tag'>Rust</span>
-
-        <p class="has-text-centered">
-          <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-        </p>
-        <hr class="gn-section">
-
-      </div>
-      
-    </div>
-    <!--
-    <section class="hero is-info is-small">
-      <div class="hero-body">
-        <p class="title">
-          Grey Neurons Consulting
-        </p>
-        <p class="subtitle">
-          Experience the wisdom
-        </p>
-      </div>
-
-    </section>
-
-    <div class="container mx-6">
-      <div class="notification is-info">
-        <span class="title">GREY NEURONS</span><br>
-        <span class="sub-title"><i>Experience the wisdom</i></span>
-      </div>
-    </div>
-
-    <section class="banner">
-    <div class="hero-body">
-      <p class="title">
-        Grey Neurons Consulting
-      </p>
-      <p class="subtitle">
-        Experience the wisdom
-      </p>
-    </div>
-     </section>
-  -->
-
-
- 
-
-    <div id ="28032022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Project vs Product mindset
-        </p>
-
-      </header>
- 
-      <div class="content mx-6">
-        <img src="img/projectproduct.png" alt="Project vs Product mindset" width="500" height="600">
-        <br>
-        <small><a  href="https://www.aihr.com/blog/hr-trends">referred from aihr.com</a></small>
-      </div>
-
-      <div class="block mx-3">
-        <span class = 'tag'>Software Engineering</span>
-        <span class = 'tag'>Peopleware</span>
-        <span class = 'tag'>Culture</span>
-
-        <p class="has-text-centered">
-          <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-        </p>
-
-        <hr class="gn-section">
-
-      </div>
-      
-    </div>
-
-    <div id="27032022" class='block has-text-left has-background-dark has-text-light mx-6'>
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Reality of Software Engineering
-        </p>
-      </header>
-      <div class="content mx-6">
-          
-          <div class = "block has-text-light">
-
-            The software practitioners from today's age would agree not much has changed 
-            in terms of software development. New programming languages, frameworks & libraries 
-            have come but challenges of changing requirements, estimation overruns and 
-            quality problems continue to be same as what it was 30 - 40 years ago. 
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/tribe-of-hackers.html">Read ...</a>
+                </span>
+              </p>
           </div>
-
-          <blockquote>
-              "The gap between the best software engineering practice and the average practice 
-              is very wide - perhaps wider than in any other engineering discipline. 
-              A tool that disseminates good practice would be important" - Fred Brooks
-              
-          </blockquote>
-
-          <blockquote>
-            "A system is never finished being 
-            developed until it ceases to be used.” — Jerry Weinberg  
-          </blockquote>
-
-          <blockquote>
-            “The first 90% of the code accounts for the first 
-            90% of the development time. The remaining 10% of the code accounts 
-            for the other 90% of the development time.” — Tom Cargill 
-          </blockquote>
-
-          <blockquote>
-            “As a rule, software systems do not work well until they have been used, 
-            and have failed repeatedly, in real applications.”— Dave Parnas
-          </blockquote>
-
-          <blockquote>
-            “No amount of testing can prove a software right, a single test can 
-            prove a software wrong.”— Amir Ghahrai
-          </blockquote>
-
-          <blockquote>
-            “Software and cathedrals are much the same: first we build them, 
-            then we pray.”— Anonymous
-          </blockquote>
-
-          <blockquote>
-            “Software built up over years from millions of lines of code, 
-            branching, unfolding & intertwining comes to behave more like an 
-            organism than a machine.” - Anonymous
-          </blockquote>
-      </div>
-
-      <div class="block mx-3">
-        <span class = 'tag'> Software Engineering</span>
-
-        <p class="has-text-centered">
-          <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-        </p>
-        <hr class="gn-section">
-
-      </div>
-    </div>
-
-    <div id ="13032022" class='block has-text-left has-text-light mx-6'>
-      <header class="card-header">
-        <p class="card-header-title has-text-primary">
-          Elixir is the future of Erlang
-        </p>  
       
-      </header> 
-
-      <div class="card-content">
-        
-        <div class="block"> Erlang was invented at Ericssion by 
-        <a  target="_blank" rel="noopener noreferrer" 
-        href="https://en.wikipedia.org/wiki/Joe_Armstrong_(programmer)">Joe armstrong</a> 
-        & others to specifically meet the 
-        then telecom giants requirements to have a highly scalabable/concurrent fault tolerant
-        systems. Erlang is largely functional concurrency oriented prorgamming language. 
-        
-        Even after being opensourced in late 1990 it was not very 
-        popular  as it lacked  big corporate sponsorship & 
-        was always considered a niche langauge.
-        </div> 
-
-        <div class="block">Mid 2000s , need for internet scale ( where you may have 100Ks of concurrent users unlike 
-        100s in enterprise software ) forced the programming community to reconsider Erlang. 
-        The biggest evidence of this is WhatsApp where the core messaging 
-        services are written in Erlang. </div>
-
-        <div class="block">
-          Functional programming paradigm existed since early 1950 but had remained confined to universities & academia. 
-          Late 2000 saw a renewed interest in functional programming and corporates especially startups were open to adapting
-          functional programming in mainstream product development. While the interest in Erlang was on rise, people still had 
-          concerns about Erlangs quirky syntax and lack of modern tooling.
-        </div>
-        
-        <div class="block">Around 2010 , Jose Valim a core team member of Ruby on Rails team was working to improve the 
-          performance of Rails which had challenges with its concurrency implementation. 
-          As a solution to Rails concurrency issues, Jose valim ended up creating Elixir language.
-          Elixir while not a fully functional language like Haskell adapted the syntax & tools from 
-          Ruby on rails but under the hood decided to use BEAM, the rock solid super concurrent virtual machine of Erlang.
-          Essentially with this Jose had solved two problems -> concurrency issus of Ruby, quirky syntax/lack of tools on Erlang.
-
-
         </div>
 
-        <div class="block">So next time  when you need to build highly distributed systems that need low latency (soft real time) 
-          and high reliability, Elixir is the way to go.
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                Leave the camp ground cleaner 
+              </div>
+            </div>
+            <div class="card-content">
+              <p class='is-success'>
+                The Boy Scouts of America have a simple rule — ‘Leave the campground 
+                cleaner than you found it’*. There is quite a bit software developers can learn 
+                from this & apply to how they refactor their code.            
+              </p>
+          
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/campground-clean.html">Read ...</a>
+                </span>
+              </p>
+          </div>
+      
         </div>
 
       </div>
-      <div class=" block mx-3">
-        <span class = 'tag'>Elixir</span>&NonBreakingSpace;
-        <span class = 'tag'>Erlang</span>&NonBreakingSpace;
-        <span class = 'tag'>Functional programming</span>&NonBreakingSpace;
-        <p class="has-text-centered">
-          <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-        </p>
-        <hr class="gn-section">
+
+      <div class="columns mx-6">
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                Beware of the tab nabbing
+              </div>
+            </div>
+            <div class="card-content">
+              <p class='is-success'>
+                A simple anchor tag in html can leave you vulnerable for tabnabbing attack.
+                Luckily the solution is also simple but relatively unknown ...
+                <br/><br/>
+
+              </p>
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/beware-of-tabnabbing.html">Read ...</a>
+                </span>
+              </p>
+          </div>
+      
+        </div>
+
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                  Audit your HTML pages
+              </div>
+            </div>
+            <div class="card-content">
+              <p class='is-success'>
+                Is your HTML page really optimized and following all the bestpractices and guidelines. 
+                There are easy ways to find this out but are the UI developers using it from day #1.
+              </p>
+          
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/audit-the-page.html">Read ...</a>
+                </span>
+              </p>
+          </div>
+      
+        </div>
+
+      </div>
+
+      <div class="columns mx-6">
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                Project vs Product mindset
+              </div>
+            </div>
+            <div class="card-content">
+              <p class='is-success'>
+                Doing a custom project vs. working on product needs a different mindset and approach. Find out how and why
+                <br/>
+                <br/>
+                <br/>
+
+              </p>
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/project-product-mindset.html">Read ...</a>
+                </span>
+              </p>
+          </div>
+      
+        </div>
+
+        <div class ="column is-5">
+          <div class="card">
+            <div class='card-header'>
+              <div class="card-header-title
+                          has-text-success">
+                  Realities of software development
+              </div>
+            </div>
+            <div class="card-content">
+              <p class='is-success'>
+                Software development is it an art or engineering is anyone's guess.
+                How to estimate software development efforts and deliver high quality products is being researched from last 50+ years but not much has changed.
+              </p>
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item">
+                <span>
+                  <a href="/blogs/software-eng-reality.html">Read ...</a>
+                </span>
+              </p>
+          </div>
+      
+        </div>
 
       </div>
     </div>
+
   </div>
  
 
