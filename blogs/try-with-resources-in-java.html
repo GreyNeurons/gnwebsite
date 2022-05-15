@@ -1,0 +1,167 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GreyNeurons Blog - Java records</title>
+  <meta name="description" content="Introduction to Java try with resources">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Grey Neurons Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blog.html">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bulma.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="About try with resources in Java" />
+  <meta name="twitter:site" content="@GreyNeurons" />
+
+</head>
+
+<body class ="has-background-dark has-text-centered is-family-primary">
+
+  <div class = "section">
+
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li class="is-dark"><a  href="/">Home</a></li>
+          <li class="is-dark"><a  href="/blog.html">Blogs</a></li>
+          <li class="is-active"><a  href="#" aria-current="page">Java Try with try-with-resources</a></li>
+        </ul>
+    </nav>
+
+    <div id = "15052022" class='block has-text-left has-background-dark has-text-light mx-6'>
+
+        <header class="card-header">
+          <p class="card-header-title has-text-primary">
+            Introduction to Java try with resources
+          </p>  
+        </header>
+  
+        <div class="content mx-6">
+          <p> One of the biggest problem that creeeps into production code is resource leaks. 
+              Often resources like database connections, open files are not closed 
+              mostly in exception cases or sometimes even in the normal or happy path 
+              scenarios. Typically side effects of such leaks shows up when the system is under load 
+              or is soaked for a long time. These are difficult to troubleshoot as they manifest in production
+              in completely unrelated ways...
+
+          </p>
+          <br/>
+          <p>
+            Would not it be great if these resources were autoclosed irrespective of whether the code executed
+            a success path or error path without being dependendent on the programmer to take care of it by 
+            explicitly handling resource closing code in both success and failure cases.
+          </p>
+
+          <p>
+            Java 7 introduced a feature called '<b>try with resources</b>''. Strangely it is not 
+            very popular even after being around for more then a decade.
+            <br/>
+            Let's take a quick look at this feature and see how you can benefit from it.
+          </p>
+  
+   
+          <p>
+            <div class="columns has-text-left">
+              <div class="column is-half">
+                <span class="has-text-danger">Sample code wihout using try with resources</span>
+                <xmp class ="code code-border">
+    Scanner sc = null;
+    try {
+        sc = new Scanner(new File("sample.txt"));
+        while (sc.hasNext()) {
+            System.out.println(sc.nextLine());
+        }
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } finally {
+        if (sc != null) {
+            sc.close();
+        }
+    }
+              </xmp>
+              </div>
+              <div class="column">
+                <span class="has-text-success">Sample code using try with resources</span>
+    <xmp class ="code code-border ">
+    try (Scanner sc = new Scanner(new File("sample.txt"))) 
+    {
+        while (sc.hasNext()) {
+            System.out.println(sc.nextLine());
+        }
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+              </xmp>
+              </div>
+            </div>
+          </p>
+          <p>
+            Benefits of using are obvious -
+            <li>The code is shorter.</li>
+            <li>No leaky code - Resources are closed when they go out of scope.</li>
+
+            <br/>
+            So if you have are working on a project that uses Java 7 or higher & 
+            whenever you open a resource ( file, database connection etc) check if the resource
+            you are using implements AutoCloseable then it is time use Try with resources then just
+            vanilla Try Catch finally statement
+            <br/>
+            </p>
+            <p>
+            Here are some additional resources about try with resources
+            <li>
+            <a  
+            href="https://www.youtube.com/watch?v=V3X6uV4Xg34">
+            Most viewed/liked YouTube video on Try with resources
+            </a>
+            </li>
+            <li>
+              <a href ="https://docs.oracle.com/javase/7/docs/technotes/guides/language/try-with-resources.html">
+                Official documentation on Try with resources
+              </a>
+            </li>
+            <li><a href="java-records.html">Java records Introduction</a></li>
+
+          </p>
+          
+          </div>
+    
+        <div class="block mx-3">
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <span class = 'tag'>Java</span>
+              <span class = 'tag'>Refactoring</span>
+            </div>
+            <div class="column">
+              <span class ='has-text-right'>
+                <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+              </span>
+            </div>
+          </div>
+  
+          <hr class="gn-section">
+        </div>
+      </div>
+
+  </div>
+ 
+
+  <a title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+  <script async src="//static.getclicky.com/101362676.js"></script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+
+</body>
+
+</html>
