@@ -43,3 +43,12 @@ hr.gn-main {
     cursor: pointer;
     text-decoration: none;
   }
+
+  .card-header-title-light {
+    color: whitesmoke;
+  }
+
+  .card-header-title-dark {
+    color: grey;
+  }
+  
