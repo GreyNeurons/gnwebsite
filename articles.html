@@ -68,11 +68,13 @@
 
   <!-- start Header and navigation bar section-->
   <div class = "section has-text-grey-light has-background-dark">
-    <div class = "title is-size-1 has-text-white is-uppercase">
-      Grey Neurons
-    </div>
-    <div class = "subtitle is-italic has-text-grey-light is-family-monospace">
-      Experience the wisdom
+    <div class="content has-text-white is-family-monospace">
+      <p class = "title is-size-5 has-text-white  is-uppercase">
+        Grey Neurons
+      </p>
+      <p class = "subtitle has-text-grey-light ">
+        Experience the wisdom
+      </p>
     </div>
     <nav class="breadcrumb" aria-label="breadcrumbs">
       <ul>
@@ -85,167 +87,178 @@
   </div>
   <!-- end Header and navigation bar section-->
 
-  <!-- start Java Articles section-->
 
-  <div class = "section">
-    <div class ="title has-text-dark">
-      Java
-    </div>
-    <div class="columns is-centered">
-
-      <div class="column">
-          <div class="card-header-title card-header-title-dark">Java Try with resources - Stop leaking resources
-          </div>
-          <div class="card-content">
-              Unclosed file handles, database connection is a common problem. Get rid of it by using 
-              an old but not too popular java feature.<a href="/blogs/try-with-resources-in-java.html">Read ...</a>
-          </div>
-      </div>
-
-      <div class="column">
-          <div class="card-header-title card-header-title-dark">Java Records - Escape the verbosity
-
-          </div>
-          <div class="card-content">
-              Verbosity is not bad but too much of it can be a productivity killer. 
-              Starting Jav 14, you have options to escape the verbosity by using a new feature called Java Records. <a href="/blogs/try-with-resources-in-java.html">Read ...</a>
-
-          </div>
-      </div>
-      
-    </div>  
-  </div>
-  <!-- end Java Articles section-->
-
-  <!-- Start of Software Engineering section -->
   <div class = "section has-text-grey-light has-background-dark">
-    <div class ="title has-text-light">
-      Software Engineering
-    </div>
+    <!-- our articles page has 2 columns layout & in each column we have columns
+    which summarizes and then links to the full article. -->
     <div class="columns is-centered">
 
-      <div class="column">
-          <div class="card-header-title card-header-title-light">Leave the camp ground cleaner 
-          </div>
-          <div class="card-content">The Boy Scouts of America have a simple rule — ‘Leave the campground 
-            cleaner than you found it’*. There is quite a bit software developers can learn 
-            from this & apply to how they refactor their code.  <a href="/blogs/campground-clean.html">Read ...</a>
-          </div>
-
-          <div class="card-header-title  card-header-title-light">
-            Project vs Product mindset
+      <!-- First column start -->
+      <div class="column ">
+        <div class ="card has-text-grey-light has-background-dark">
+          <div class="card-header-title card-header-title-light">
+            Java Try with resources - Stop leaking resources
           </div>
           <div class="card-content">
-            Doing a custom project vs. working on product needs a different mindset and approach. Find out how and why <a href="/blogs/project-product-mindset.html">Read ...</a>
-          </div>
-      </div>
-
-      <div class="column">
-          <div class="card-header-title  card-header-title-light">
-            Realities of software development
-          </div>
-          <div class="card-content">
-                Software development is it an art or engineering is anyone's guess.
-                How to estimate software development efforts and deliver high quality products is being researched from last 50+ years but not much has changed. <a href="/blogs/software-eng-reality.html">Read ...</a>
-
-          </div>
-      </div>
-      
-    </div>  
-  </div>
-  <!-- End of software Engineering section -->
-
-  <!-- start of FP section-->
-  <div class = "section">
-    <div class ="title is-text-light">
-      Functional programming
-    </div>
-    <div class="columns is-centered">
-
-      <div class="column">
-          <div class="card-header-title"> Elixir is the future of Erlang
-          </div>
-          <div class="card-content">
-            This Blog gives you a brief history of both Erlang and Elixir.
-            It also talks about the strengths of both the languages & how the future of both languages is converging.<a href="/blogs/elixir-is-future-of-erlang.html">Read ...</a>
-
-          </div>
-      </div>
-
-      <div class="column">
-          <div class="card-header-title">
-          </div>
-          <div class="card-content">
-
-          </div>
-      </div>
-      
-    </div>  
-  </div>
-  <!-- end of FP Articles section-->
-
-    <!-- start of web & front end template  section -->
-
-    <div class = "section has-text-grey-light has-background-dark">
-      <div class ="title has-text-light">
-        Web Development
-      </div>
-      <div class="columns is-centered">
-  
-        <div class="column">
-            <div class="card-header-title card-header-title-light"> Beware of Tab Nabbing
+            <div class="content">
+              Unclosed file handles, database connection is a common problem that goes unnoticed but hits you badly in production. Get rid of it by using 
+              an old but not too popular java feature.<a href="/blogs/try-with-resources-in-java.html"> Read ...</a>
+              
+              <p>
+                <div class="tags">
+                  <span class="tag is-rounded is-primary">Java</span>
+                  <span class="tag is-rounded is-primary">Refactoring</span>
+                </div>
+              </p>
             </div>
-            <div class="card-content">
-              A simple anchor tag in html can leave you vulnerable for tabnabbing attack.
-              Luckily the solution is also simple but relatively unknown.
-                <a href="/blogs/beware-of-tabnabbing.html">Read ...</a>
-            </div>
+          </div>
         </div>
-  
-        <div class="column">
-            <div class="card-header-title card-header-title-light">Audit your HTML pages
-  
+
+        <div class ="card has-text-grey-light has-background-dark">
+          <div class="card-header-title card-header-title-light">
+            Leave the camp ground cleaner 
+          </div>
+          <div class="card-content">
+            <div class="content">  
+              The Boy Scouts of America have a simple rule — ‘Leave the campground 
+              cleaner than you found it’*. There is quite a bit software developers can learn 
+              from this & apply to how they refactor their code.  <a href="/blogs/campground-clean.html"> Read ...</a>
+
             </div>
-            <div class="card-content">
+            <p>
+              <div class="tags">
+                <span class="tag is-rounded is-primary">Software Engineering</span>
+                <span class="tag is-rounded is-primary">Culture</span>
+                <span class="tag is-rounded is-primary">Refactoring</span>
+              </div>
+            </p>
+
+          </div>
+        </div>
+
+        <!-- first column 3rd card start -->
+        
+        <div class ="card has-text-grey-light has-background-dark">
+          <div class="card-header-title card-header-title-light">
+            Tribe of Hackers
+          </div>
+          <div class="card-content">
+            <div class="content">  
+              Tribe of hackers is collection of interviews with 70 + cybersecurity professionals.
+              Interview questions were same & a very common sensical pattern can be derived from the answers.<a href="/blogs/tribe-of-hackers.html"> Read ...</a>
+
+            </div>
+            <p>
+              <div class="tags">
+                <span class="tag is-rounded is-primary">Cyber security</span>
+                <span class="tag is-rounded is-primary">Books</span>
+              </div>
+            </p>
+
+          </div>
+        </div>
+        <!-- first column 3rd card end -->
+
+        <!-- first column 4th card start -->
+        
+        <div class ="card has-text-grey-light has-background-dark">
+          <div class="card-header-title card-header-title-light">
+            Audit your HTML pages
+          </div>
+          <div class="card-content">
+            <div class="content">  
               Is your HTML page really optimized and following all the bestpractices and guidelines. 
               There are easy ways to find this out but are the UI developers using it from day #1.
-              <a href="/blogs/audit-the-page.html">Read ...</a>
+              <a href="/blogs/audit-the-page.html"> Read ...</a>
 
             </div>
-        </div>
-        
-      </div>  
-    </div>
-    <!-- end web development template section-->
+            <p>
+              <div class="tags">
+                <span class="tag is-rounded is-primary">UI</span>
+                <span class="tag is-rounded is-primary">html</span>
+              </div>
+            </p>
 
-      <!-- start of Books section-->
-  <div class = "section">
-    <div class ="title is-text-light">
-      Books
-    </div>
-    <div class="columns is-centered">
-      <div class="column">
-        <div class="card-header-title">Tribe of Hackers
+          </div>
         </div>
-        <div class="card-content">
-            Tribe of hackers is collection of interviews with 70 + cybersecurity professionals.
-            Interview questions were same & a very common sensical pattern can be derived from the answers.<a href="/blogs/tribe-of-hackers.html"> Read ...</a>
+        <!-- first column 4th card end -->
 
-        </div>
       </div>
-      
+      <!-- First column end -->
+
+      <!-- Second column start -->
       <div class="column">
-          <div class="card-header-title"> 
+        <div class="card has-text-grey-light has-background-dark">
+          <div class="card-header-title card-header-title-light">Java Records - Escape the verbosity
+          </div>
+          <div class = "card-content">
+            <div class="content">
+                Verbosity is not bad but too much of it can be a productivity killer. 
+                Starting Java 14, you have options to escape the verbosity by using a new feature called Java Records. <a href="/blogs/java-records.html"> Read ...</a>
+
+                <p>
+                  <div class="tags">
+                    <span class="tag is-rounded is-primary">Java</span>
+                    <span class="tag is-rounded is-primary">Refactoring</span>
+                  </div>
+                </p>
+            </div>
+          </div>
+        </div>
+
+        <div class ="card has-text-grey-light has-background-dark">
+          <div class="card-header-title card-header-title-light"> Elixir is the future of Erlang
           </div>
           <div class="card-content">
+            <div class="content">
+              This Blog gives you a brief history of both Erlang and Elixir.
+              It also talks about the strengths of both the languages & how the future of both languages is converging.<a href="/blogs/elixir-is-future-of-erlang.html"> Read ...</a>
+
+              <p>
+                <div class="tags mt-1">
+                  <span class="tag is-rounded is-primary">Elixir</span>
+                  <span class="tag is-rounded is-primary">Erlang</span>
+                  <span class="tag is-rounded is-primary">functional programming</span>
+                </div>
+              </p>
+
+            </div>
           </div>
+        </div>
+
+        <!-- second column third card start -->
+
+        <div class ="card has-text-grey-light has-background-dark">
+          <div class="card-header-title card-header-title-light"> Beware of Tab Nabbing
+          </div>
+          <div class="card-content">
+            <div class="content">
+              A simple anchor tag in HTML can leave you vulnerable for tabnabbing attack.
+              Luckily the solution is also simple but relatively unknown.
+                <a href="/blogs/beware-of-tabnabbing.html"> Read...</a>
+
+              <p>
+                <div class="tags mt-1">
+                  <span class="tag is-rounded is-primary">UI</span>
+                  <span class="tag is-rounded is-primary">Cyber security</span>
+                  <span class="tag is-rounded is-primary">HTML</span>
+
+                </div>
+              </p>
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- second column third card end -->
+        
       </div>
+      <!-- Second column end -->
 
-
-      
     </div>  
   </div>
-  <!-- end of Books Articles section--> 
+
 
   <!-- start Footer section-->
   <div class = "section has-text-grey-light has-background-dark">
