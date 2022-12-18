@@ -61,24 +61,45 @@
         </header>
   
         <div class="content mx-6">
-          <p>Recently in a code review session for a product under development, goto know the team was using Firebase for in app notifications. Looked like a reasonable choice nevertheless reminded me of the infamous story how a startup almost went bankrupt using Firebase. I shared the story with the team & apply learnings if any from the same.
+          <p>Recently in a code review session for a product under development, goto know the team was using Firebase for in-app notifications. Looked like a reasonable choice nevertheless reminded me of the infamous story how a startup almost went bankrupt using Firebase. I shared the story with the team & requested them to apply learnings if any from the same.
           </p>
 
-          <p>The story is really about how a startup got a bill of 72K USD overnight after launching their application. If you are interested you can read up the first part of the story <a target="_blank" rel="noopener noreferrer" href = "https://blog.tomilkieway.com/72k-1/">here</a>.
+          <p>The story is really about how a startup got a bill of <a target="_blank" rel="noopener noreferrer" href="https://blog.tomilkieway.com/72k-1/">72K USD overnight </a> after launching their application. Following are few wisdom nuggests from the story.
+            <blockquote>
+              I jumped out of the bed, logged into Google Cloud Billing, and saw a bill for ~$5,000. Super stressed, and not sure what happened, I clicked around, trying to figure out what was happening. I also started thinking of what may have happened, and how we could “possibly” pay the $5K bill.<br>
+
+              The problem was, every minute the bill kept going up.After 5 minutes, the bill read $15,000, in 20 mins, it said $25,000. I wasn’t sure where it would stop. Perhaps it won’t stop?
+
+              After two hours, it settled at a little short of $72,000.
+            </blockquote>
+            
           </p>
           
           <p>
-          Techies should NOT skip the <a target="_blank" rel="noopener noreferrer" href="https://blog.tomilkieway.com/72k-2/">part 2 of the story</a> where the author talks about the code in his application that led to this and how he fixed it.
+          Techies should NOT skip the <a target="_blank" rel="noopener noreferrer" href="https://blog.tomilkieway.com/72k-2/">part 2 of the story</a> where the author talks about the code in his application that led to this and how he fixed it. Here is a summary from part 2 for the busy bees.
+
+          <blockquote>
+            While creating a Cloud Run service, we chose default values in the service. The max-instances is preset to 1000, and concurrency set to 80. In the beginning we didn’t know that these values are actually worst case scenario for a test program. <br>
+
+            Had we chosen max-instances to be “2”, our costs would’ve been 500 times less. $72,000 bill would’ve been: $144. Had we chosen concurrency of “1” request, we probably wouldn’t have even noticed the bill.
+          </blockquote>
+
+          <blockquote>
+            Cloud overall is like a double edged sword. When used properly, it can be of great use, but if used incorrectly, it can have consequences. <br>
+
+            If you count the number of pages in GCP documentation, it’s probably more than pages in few novels. Understanding Pricing, Usage, is not only time consuming, but requires a deep understanding of how Cloud services work. No wonder there are full time jobs for just this purpose!
+          </blockquote>
           </p>  
 
           <p>
-          When the story was published, it was discussed quite a bit on internet. <a target="_blank" rel="noopener noreferrer" href="https://news.ycombinator.com/item?id=25372336">Here</a> is one from Y Combinator forum. 
+
+          When the story was published around 2020, it was discussed quite a bit on internet. Here is an <a target="_blank" rel="noopener noreferrer" href="https://news.ycombinator.com/item?id=25372336">interesting thread</a> from a Y Combinator forum. 
           </p>
-          
+          <br>
           <p>
-            Generally, quite a few folks who adapted the cloud are rethinking and leaving the cloud. A recent example is <a href="https://basecamp.com/">Basecamp</a> & <a href="https://www.hey.com/">HEY</a> quitting on cloud. 
+            Generally, quite a few folks who launched their startups successfully on cloud are leaving the cloud. A recent example is <a target="_blank" rel="noopener noreferrer" href="https://basecamp.com/">Basecamp</a> & <a target="_blank" rel="noopener noreferrer" href="https://www.hey.com/">HEY</a> quitting on cloud. 
             
-            It is estimated they reduce their $3 million annual AWS bill by an estimated 60% . 
+            It is estimated they will reduce their <u>$3 million annual AWS bill by an estimated 60%</u> . 
 
             David Heinemeier Hansson, Co-Owner & CTO of Basecamp & HEY has written a nice article summarizing
               <a target="_blank" rel="noopener noreferrer" href="https://world.hey.com/dhh/why-we-re-leaving-the-cloud-654b47e0">why he is leaving the cloud</a> . 
@@ -97,19 +118,37 @@
           </p>
 
           <p>
-            Another example is from SEO crawler <a href="https://prerender.io/">PreRender</a> who reduced annual server costs by 80% — from $1M to $200k — by moving away from AWS. The whole journey has been documented in detail and can be read <a href="">here</a>. 
+            Another example is from SEO crawler <a target="_blank" rel="noopener noreferrer" href="https://prerender.io/">PreRender</a> who <u>reduced annual server costs by 80% — from $1M to $200k </u> — by moving away from AWS. The whole journey has been  <a target="_blank" rel="noopener noreferrer" href="https://levelup.gitconnected.com/how-we-reduced-our-annual-server-costs-by-80-from-1m-to-200k-by-moving-away-from-aws-2b98cbd21b46">documented in detail</a>. Here are few wisdom nuggets for busy bees.
+
+            <blockquote>
+              Moving data around is where you will start running into huge bottlenecks.<br>
+
+              The true hidden price for AWS is coming from the traffic cost, they sell a reasonably priced storage, and it’s even free to upload it. But when you get it out, you pay an enormous cost.<br>
+
+              Small startups often don’t calculate the traffic cost, even tho it can be 90% of their bill.
+            </blockquote>
+            <blockquote>
+              For example, if you are in the US West(Oregon) region, you have to shell out $0.080/GB whereas in the Asia Pacific (Seoul) region it bumps up to $0.135/GB. <br>
+
+              In our case, it was easy around the $30k — $50k per month. By the end of phase two, we had reduced our total monthly server costs down by 41.2%.
+            </blockquote>
           </p>
 
           <p>
-            A common thread why folks want to quit cloud appears to be their outbound data transfer costs. These clouds trap you by allowing you to upload data for free (ingress) but if you want to trasnfer out your own data ( egress), they will charge you a bomb. For more on this , read <a href="https://www.hostdime.com/blog/enterprises-flying-off-cloud-over-cost-concerns/">here</a>. 
+            A common thread why folks want to quit cloud appears to be their <u>outbound data transfer</u> costs. These clouds trap you by allowing you to upload data for free (ingress) but if you want to <a target="_blank" rel="noopener noreferrer" href="https://www.hostdime.com/blog/enterprises-flying-off-cloud-over-cost-concerns/">to transfer out your own data ( egress)</a> they will charge you a bomb. 
 
+          </p>
+          <br>
+          <p>
+            Cloud is very <u>unforgiving to developers</u>. A small mistake in your code or not paying attention to billing plans and you are punished immediately. E.g. You do error handling in aws lambda by retrying an operation, your bill will go up. Clouds in someways forces you to become better coder by writing code that is compute, memory & storage efficient. Unfortunately the cost you pay to learn this could be very high.
           </p>
           <p>
             <b>
-              <span class="has-text-warning">So next time you are building your app & want to use a cloud service, remember this blog. Think hard because this is the moment when your cloud journey starts & you want to be doubly sure it makes sense for you both technoogywise & businesswise.
+              <span class="has-text-warning">So next time you are building your app & want to use a cloud service, remember this blog. Cloud is part of our life & can not be completely ignored. But think hard , do your technical & commercial due dilligence thoroughly and then may be take baby steps<a target="_blank" rel="noopener noreferrer"  href = "3-reasons-to-respect-cockroaches.html"> especially if you respect cockroches more then unicorns</a>.
               </span>
             </b> 
-          </p>        
+          </p>   
+          <br>     
         </div>
     
         <div class="block mx-3">
