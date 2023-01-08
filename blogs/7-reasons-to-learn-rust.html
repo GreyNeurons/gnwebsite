@@ -1,0 +1,189 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Grey Neurons - 7 reasons to learn Rust</title>
+  <meta name="description" content="Article talks about how Rust programming language is important and poised to provide a good alternative to C in system programming space">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="7 reasons why this decade belongs to Rust">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.greyneuronsconsulting.com/7-reasons-to-learn-rust.html">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bulma.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 reasons to learn Rust" />
+  <meta name="twitter:site" content="@GreyNeurons" />
+
+</head>
+
+<body class ="has-background-dark has-text-centered is-family-primary">
+
+      <!-- start Header and navigation bar section-->
+  <div class = "section has-text-grey-light has-background-dark">
+    <div class="content has-text-white is-family-monospace">
+      <p class = "title is-size-5 has-text-white  is-uppercase">
+        Grey Neurons
+      </p>
+      <p class = "subtitle has-text-grey-light ">
+        Experience the wisdom
+      </p>
+    </div>
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li class="is-dark"><a  href="/">Home</a></li>
+          <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
+          <li class="is-active"><a  href="#" aria-current="page">7 reasons to learn Rust</a></li>
+        </ul>
+    </nav>
+    <hr class = "gn-main"></hr>
+
+  </div>
+  <!-- end Header and navigation bar section-->
+
+
+    <div id = "23042022" class='card has-text-left has-background-dark has-text-light mx-6'>
+
+        <header class="card-header">
+          <p class="card-header-title has-text-primary">
+            7 reasons to learn Rust
+          </p>  
+        </header>
+  
+        <div class="content mx-6">
+            
+            <p>
+              <a target="_blank" rel="noopener noreferrer" href="https://www.rust-lang.org/">Rust</a> is a general purpose programming language with goals to produce fast, memory efficient natively cross platform code with a emphasis to enable you to eliminate memory safety and thread safety related issues at compile time.
+            </p>
+            <p>
+              Rust started as a <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Rust_(programming_language)">hobby project in 2005</a> and was officially adapted by Mozilla Foundation around 2009. In 2015 with the release of Rust 1.0, it started getting serious attention. Around 2019, a Rust moved under Rust Foundation with the biggies like Microsoft, AWS, Google joining as founding members.
+            </p>
+            <p>
+              Rust had remarkable 2022 and looks like it is all set to challenge C/C++ as defacto standard for system programming for following reasons.
+            </p>
+            <p>1. Rust has finally
+                <a target="_blank" rel="noopener noreferrer" href="https://www.zdnet.com/article/linus-torvalds-rust-will-go-into-linux-6-1/">made it to the Linux kernel</a>. 
+                Linux Kernel has been a C posterboy all along & Linus Torvalds has for long time even <a target="_blank" rel="noopener noreferrer" href ="http://harmful.cat-v.org/software/c++/linus?utm_source=thenewstack&utm_medium=website&utm_content=inline-mention&utm_campaign=platform">opposing C++ entry </a> 
+                into Linux kernel. Under such situations, Rust making into Linux kernel is a really big breakthru for the Rust.
+                 <blockquote>
+                  The Rust in Linux debate is over. The implementation has begun. In an email conversation, Linux's creator Linus Torvalds, told me, "Unless something odd happens, it [Rust] will make it into 6.1."
+                 </blockquote>
+                
+            </p>
+
+            <p>2. Google , a founding member of Rust Foundation claims 
+                <a target="_blank" rel="noopener noreferrer" href="https://www.zdnet.com/article/chrome-70-of-all-security-bugs-are-memory-safety-issues/"> 
+                    70% of security bugs found in chrome</a> can be attributed to memory safety  issues. 
+                    Android Open Source Project (AOSP) already supports the Rust programming language for developing the OS itself. 
+                    Overall Google is going all out to support Rust
+                    <blockquote>
+                      Google says that since March 2019, 125 of the 130 Chrome vulnerabilities 
+                      with a "critical" severity rating were memory corruption-related issues, 
+                      showing that despite advances in fixing other bug classes, memory management is 
+                      still a problem
+                    </blockquote>
+    
+            </p>
+
+            <p>
+              3. Microsoft , another founding member of Rust Foundation has made similar claims stating 
+              <a target="_blank" rel="noopener noreferrer" href="https://www.zdnet.com/article/microsoft-70-percent-of-all-security-bugs-are-memory-safety-issues/
+              ">70% of security defects in its products can be attributed to memory safety.</a>. Recently Microsoft Azure CTO Mark Russinovich urged software industry to  <a href="https://www.theregister.com/2022/09/20/rust_microsoft_c/
+              ">leave behind leave behind C/C++</a> & instead adapt Rust for all new development.
+              <blockquote>
+                The reason for this high percentage is because Windows has been written 
+                mostly in C and C++, two "memory-unsafe" programming languages that allow 
+                developers fine-grained control of the memory addresses where their code can be executed. 
+                One slip-up in the developers' memory management code can lead to a slew of memory safety 
+                errors that attackers can exploit with dangerous and intrusive consequences 
+                --such as remote code execution or elevation of privilege flaws.
+              </blockquote>
+              <blockquote class="twitter-tweet">
+                <p lang="en" dir="ltr">Speaking of languages, it&#39;s time to halt starting any new projects in C/C++ and use Rust for those scenarios where a non-GC language is required. 
+                  For the sake of security and reliability. the industry should declare those languages as deprecated.
+                </p>&mdash; Mark Russinovich (@markrussinovich) <a href="https://twitter.com/markrussinovich/status/1571995117233504257?ref_src=twsrc%5Etfw">September 19, 2022</a>
+              </blockquote> 
+              <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+              
+            </p>
+            
+            <p>
+              4. At AWS, yet another founding member of Rust Foundation Rust is a language of choice and used in its various technologies & services like <a target="_blank" rel="noopener noreferrer" href="https://aws.amazon.com/blogs/opensource/sustainability-with-rust/?tag=zd-buy-button-20&ascsubtag=1ddc6af3e945494ebd3b89e022b5e7ac%7Caccf3de4-4a83-4c81-8514-635e90015433%7Cdtp-oo">
+                Firecracker, Lambda, Fargate, Amazon S3, Amazon EC2 etc
+              </a>.
+              <blockquote>
+                At AWS, Rust has quickly become critical to building infrastructure at scale. Firecracker is an open source virtualization technology that powers AWS Lambda and other serverless offerings. It launched publicly in 2018 as our first notable product implemented in Rust. We use Rust to deliver services such as Amazon Simple Storage Service (Amazon S3), Amazon Elastic Compute Cloud (Amazon EC2), Amazon CloudFront, and more. In 2020, we launched Bottlerocket, a Linux-based container operating system written in Rust, and our Amazon EC2 team uses Rust as the language of choice for new AWS Nitro System components, including sensitive applications, such as Nitro Enclaves
+              </blockquote>
+
+            </p>
+            <p>
+              5. Internet security research group, folks behind Let's Encrypt have started a new initiative called 
+              <a href="https://www.memorysafety.org/"> Prossimo </a> to port many critical 
+              libraries & protocols like openSSL, NTP written in C/C++ to Rust.
+
+              <blockquote>
+                Our first goal is to move the Internet's security-sensitive software infrastructure to memory safe code. Many of the most critical software vulnerabilities are memory safety issues in C and C++ code. While there are ways to reduce the risk, including fuzzing and static analysis, such mitigations do not eliminate the risk and they consume a lot of resources on an ongoing basis. Using memory safe languages eliminates the entire class of issues. We recognize the amount of work it will take to move significant portions of the Internet’s C and C++ software infrastructure to memory safe code, but the Internet will be around for a long time. There is time for ambitious efforts to pay off. By being smart about our initial investments, focusing on the most critical components, we can start seeing significant returns within 1-2 years.
+              </blockquote>
+            </p>
+            
+            <p>
+              6. Rust is making all the right moves in the programming language survey and indexes. In the <a target="_blank" rel="noopener noreferrer" href="https://www.tiobe.com/tiobe-index/">Tiobe Index</a> of programming languages, Rust has moved from <a href="https://www.tiobe.com/tiobe-index/rust/">26 to 18</a> in last one year. Also Rust is on its <a href="https://survey.stackoverflow.co/2022/#section-most-loved-dreaded-and-wanted-programming-scripting-and-markup-languages">seventh straight year as the most loved language </a>according to latest Stack Overflow Developer survey.
+            </p>
+            
+            <p>
+              7. Any programming language needs a minimum 10-15 years to make it to the main stage. 
+              Many modern and popular programming languages like Java, Python, JavaScript, Golang use automatic memory management (aka garbage collection) automatically making them unsuitable where performance matters. Except for Golang, rest also seem to have some kind of virtual machine/interpreter to support multiple platforms. So Rust has matured sufficiently, with no competing modern language around & strong financial backing from its founding members, it is well set to challenge C/C++ in the system programming space.
+            </p>
+                  
+            <p>
+              C has been a language of choice for writing operating systems, device drivers where you need low level access to hardware, flexibility to control memory allocation. There may be billions of lines of code written in C, this is not going to be ripped apart for decades to come. But today you have a viable option in Rust to refactor some of your critical C/C++ code and for sure consider Rust as your primary choice for new project.
+            </p>
+
+        </div>
+    
+        <div class="block mx-3">
+          <div class="columns">
+            <div class="column">
+                <div class="tags">
+                    <span class="tag is-rounded ">Refactoring</span>
+                    <span class="tag is-rounded ">Programming</span>
+                </div>
+            </div>
+            <div class="column has-text-center">
+                <div class="content  has-text-white is-family-monospace">
+                <p class = "title is-size-6 has-text-white  is-uppercase">
+                    Grey Neurons
+                </p>
+                <p class = "subtitle is-size-7 has-text-grey-light ">
+                    Experience the wisdom
+                </p>
+                </div>
+            </div>
+            <div class="column has-text-right">
+              <span> 
+                <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">@greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+              </span>
+            </div>
+          </div>
+  
+          <hr class="gn-section">
+        </div>
+      </div> 
+
+  <a target="_blank" rel="noopener noreferrer" title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+  <script async src="//static.getclicky.com/101362676.js"></script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+
+</body>
+
+</html>
