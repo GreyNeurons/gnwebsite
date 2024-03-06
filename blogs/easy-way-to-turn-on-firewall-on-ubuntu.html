@@ -1,0 +1,184 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Easy way to configure firewall on Ubuntu</title>
+  <meta name="description" content="Article talks about how cockroach analogy is being used to describe startups, technologies etc.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="3 reasons to respect cockroaches">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blogs/3-reasons-to-respect-cockroaches.html">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bulma.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 reasons to respect the cockroaches" />
+  <meta name="twitter:site" content="@GreyNeurons" />
+
+</head>
+
+<body class ="has-background-dark has-text-centered is-family-primary">
+
+      <!-- start Header and navigation bar section-->
+  <div class = "section has-text-grey-light has-background-dark">
+    <div class="content has-text-white is-family-monospace">
+      <p class = "title is-size-5 has-text-white  is-uppercase">
+        Grey Neurons
+      </p>
+      <p class = "subtitle has-text-grey-light ">
+        Experience the wisdom
+      </p>
+    </div>
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li class="is-dark"><a  href="/">Home</a></li>
+          <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
+          <li class="is-active"><a  href="#" aria-current="page">Firewall Configuration on Ubuntu</a></li>
+        </ul>
+    </nav>
+    <hr class = "gn-main"></hr>
+
+  </div>
+  <!-- end Header and navigation bar section-->
+
+
+    <div id = "06032024" class='card has-text-left has-background-dark has-text-light mx-6'>
+
+        <header class="card-header">
+          <p class="card-header-title has-text-primary">
+            An easy firewall configuration for Ubuntu
+          </p>  
+        </header>
+  
+        <div class="content mx-6">
+            <p>To configure a firewall on an Ubuntu server so that only HTTPS (port 443) and SSH (port 22) ports are open, and all other ports are blocked, you can use `ufw` (Uncomplicated Firewall), which is a user-friendly front-end for managing iptables firewall rules. Here's how you can do it:
+            </p> 
+            <ul>
+              <li> 
+                <b>Install UFW</b>: If `ufw` is not already installed on your 
+                Ubuntu server, you can install it by running:<br>
+                  <code>
+                  sudo apt update
+                  sudo apt install ufw
+                  </code>
+              </li>
+
+              <li><b>Enable UFW</b>: Before enabling `ufw`, 
+                ensure that the SSH port is allowed; otherwise, 
+                you might be locked out of your server. 
+                To allow SSH (port 22) connections, run:<br>
+                <code>
+                sudo ufw allow ssh
+                </code>
+                <br>
+                Or you can explicitly specify the port number:
+                <br>
+                <code>
+                  sudo ufw allow 22/tcp
+                </code>
+              </li>
+              <li>
+                <b>Allow HTTPS</b>: To allow HTTPS (port 443) connections, run:<br>
+               <code>
+               sudo ufw allow https
+               </code>
+               <br>
+               Or you can explicitly specify the port number:
+               <code>sudo ufw allow 443/tcp</code>               
+              </li>
+              <li>
+                <b>Enable UFW</b>: After configuring the rules, 
+                enable `ufw` by running:<br>
+                <code>
+                sudo ufw enable
+                </code><br>
+                This command will apply the rules and start the firewall. 
+                You'll be asked to confirm the operation; answer `y` to proceed.
+              </li>
+
+              <li>
+                <b>Check UFW Status</b>: You can check the status 
+                of `ufw` and see the rules that are currently 
+                applied by running:<br>
+                <code>
+                sudo ufw status
+                </code><br>
+                This command shows a list of allowed and denied connections.
+ 
+              </li>
+              <li>
+                <b>Denying All Other Traffic (Optional)</b>: By default, 
+                UFW is set to deny all incoming connections and allow all 
+                outgoing connections. 
+                If you want to explicitly deny all other incoming traffic 
+                not specified in your rules, you don't need to do anything
+                 additional since this is the default behavior. 
+                 However, for outgoing connections, if you wish to 
+                 change the default policy, you can do so by running:
+                <code>
+                  sudo ufw default deny incoming
+                  sudo ufw default allow outgoing
+                </code>
+                Note that these commands set the default policies and do not need to be executed if you're okay with the default settings of denying all incoming (not explicitly allowed) and allowing all outgoing connections.
+ 
+              </li>
+
+              <li>
+                <b>Additional Rules</b>: If you need to open more ports in the future, 
+                you can add new rules using the <code>sudo ufw allow</code>> command 
+                followed by the service name or port number.
+            
+                Make sure you replace `ssh` and `https` with specific port numbers if your services run on non-standard ports. Always be cautious when modifying firewall settings to avoid locking yourself out of the server.
+    
+              </li>
+            
+            </ul>          
+        
+        </div>
+    
+        <div class="block mx-3">
+          <div class="columns">
+            <div class="column">
+                <div class="tags">
+                    <span class="tag is-rounded is-primary">Startups</span>
+                    <span class="tag is-rounded is-primary">Culture</span>
+                  </div>
+            </div>
+            <div class="column has-text-center">
+                <div class="content  has-text-white is-family-monospace">
+                <p class = "title is-size-6 has-text-white  is-uppercase">
+                    Grey Neurons
+                </p>
+                <p class = "subtitle is-size-7 has-text-grey-light ">
+                    Experience the wisdom
+                </p>
+                </div>
+            </div>
+            <div class="column has-text-right">
+              <span> 
+                <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">@greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+              </span>
+            </div>
+          </div>
+  
+          <hr class="gn-section">
+        </div>
+      </div> 
+
+  <a target="_blank" rel="noopener noreferrer" title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+  <script async src="//static.getclicky.com/101362676.js"></script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+
+</body>
+
+</html>
