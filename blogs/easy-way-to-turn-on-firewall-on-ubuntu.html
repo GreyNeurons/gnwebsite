@@ -61,97 +61,95 @@
         </header>
   
         <div class="content mx-6">
-            <p>To configure a firewall on an Ubuntu server so that only HTTPS (port 443) and SSH (port 22) ports are open, and all other ports are blocked, you can use `ufw` (Uncomplicated Firewall), which is a user-friendly front-end for managing iptables firewall rules. Here's how you can do it:
-            </p> 
-            <ul>
-              <li> 
-                <b>Install UFW</b>: If `ufw` is not already installed on your 
-                Ubuntu server, you can install it by running:<br>
-                  <code>
-                  sudo apt update
-                  sudo apt install ufw
-                  </code>
-              </li>
 
-              <li><b>Enable UFW</b>: Before enabling `ufw`, 
-                ensure that the SSH port is allowed; otherwise, 
-                you might be locked out of your server. 
-                To allow SSH (port 22) connections, run:<br>
-                <code>
-                sudo ufw allow ssh
-                </code>
-                <br>
-                Or you can explicitly specify the port number:
-                <br>
-                <code>
-                  sudo ufw allow 22/tcp
-                </code>
-              </li>
-              <li>
-                <b>Allow HTTPS</b>: To allow HTTPS (port 443) connections, run:<br>
-               <code>
-               sudo ufw allow https
-               </code>
-               <br>
-               Or you can explicitly specify the port number:
-               <code>sudo ufw allow 443/tcp</code>               
-              </li>
-              <li>
-                <b>Enable UFW</b>: After configuring the rules, 
-                enable `ufw` by running:<br>
-                <code>
-                sudo ufw enable
-                </code><br>
-                This command will apply the rules and start the firewall. 
-                You'll be asked to confirm the operation; answer `y` to proceed.
-              </li>
+          <p>To configure a firewall on an Ubuntu server to only allow HTTPS (port 443) and SSH (port 22) and block all other ports, follow these steps using UFW (Uncomplicated Firewall):</p>
+          
+          <h6 class="has-text-primary">1. Install UFW</h6>
+          <p>If not already installed, you can install UFW by running:</p>
+          <pre>
+          <code>sudo apt update
+          sudo apt install ufw</code>
+          </pre>
+          
+          <h6 class="has-text-primary">2. Enable UFW</h6>
+          <p>Before enabling UFW, ensure SSH port is allowed to avoid being locked out:</p>
+          <pre>
+          <code>sudo ufw allow ssh</code>
+          </pre>
+          <p>Or specify the port number:</p>
+          <pre>
+          <code>sudo ufw allow 22/tcp</code>
+          </pre>
+          
+          <h6 class="has-text-primary">3. Allow HTTPS</h6>
+          <p>To allow HTTPS connections, run:</p>
+          <pre>
+          <code>sudo ufw allow https</code>
+          </pre>
+          <p>Or specify the port number:</p>
+          <pre>
+          <code>sudo ufw allow 443/tcp</code>
+          </pre>
+          
+          <h6 class="has-text-primary">4. Enable UFW</h6>
+          <p>After configuring the rules, enable UFW:</p>
+          <pre>
+          <code>sudo ufw enable</code>
+          </pre>
+          
+          <h6 class="has-text-primary">5. Check UFW Status</h6>
+          <p>Check the status of UFW and the applied rules:</p>
+          <pre>
+          <code>sudo ufw status</code>
+          </pre>
+          
+          <h6 class="has-text-primary">6. Denying All Other Traffic (Optional)</h6>
+          <p>By default, UFW denies all incoming and allows all outgoing connections. If needed, set default policies:</p>
+          <pre>
+          <code>sudo ufw default deny incoming
+          sudo ufw default allow outgoing</code>
+          </pre>
+          
+          <h6 class="has-text-primary">7. Additional Rules</h6>
+          <p>To open more ports in the future, add new rules with:</p>
+          <pre>
+          <code>sudo ufw allow</code>
+          </pre>
+          
+          <h6 class="has-text-primary">8. Enable SSH Access from Specific IP Addresses</h6>
+            <p>Before enabling UFW, make sure your IP address is allowed for SSH connections. Replace <code>YOUR_IP_ADDRESS</code> with your actual IP address. For multiple IP addresses, repeat this step for each one.</p>
+            <pre>
+            <code>sudo ufw allow from YOUR_IP_ADDRESS to any port 22</code>
+            </pre>
+            <p>Example for allowing SSH from a specific IP address:</p>
+            <pre>
+            <code>sudo ufw allow from 192.168.1.100 to any port 22</code>
+            </pre>
 
-              <li>
-                <b>Check UFW Status</b>: You can check the status 
-                of `ufw` and see the rules that are currently 
-                applied by running:<br>
-                <code>
-                sudo ufw status
-                </code><br>
-                This command shows a list of allowed and denied connections.
- 
-              </li>
-              <li>
-                <b>Denying All Other Traffic (Optional)</b>: By default, 
-                UFW is set to deny all incoming connections and allow all 
-                outgoing connections. 
-                If you want to explicitly deny all other incoming traffic 
-                not specified in your rules, you don't need to do anything
-                 additional since this is the default behavior. 
-                 However, for outgoing connections, if you wish to 
-                 change the default policy, you can do so by running:
-                <code>
-                  sudo ufw default deny incoming
-                  sudo ufw default allow outgoing
-                </code>
-                Note that these commands set the default policies and do not need to be executed if you're okay with the default settings of denying all incoming (not explicitly allowed) and allowing all outgoing connections.
- 
-              </li>
+            <h6 class="has-text-primary">9. Verify UFW Rules</h6>
+            <p>Check the status of UFW and verify your rules:</p>
+            <pre>
+            <code>sudo ufw status</code>
+            </pre>
 
-              <li>
-                <b>Additional Rules</b>: If you need to open more ports in the future, 
-                you can add new rules using the <code>sudo ufw allow</code>> command 
-                followed by the service name or port number.
+            <h6 class="has-text-primary">10. Manage Connections</h6>
+              <p>To update allowed IP addresses for SSH, delete the existing rule and add a new one with the updated IP address. To delete a rule, use:</p>
+              <pre>
+              <code>sudo ufw delete allow from OLD_IP_ADDRESS to any port 22</code>
+              </pre>
+              <p>Then, add a new rule with the new IP address as previously shown.</p>
+
             
-                Make sure you replace `ssh` and `https` with specific port numbers if your services run on non-standard ports. Always be cautious when modifying firewall settings to avoid locking yourself out of the server.
-    
-              </li>
-            
-            </ul>          
-        
+          <p class ="has-text-warning">Remember to replace <code>ssh</code> and <code>https</code> with specific port numbers if your services run on non-standard ports. Be cautious when modifying firewall settings to avoid locking yourself out of the server.</p>
+
         </div>
     
         <div class="block mx-3">
           <div class="columns">
             <div class="column">
                 <div class="tags">
-                    <span class="tag is-rounded is-primary">Startups</span>
-                    <span class="tag is-rounded is-primary">Culture</span>
+                    <span class="tag is-rounded is-primary">Linux</span>
+                    <span class="tag is-rounded is-primary">Security</span>
                   </div>
             </div>
             <div class="column has-text-center">
