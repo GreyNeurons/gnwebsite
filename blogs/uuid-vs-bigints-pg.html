@@ -11,8 +11,8 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.greyneuronsconsulting.com/blogs/3-reasons-to-respect-cockroaches.html">
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" href="/icon.png">
   <!-- Place favicon.ico in the root directory -->
 
   <link rel="stylesheet" href="/css/normalize.css">
@@ -30,34 +30,12 @@
 <body >
 
   <!-- start Header and navigation bar section-->
-  <div class = "columns has-text-grey-light has-background-dark">
-    <div class="column">
-      <div class="content has-text-white is-family-monospace">
-        <p class = "title is-size-5 has-text-white  is-uppercase">
-          Grey Neurons
-        </p>
-        <p class = "subtitle has-text-grey-light ">
-          Experience the wisdom
-        </p>
-      </div>
-    </div>
-    <div class=""column">
-      <div class="box has-background-dark">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-            <ul>
-              <li class="is-dark"><a  href="/">Home</a></li>
-              <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
-              <li class="is-active"><a  href="#" aria-current="page">UUIDs or BigInts</a></li>
-            </ul>
-        </nav>
-      </div>
-    </div>
-  </div>
+  <blog-header></blog-header>
 
   <!-- end Header and navigation bar section-->
 
-    <div class="section is-family-monospace">
-      <div id = "06032024" class='card'>
+    <div class="section">
+      <div class='card'>
 
         <header class="card-header">
           <p class="card-header-title">
@@ -81,14 +59,15 @@
                 <div class="box">
                   <strong>What are UUIDs?</strong>
                   <p>UUID stands for Universal Unique Identifier. As the name suggests, UUIDs are designed to be globally unique across tables, databases, and even servers. A UUID is a 128-bit value, typically represented as a 36-character string (including hyphens). This uniqueness comes at the cost of size and complexity in generation and handling.</p>
-                    
+                  
+                  
                   <strong>Pros of Using UUIDs</u></strong>
                   <ul>
                       <li><u>Global Uniqueness:</u> The primary advantage of UUIDs is their guarantee of uniqueness beyond the scope of a single database. This is particularly useful for distributed systems where data from multiple sources might need to be merged or synchronized without conflicts.</li>
                       <li><u>Anonymity:</u> UUIDs do not reveal information about when or where they were generated, which can be beneficial for privacy and security considerations.</li>
                       <li><u>Scalability:</u> Since UUIDs do not need a central authority to ensure their uniqueness, they are well-suited for scaling out, especially in distributed databases and microservices architectures.</li>
                   </ul>
-          
+
                   <strong>Cons of Using UUIDs</strong>
                   <ul>
                       <li><u>Performance:</u> The size of UUIDs (16 bytes) is larger than that of a bigint (8 bytes), which can lead to increased storage requirements and potentially slower performance in index lookups and joins.</li>
@@ -135,8 +114,11 @@
 
       </div> 
     </div>  
-    <page-footer />  
-    <script async src="/js/page-footer.js"></script>
+    <blog-footer></blog-footer>
+    
+    <script defer src="/js/blog-header.js"></script>    
+    <script async src="/js/blog-footer.js"></script>
+
 
 </body>
 

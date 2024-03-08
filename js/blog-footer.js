@@ -1,5 +1,5 @@
 
-class PageFooter extends HTMLElement {
+class BlogFooter extends HTMLElement {
   constructor() {
     super();
     const shadow = this.attachShadow({ mode: 'open' });
@@ -30,4 +30,4 @@ class PageFooter extends HTMLElement {
   connectedCallback() {
   }
 }
-customElements.define('page-footer', PageFooter);
+customElements.define('blog-footer', BlogFooter);
