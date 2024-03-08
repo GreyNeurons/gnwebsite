@@ -27,40 +27,45 @@
 
 </head>
 
-<body class ="has-background-dark has-text-centered is-family-primary">
+<body >
 
-      <!-- start Header and navigation bar section-->
-  <div class = "section has-text-grey-light has-background-dark">
-    <div class="content has-text-white is-family-monospace">
-      <p class = "title is-size-5 has-text-white  is-uppercase">
-        Grey Neurons
-      </p>
-      <p class = "subtitle has-text-grey-light ">
-        Experience the wisdom
-      </p>
+  <!-- start Header and navigation bar section-->
+  <div class = "columns has-text-grey-light has-background-dark">
+    <div class="column">
+      <div class="content has-text-white is-family-monospace">
+        <p class = "title is-size-5 has-text-white  is-uppercase">
+          Grey Neurons
+        </p>
+        <p class = "subtitle has-text-grey-light ">
+          Experience the wisdom
+        </p>
+      </div>
     </div>
-    <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-          <li class="is-dark"><a  href="/">Home</a></li>
-          <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
-          <li class="is-active"><a  href="#" aria-current="page">UUIds or BigInts</a></li>
-        </ul>
-    </nav>
-    <hr class = "gn-main"></hr>
-
+    <div class=""column">
+      <div class="box has-background-dark">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+              <li class="is-dark"><a  href="/">Home</a></li>
+              <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
+              <li class="is-active"><a  href="#" aria-current="page">UUIDs or BigInts</a></li>
+            </ul>
+        </nav>
+      </div>
+    </div>
   </div>
+
   <!-- end Header and navigation bar section-->
 
-
-    <div id = "06032024" class='card has-text-left has-background-dark has-text-light mx-6'>
+    <div class="section is-family-monospace">
+      <div id = "06032024" class='card'>
 
         <header class="card-header">
-          <p class="card-header-title has-text-primary">
-            UUID or bigInt as identity column in postgres
+          <p class="card-header-title">
+            UUID or BigInt as identity column in postgres
           </p>  
         </header>
   
-        <div class="content mx-6">
+        <div class="card-content">
                 <p>In the world of database design, 
                     particularly when using PostgreSQL, 
                     a common question arises regarding the choice of 
@@ -70,79 +75,68 @@
                     drawbacks, and the decision ultimately depends on the 
                     specific requirements of your application. 
                     Let's explore the pros and cons of each to help you make 
-                    an informed decision.</p>
-        
-                <h5 class="has-text-primary">What are UUIDs?</h5>
-                <p>UUID stands for Universal Unique Identifier. As the name suggests, UUIDs are designed to be globally unique across tables, databases, and even servers. A UUID is a 128-bit value, typically represented as a 36-character string (including hyphens). This uniqueness comes at the cost of size and complexity in generation and handling.</p>
-        
-                <h6 class="has-text-primary">Pros of Using UUIDs</h6>
-                <ul>
-                    <li><strong class="has-text-white">Global Uniqueness:</strong> The primary advantage of UUIDs is their guarantee of uniqueness beyond the scope of a single database. This is particularly useful for distributed systems where data from multiple sources might need to be merged or synchronized without conflicts.</li>
-                    <li><strong class="has-text-white">Anonymity:</strong> UUIDs do not reveal information about when or where they were generated, which can be beneficial for privacy and security considerations.</li>
-                    <li><strong class="has-text-white">Scalability:</strong> Since UUIDs do not need a central authority to ensure their uniqueness, they are well-suited for scaling out, especially in distributed databases and microservices architectures.</li>
-                </ul>
-        
-                <h6 class="has-text-primary"></h6>Cons of Using UUIDs</h6>
-                <ul>
-                    <li><strong class="has-text-white">Performance:</strong> The size of UUIDs (16 bytes) is larger than that of a bigint (8 bytes), which can lead to increased storage requirements and potentially slower performance in index lookups and joins.</li>
-                    <li><strong class="has-text-white">Readability:</strong> UUIDs are not human-readable, making manual inspection and debugging more challenging.</li>
-                    <li><strong class="has-text-white">Complexity:</strong> Generating UUIDs requires more computational effort than incrementing a numerical value, and their non-sequential nature can lead to fragmented indexes over time.</li>
-                </ul>
-        
-                <h5 class="has-text-primary">What is bigint?</h5>
-                <p>A bigint is a large-range integer data type that occupies 8 bytes of storage. It can store numbers from -9223372036854775808 to 9223372036854775807, providing a vast range that is sufficient for many applications.</p>
-        
-                <h6 class="has-text-primary">Pros of Using bigint</h6>
-                <ul>
-                    <li><strong class="has-text-white">Performance:</strong> bigint values are smaller and more straightforward to generate than UUIDs, leading to better performance in terms of storage, indexing, and join operations.</li>
-                    <li><strong class="has-text-white">Simplicity:</strong> Using numeric IDs is straightforward and familiar to most developers, making implementation and maintenance easier.</li>
-                    <li><strong class="has-text-white">Sequentiality:</strong> bigint IDs are usually generated sequentially, which ensures a well-ordered index and can improve data retrieval speed.</li>
-                </ul>
-        
-                <h6 class="has-text-primary">Cons of Using bigint</h6>
-                <ul>
-                    <li><strong class="has-text-white">Scalability Limitations:</strong> In distributed systems, generating unique bigint IDs can require coordination between nodes to avoid conflicts, which can complicate the architecture and limit scalability.</li>
-                    <li><strong class="has-text-white">Predictability:</strong> Sequential IDs can inadvertently expose information about the number of records in a database or the rate at which records are created, potentially posing a security risk.</li>
-                </ul>
-        
-                <h5 class="has-text-primary">Conclusion</h5>
-                <p>The choice between UUIDs and bigint as identity columns in PostgreSQL hinges on the specific needs of your application. If you require global uniqueness, are building a distributed system, or need to avoid revealing information through your IDs, UUIDs are the way to go. On the other hand, if your priorities are performance, simplicity, and sequential order, bigint is likely a better choice.</p>
-                <p>Remember, the decision isn't always binary. Some applications might benefit from using both types of identifiers in different parts of the system. It's crucial to weigh the pros and cons in the context of your project's requirements to make the best decision.</p>
-
-        </div>
-    
-        <div class="block mx-3">
-          <div class="columns">
-            <div class="column">
-                <div class="tags">
-                    <span class="tag is-rounded is-primary">System Design</span>
-                    <span class="tag is-rounded is-primary">Postgres</span>
-                  </div>
-            </div>
-            <div class="column has-text-center">
-                <div class="content  has-text-white is-family-monospace">
-                <p class = "title is-size-6 has-text-white  is-uppercase">
-                    Grey Neurons
-                </p>
-                <p class = "subtitle is-size-7 has-text-grey-light ">
-                    Experience the wisdom
-                </p>
+                    an informed decision.
+                  </p>
+                
+                <div class="box">
+                  <strong>What are UUIDs?</strong>
+                  <p>UUID stands for Universal Unique Identifier. As the name suggests, UUIDs are designed to be globally unique across tables, databases, and even servers. A UUID is a 128-bit value, typically represented as a 36-character string (including hyphens). This uniqueness comes at the cost of size and complexity in generation and handling.</p>
+                    
+                  <strong>Pros of Using UUIDs</u></strong>
+                  <ul>
+                      <li><u>Global Uniqueness:</u> The primary advantage of UUIDs is their guarantee of uniqueness beyond the scope of a single database. This is particularly useful for distributed systems where data from multiple sources might need to be merged or synchronized without conflicts.</li>
+                      <li><u>Anonymity:</u> UUIDs do not reveal information about when or where they were generated, which can be beneficial for privacy and security considerations.</li>
+                      <li><u>Scalability:</u> Since UUIDs do not need a central authority to ensure their uniqueness, they are well-suited for scaling out, especially in distributed databases and microservices architectures.</li>
+                  </ul>
+          
+                  <strong>Cons of Using UUIDs</strong>
+                  <ul>
+                      <li><u>Performance:</u> The size of UUIDs (16 bytes) is larger than that of a bigint (8 bytes), which can lead to increased storage requirements and potentially slower performance in index lookups and joins.</li>
+                      <li><u>Readability:</u> UUIDs are not human-readable, making manual inspection and debugging more challenging.</li>
+                      <li><u>Complexity:</u> Generating UUIDs requires more computational effort than incrementing a numerical value, and their non-sequential nature can lead to fragmented indexes over time.</li>
+                  </ul>
                 </div>
-            </div>
-            <div class="column has-text-right">
-              <span> 
-                <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">@greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-              </span>
-            </div>
+                <div class="box">  
+                  <strong>What is bigint?</strong>
+                    <p>A bigint is a large-range integer data type that 
+                      occupies 8 bytes of storage. 
+                      It can store numbers from -9223372036854775808 to 
+                      9223372036854775807, providing a vast range that is 
+                      sufficient for many applications.</p>
+          
+                  <strong>Pros of Using bigint</strong>
+                  <ul>
+                      <li><u>Performance:</u> bigint values are smaller and more straightforward to generate than UUIDs, leading to better performance in terms of storage, indexing, and join operations.</li>
+                      <li><u>Simplicity:</u> Using numeric IDs is straightforward and familiar to most developers, making implementation and maintenance easier.</li>
+                      <li><u>Sequentiality:</u> bigint IDs are usually generated sequentially, which ensures a well-ordered index and can improve data retrieval speed.</li>
+                  </ul>
+          
+                  <strong>Cons of Using bigint</strong>
+                  <ul>
+                      <li><u>Scalability Limitations:</u> In distributed systems, generating unique bigint IDs can require coordination between nodes to avoid conflicts, which can complicate the architecture and limit scalability.</li>
+                      <li><u>Predictability:</u> Sequential IDs can inadvertently expose information about the number of records in a database or the rate at which records are created, potentially posing a security risk.</li>
+                  </ul>
+                </div>
+                <div class="box">
+                  <strong>Conclusion</strong>
+                  <p>The choice between UUIDs and bigint as identity columns in PostgreSQL 
+                    hinges on the specific needs of your application. 
+                    If you require global uniqueness, are building a distributed system, 
+                    or need to avoid revealing information through your IDs, UUIDs are the 
+                    way to go. 
+                    On the other hand, if your priorities are performance, simplicity, 
+                    and sequential order, bigint is likely a better choice. Remember, the decision isn't always binary. Some applications might 
+                    benefit from using both types of identifiers in different parts of 
+                    the system. It's crucial to weigh the pros and cons in the context 
+                    of your project's requirements to make the best decision.
+                  </p>
+                </div>  
           </div>
-  
-          <hr class="gn-section">
-        </div>
-      </div> 
 
-  <a target="_blank" rel="noopener noreferrer" title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
-  <script async src="//static.getclicky.com/101362676.js"></script>
-  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+      </div> 
+    </div>  
+    <page-footer />  
+    <script async src="/js/page-footer.js"></script>
 
 </body>
 
