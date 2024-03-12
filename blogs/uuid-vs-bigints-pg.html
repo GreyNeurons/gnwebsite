@@ -38,7 +38,7 @@
       <div class='card'>
 
         <header class="card-header">
-          <p class="card-header-title">
+          <p class="card-header-title is-centered is-size-2">
             UUID or BigInt as identity column in postgres
           </p>  
         </header>
@@ -57,11 +57,11 @@
                   </p>
                 
                 <div class="box">
-                  <strong>What are UUIDs?</strong>
+                  <strong class="is-size-4">What are UUIDs?</strong>
                   <p>UUID stands for Universal Unique Identifier. As the name suggests, UUIDs are designed to be globally unique across tables, databases, and even servers. A UUID is a 128-bit value, typically represented as a 36-character string (including hyphens). This uniqueness comes at the cost of size and complexity in generation and handling.</p>
                   <div class="columns mt-2">
                     <div class="column mt-1">
-                      <strong>Pros of Using UUIDs</u></strong>
+                      <strong >Pros of Using UUIDs</u></strong>
                       <ul>
                           <li><u>Global Uniqueness:</u> The primary advantage of UUIDs is their guarantee of uniqueness beyond the scope of a single database. This is particularly useful for distributed systems where data from multiple sources might need to be merged or synchronized without conflicts.</li>
                           <li><u>Anonymity:</u> UUIDs do not reveal information about when or where they were generated, which can be beneficial for privacy and security considerations.</li>
@@ -81,7 +81,7 @@
     
                 </div>
                 <div class="box">  
-                  <strong>What is bigint?</strong>
+                  <strong class="is-size-4">What is bigint?</strong>
                     <p>A bigint is a large-range integer data type that 
                       occupies 8 bytes of storage. 
                       It can store numbers from -9223372036854775808 to 
@@ -110,7 +110,7 @@
    
                 </div>
                 <div class="box">
-                  <strong>Conclusion</strong>
+                  <strong class="is-size-4">Conclusion</strong>
                   <p>The choice between UUIDs and bigint as identity columns in PostgreSQL 
                     hinges on the specific needs of your application. 
                     If you require global uniqueness, are building a distributed system, 
