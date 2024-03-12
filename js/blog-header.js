@@ -24,9 +24,15 @@ class BlogHeader extends HTMLElement {
         <div class="box has-background-dark">
           <nav class="breadcrumb" aria-label="breadcrumbs">
               <ul>
+                
                 <li class="is-dark"><a  href="/">Home</a></li>
                 <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
-                <li class="is-active"><a  href="#" aria-current="page">UUIDs or BigInts</a></li>
+                
+                  <li class="is-active"><a  href="#" aria-current="page">
+                      <slot name="bread-crumb-current-page"></slot>
+                    </a>
+                  </li>
+                
               </ul>
           </nav>
         </div>
