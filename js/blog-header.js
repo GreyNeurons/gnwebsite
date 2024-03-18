@@ -12,8 +12,8 @@ class BlogHeader extends HTMLElement {
       <div class = "columns has-text-grey-light has-background-dark">
       <div class="column">
         <div class="content has-text-white is-family-monospace">
-          <p class = "title is-size-5 has-text-white  is-uppercase">
-            Grey Neurons
+          <p class = "title is-size-5 has-text-white">
+            GreyNeurons
           </p>
           <p class = "subtitle has-text-grey-light ">
             Experience the wisdom
