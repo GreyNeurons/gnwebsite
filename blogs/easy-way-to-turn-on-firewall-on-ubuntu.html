@@ -9,7 +9,7 @@
 
   <meta property="og:title" content="3 reasons to respect cockroaches">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blogs/3-reasons-to-respect-cockroaches.html">
+  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blogs/easy-way-to-turn-on-firewall-on-ubuntu.html">
 
   <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="icon.png">
@@ -27,35 +27,17 @@
 
 </head>
 
-<body class ="has-background-dark has-text-centered is-family-primary">
+<body>
 
-      <!-- start Header and navigation bar section-->
-  <div class = "section has-text-grey-light has-background-dark">
-    <div class="content has-text-white is-family-monospace">
-      <p class = "title is-size-5 has-text-white  is-uppercase">
-        Grey Neurons
-      </p>
-      <p class = "subtitle has-text-grey-light ">
-        Experience the wisdom
-      </p>
-    </div>
-    <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-          <li class="is-dark"><a  href="/">Home</a></li>
-          <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
-          <li class="is-active"><a  href="#" aria-current="page">Firewall Configuration on Ubuntu</a></li>
-        </ul>
-    </nav>
-    <hr class = "gn-main"></hr>
+  <blog-header>
+    <span slot ="bread-crumb-current-page">Firewall Configuration on Ubuntu</span>
+  </blog-header>
 
-  </div>
-  <!-- end Header and navigation bar section-->
-
-
-    <div id = "06032024" class='card has-text-left has-background-dark has-text-light mx-6'>
+  <div class = "section">
+    <div id = "06032024" class='card'>
 
         <header class="card-header">
-          <p class="card-header-title has-text-primary">
+          <p class="card-header-title">
             An easy firewall configuration for Ubuntu
           </p>  
         </header>
@@ -64,14 +46,14 @@
 
           <p>To configure a firewall on an Ubuntu server to only allow HTTPS (port 443) and SSH (port 22) and block all other ports, follow these steps using UFW (Uncomplicated Firewall):</p>
           
-          <h6 class="has-text-primary">1. Install UFW</h6>
+          <h6>1. Install UFW</h6>
           <p>If not already installed, you can install UFW by running:</p>
           <pre>
           <code>sudo apt update
           sudo apt install ufw</code>
           </pre>
           
-          <h6 class="has-text-primary">2. Enable UFW</h6>
+          <h6>2. Enable UFW</h6>
           <p>Before enabling UFW, ensure SSH port is allowed to avoid being locked out:</p>
           <pre>
           <code>sudo ufw allow ssh</code>
@@ -81,7 +63,7 @@
           <code>sudo ufw allow 22/tcp</code>
           </pre>
           
-          <h6 class="has-text-primary">3. Allow HTTPS</h6>
+          <h6>3. Allow HTTPS</h6>
           <p>To allow HTTPS connections, run:</p>
           <pre>
           <code>sudo ufw allow https</code>
@@ -91,32 +73,32 @@
           <code>sudo ufw allow 443/tcp</code>
           </pre>
           
-          <h6 class="has-text-primary">4. Enable UFW</h6>
+          <h6>4. Enable UFW</h6>
           <p>After configuring the rules, enable UFW:</p>
           <pre>
           <code>sudo ufw enable</code>
           </pre>
           
-          <h6 class="has-text-primary">5. Check UFW Status</h6>
+          <h6>5. Check UFW Status</h6>
           <p>Check the status of UFW and the applied rules:</p>
           <pre>
           <code>sudo ufw status</code>
           </pre>
           
-          <h6 class="has-text-primary">6. Denying All Other Traffic (Optional)</h6>
+          <h6>6. Denying All Other Traffic (Optional)</h6>
           <p>By default, UFW denies all incoming and allows all outgoing connections. If needed, set default policies:</p>
           <pre>
           <code>sudo ufw default deny incoming
           sudo ufw default allow outgoing</code>
           </pre>
           
-          <h6 class="has-text-primary">7. Additional Rules</h6>
+          <h6>7. Additional Rules</h6>
           <p>To open more ports in the future, add new rules with:</p>
           <pre>
           <code>sudo ufw allow</code>
           </pre>
           
-          <h6 class="has-text-primary">8. Enable SSH Access from Specific IP Addresses</h6>
+          <h6>8. Enable SSH Access from Specific IP Addresses</h6>
             <p>Before enabling UFW, make sure your IP address is allowed for SSH connections. Replace <code>YOUR_IP_ADDRESS</code> with your actual IP address. For multiple IP addresses, repeat this step for each one.</p>
             <pre>
             <code>sudo ufw allow from YOUR_IP_ADDRESS to any port 22</code>
@@ -126,56 +108,31 @@
             <code>sudo ufw allow from 192.168.1.100 to any port 22</code>
             </pre>
 
-            <h6 class="has-text-primary">9. Verify UFW Rules</h6>
+          <h6>9. Verify UFW Rules</h6>
             <p>Check the status of UFW and verify your rules:</p>
             <pre>
             <code>sudo ufw status</code>
             </pre>
 
-            <h6 class="has-text-primary">10. Manage Connections</h6>
-              <p>To update allowed IP addresses for SSH, delete the existing rule and add a new one with the updated IP address. To delete a rule, use:</p>
-              <pre>
-              <code>sudo ufw delete allow from OLD_IP_ADDRESS to any port 22</code>
-              </pre>
-              <p>Then, add a new rule with the new IP address as previously shown.</p>
+          <h6>10. Manage Connections</h6>
+            <p>To update allowed IP addresses for SSH, delete the existing rule and add a new one with the updated IP address. To delete a rule, use:</p>
+            <pre>
+            <code>sudo ufw delete allow from OLD_IP_ADDRESS to any port 22</code>
+            </pre>
+            <p>Then, add a new rule with the new IP address as previously shown.</p>
 
             
-          <p class ="has-text-warning">Remember to replace <code>ssh</code> and <code>https</code> with specific port numbers if your services run on non-standard ports. Be cautious when modifying firewall settings to avoid locking yourself out of the server.</p>
+          <p>Remember to replace <code>ssh</code> and <code>https</code> with specific port numbers if your services run on non-standard ports. Be cautious when modifying firewall settings to avoid locking yourself out of the server.</p>
 
         </div>
     
-        <div class="block mx-3">
-          <div class="columns">
-            <div class="column">
-                <div class="tags">
-                    <span class="tag is-rounded is-primary">Linux</span>
-                    <span class="tag is-rounded is-primary">Security</span>
-                  </div>
-            </div>
-            <div class="column has-text-center">
-                <div class="content  has-text-white is-family-monospace">
-                <p class = "title is-size-6 has-text-white  is-uppercase">
-                    Grey Neurons
-                </p>
-                <p class = "subtitle is-size-7 has-text-grey-light ">
-                    Experience the wisdom
-                </p>
-                </div>
-            </div>
-            <div class="column has-text-right">
-              <span> 
-                <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">@greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-              </span>
-            </div>
-          </div>
-  
-          <hr class="gn-section">
-        </div>
       </div> 
+  </div>  
+  
+  <blog-footer></blog-footer>
 
-  <a target="_blank" rel="noopener noreferrer" title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
-  <script async src="//static.getclicky.com/101362676.js"></script>
-  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+  <script defer src="/js/blog-header.js"></script>    
+  <script async src="/js/blog-footer.js"></script>
 
 </body>
 
