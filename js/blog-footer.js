@@ -23,7 +23,7 @@ class BlogFooter extends HTMLElement {
             </div>
           </div>
           <div class="column has-background-dark">
-            <div class="content has-text-white has-text-right is-size-7 is-family-monospace"> &copy; 2024 by GreyNeurons Consulting LLC. All rights reserved. </div>
+            <div class="content has-text-white has-text-right is-size-7 is-family-monospace"> &copy; 2025 by GreyNeurons Consulting LLP. All rights reserved. </div>
           </div>
         </div>
       </div>
