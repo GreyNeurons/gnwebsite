@@ -27,9 +27,13 @@ class BlogFooter extends HTMLElement {
           </div>
         </div>
       </div>
+      
+      <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d46481215ded45428bf6e7854af04c53"}'></script><!-- End Cloudflare Web Analytics -->
+
     `;
   }
   connectedCallback() {
   }
 }
 customElements.define('blog-footer', BlogFooter);
+
