@@ -52,3 +52,31 @@ hr.gn-main {
     color: grey;
   }
   
+  /* Floating Button */
+  .back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #3273dc; /* Bulma primary color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: none; /* Hidden by default */
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+    /* Hover Effect */
+  .back-to-top:hover {
+      background: #205bac;
+  }
+
+      /* Show when scrolled down */
+  .show-button {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
