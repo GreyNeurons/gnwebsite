@@ -2,91 +2,21 @@
 <html class="no-js" lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>GreyNuerons Blogs</title>
-  <meta name="description" content="A software engineering blog about anything everything on software development 
-  right from requirements, estimation architecture, design , coding to QA & support. 
-  We talk about python, java,Elixir, Erlang. We cover functional programming paradigms vs imperative. 
-  We talk about people issues effecting most software teams. We look at full stack development equally 
-  focusing on backend and frontend. ">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Set page-specific meta description
+    window.pageMetaDescription = "GreyNeurons Blog";
+  </script>
 
-  <meta property="og:title" content="GreyNeurons Blogs">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blog.html">
-
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
-
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/bulma.css">
-  <link rel="stylesheet" href="css/main.css">
-
-  <meta name="theme-color" content="#fafafa">
-  
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="GreyNeurons Blogs" />
-  <meta name="twitter:site" content="@GreyNeurons" />
-  <meta name="twitter:creator" content="@GreyNeurons" />
-  <meta name="twitter:url" content="https://www.greyneuronsconsulting.com/blog.html" />
-
+  <script src="/js/head-component.js"></script>  
 </head>
+
 
 <body>
   
-    <!-- start of template  section
-
-    <div class = "section">
-      <div class ="title has-text-light">
-        Erlang Elixir
-      </div>
-      <div class="columns is-centered">
-  
-        <div class="column">
-            <div class="card-header-title"> Column 1 Title 1
-            </div>
-            <div class="card-content">
-  
-            </div>
-        </div>
-  
-        <div class="column">
-            <div class="card-header-title">Column 2 Title 2
-  
-            </div>
-            <div class="card-content">
-  
-            </div>
-        </div>
-        
-      </div>  
-    </div>
-    end template section-->
-  
-
-  <!-- start Header and navigation bar section-->
-  <div class = "section has-text-grey-light has-background-dark">
-    <div class="content has-text-white is-family-monospace">
-      <p class = "title is-size-5 has-text-white  is-uppercase">
-        Grey Neurons
-      </p>
-      <p class = "subtitle has-text-grey-light ">
-        Experience the wisdom
-      </p>
-    </div>
-    <nav class="breadcrumb" aria-label="breadcrumbs">
-      <ul>
-        <li class="is-dark"><a  href="/">Home</a></li>
-        <li class="is-active"><a  href="#" aria-current="page">Blogs</a></li>
-      </ul>
-    </nav>
-    <hr class = "gn-main"></hr>
-
-  </div>
-  <!-- end Header and navigation bar section-->
-
-   
+  <blog-header>
+    <span slot="bread-crumb-current-page"></span>
+  </blog-header>
+ 
 
   <div class = "section">
 
@@ -140,33 +70,33 @@
 
     </div>
 
-        <div class="card">
-          The programming landscape has always been dynamic, with languages evolving to meet the ever-changing demands of technology and industry. From enterprise systems to cloud-native applications and gaming, each programming language plays a unique role in shaping the technological world we live in. This blog takes an in-depth look at some of the most influential languages today.
-          <a href="https://open.substack.com/pub/greyneurons/p/future-of-programming-languages?r=344f9k&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">...more</a>
+    <div class="card">
+      The programming landscape has always been dynamic, with languages evolving to meet the ever-changing demands of technology and industry. From enterprise systems to cloud-native applications and gaming, each programming language plays a unique role in shaping the technological world we live in. This blog takes an in-depth look at some of the most influential languages today.
+      <a href="https://open.substack.com/pub/greyneurons/p/future-of-programming-languages?r=344f9k&utm_campaign=post&utm_medium=web" target="_blank" rel="noopener noreferrer">...more</a>
 
-          <div class="has-text-right">
-            <span class="tag is-rounded">Programming languages</span>
-          </div>
+      <div class="has-text-right">
+        <span class="tag is-rounded">Programming languages</span>
+      </div>
 
-          <hr class = "gn-main"></hr>
-        </div>
+      <hr class = "gn-main"></hr>
+    </div>
   
-        <div class="card">
+    <div class="card">
 
-          Recently in a code review session for a product under development, goto know the team was using Firebase for in-app notifications. Looked like a reasonable choice nevertheless reminded me of the infamous story how a <strong>startup almost went bankrupt</strong> using Firebase. I shared the story with the team & requested them to apply learnings if any from the same.
-          <a rel="noopener noreferrer" href="/blogs/beware-of-those-free-tiers.html">more...</a>
-      
-          <p>
-            <div class="has-text-right">
-              <span class="tag is-rounded">Cloud</span>
-              <span class="tag is-rounded">Culture</span>
-              <span class="tag is-rounded">System Design</span>
-            </div>
-          </p>
-      
-          <hr class = "gn-main"></hr>
-            
-  </div>
+      Recently in a code review session for a product under development, got to know the team was using Firebase for in-app notifications. Looked like a reasonable choice nevertheless reminded me of the infamous story how a <strong>startup almost went bankrupt</strong> using Firebase. I shared the story with the team & requested them to apply learnings if any from the same.
+      <a rel="noopener noreferrer" href="/blogs/beware-of-those-free-tiers.html">more...</a>
+  
+      <p>
+        <div class="has-text-right">
+          <span class="tag is-rounded">Cloud</span>
+          <span class="tag is-rounded">Culture</span>
+          <span class="tag is-rounded">System Design</span>
+        </div>
+      </p>
+  
+      <hr class = "gn-main"></hr>
+        
+    </div>
 
   
   </div>
