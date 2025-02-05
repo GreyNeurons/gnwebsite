@@ -1,5 +1,4 @@
 (function() {
-    
     let pageDescription = window.pageMetaDescription || 
     "Grey Neurons - Experience the wisdom";
 
@@ -27,5 +26,14 @@
         <meta name="twitter:title" content="${pageDescription}" />
         <meta name="twitter:site" content="@GreyNeurons" />
     `;
-   
+
+    // Inject Cloudflare Analytics only once
+    if (!document.getElementById('cf-analytics')) {
+        const script = document.createElement('script');
+        script.defer = true;
+        script.id = 'cf-analytics';
+        script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+        script.setAttribute('data-cf-beacon', '{"token": "d46481215ded45428bf6e7854af04c53"}');
+        document.head.appendChild(script);
+    }
 })();
