@@ -10,7 +10,7 @@
 
         <meta property="og:title" content="${pageDescription}">
         <meta property="og:type" content="article">
-        <meta property="og:url" content="https://www.greyneuronsconsulting.com/blogs/beware-of-those-free-tiers.html">
+        <meta property="og:url" content="https://www.greyneuronsconsulting.com/">
 
         <link rel="manifest" href="site.webmanifest">
         <link rel="apple-touch-icon" href="icon.png">
