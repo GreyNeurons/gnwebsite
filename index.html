@@ -7,8 +7,14 @@
     window.pageMetaDescription = "GreyNeurons - Experience the wisdom";
   </script>
 
-  <script src="/js/head-component.js"></script>  
+  <!-- ✅ Load styles as early as possible -->
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/bulma.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <script defer src="/js/head-component.js"></script>  
 </head>
+
 
 <body>
 
@@ -17,7 +23,7 @@
 
     <nav id="navbar" class="navbar" role="navigation" aria-label="GreyNeurons menu bar">
       
-      <div id="main-navBar" class="navbar-menu has-background-dark is-active">
+      <div id="main-navBar" class="navbar-menu has-background-dark">
         <div class="navbar-start">
           <div class="content">
             <p class = "title is-size-5 has-text-white is-family-monospace">
@@ -339,8 +345,8 @@
 
   <blog-footer></blog-footer>
     
-  <script async src="/js/blog-footer.js"></script>
-  <script async src="/js/util.js"></script>
+  <script defer src="/js/blog-footer.js"></script>
+  <script defer src="/js/util.js"></script>
 
 </body>
 
