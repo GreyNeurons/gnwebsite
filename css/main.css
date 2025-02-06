@@ -80,3 +80,22 @@ hr.gn-main {
     opacity: 1;
     transform: translateY(0);
   }
+
+  .navbar {
+    background-color: #222 !important;  /* Dark navbar background */
+    color: white !important;  /* Ensure text is always visible */
+}
+
+.navbar a.navbar-item {
+    color: white !important;
+}
+
+.navbar a.navbar-item:hover {
+    color: #f8f8f8 !important;  /* Light hover effect */
+}
+
+/* Ensure navbar remains visible */
+.navbar-menu {
+    min-height: 3.25rem; /* Prevents collapse */
+    display: flex !important; /* Forces proper display */
+}

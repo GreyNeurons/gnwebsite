@@ -54,3 +54,11 @@
     }
 
 })();
+
+window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+        console.log("Page restored from cache, forcing styles to reapply.");
+        document.documentElement.classList.add("loaded");
+    }
+})
+
