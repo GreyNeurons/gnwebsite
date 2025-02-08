@@ -99,3 +99,11 @@ hr.gn-main {
     min-height: 3.25rem; /* Prevents collapse */
     display: flex !important; /* Forces proper display */
 }
+
+.card:nth-child(odd) {
+  background-color: #f4f4f4; /* Light Gray */
+}
+
+.card:nth-child(even) {
+  background-color: #e3f2fd; /* Soft Blue */
+}
