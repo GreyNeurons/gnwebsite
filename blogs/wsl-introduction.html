@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSL Configuration & Optimization Summary</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+
+    
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Windows Subsystem for Linux (WSL) – Detailed Summary</h1>
+            <div class="content">
+                <h2 class="subtitle">✅ What is WSL?</h2>
+                <p>WSL (Windows Subsystem for Linux) is a compatibility layer for running Linux directly on Windows without using a virtual machine (VM) or dual booting. It provides a native Linux experience within the Windows environment, enabling users to run Linux distributions, execute shell commands, develop software, and access Linux tools seamlessly.</p>
+                <ul>
+                    <li><strong>WSL1:</strong> A lightweight translation layer that converts Linux system calls to Windows NT kernel calls.</li>
+                    <li><strong>WSL2:</strong> Uses a real Linux kernel inside a virtualized lightweight VM, offering better performance and full system call compatibility.</li>
+                </ul>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">✅ Why Use WSL?</h2>
+                <p>WSL is useful for developers, sysadmins, and power users who need Linux tools but prefer to work within Windows. Benefits include:</p>
+                <ul>
+                    <li><strong>Seamless Linux Integration</strong> – Run Linux commands alongside Windows applications.</li>
+                    <li><strong>Developer Productivity</strong> – Use Linux-exclusive development tools like GCC, Python, Node.js.</li>
+                    <li><strong>Performance</strong> – WSL2 provides near-native Linux performance.</li>
+                    <li><strong>File System Interoperability</strong> – Access Windows files from Linux and vice versa.</li>
+                    <li><strong>Security & Networking</strong> – Run security tools, test network configurations, and use SSH.</li>
+                    <li><strong>Low Overhead</strong> – Unlike full VMs, WSL is lightweight and efficient.</li>
+                </ul>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">✅ How Does WSL Work?</h2>
+                <ol>
+                    <li><strong>Install WSL:</strong> Run <code>wsl --install</code> in PowerShell and install a Linux distro from the Microsoft Store.</li>
+                    <li><strong>Choose Between WSL1 and WSL2:</strong> WSL1 is lightweight, while WSL2 supports Docker.</li>
+                    <li><strong>Run Linux Commands in Windows:</strong> Use Windows Terminal, PowerShell, or CMD.</li>
+                    <li><strong>Interoperability with Windows:</strong> Access files between Linux and Windows seamlessly.</li>
+                    <li><strong>Networking & Development:</strong> Supports Docker, Kubernetes, SSH, and cloud-native tools.</li>
+                </ol>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">✅ When Was WSL Introduced?</h2>
+                <ul>
+                    <li><strong>2016</strong> – WSL1 introduced as a translation layer for Linux system calls.</li>
+                    <li><strong>2019</strong> – WSL2 launched with a real Linux kernel.</li>
+                    <li><strong>2021</strong> – Windows 11 introduced simplified installation and GUI support.</li>
+                </ul>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">✅ Where Can You Use WSL?</h2>
+                <p>WSL is available on:</p>
+                <ul>
+                    <li><strong>Windows 10 (1903+)</strong> – Limited to WSL1 in older versions, WSL2 requires 2004+.</li>
+                    <li><strong>Windows 11</strong> – Best WSL experience with built-in support.</li>
+                    <li><strong>Windows Server 2022</strong> – Enterprise use cases.</li>
+                </ul>
+            </div>
+            
+            <h1 class="title">Notable Case Studies & Real-World Uses of WSL</h1>
+            <div class="content">
+                <h2 class="subtitle">1️⃣ Microsoft’s Internal Adoption</h2>
+                <p><strong>Use Case:</strong> Microsoft’s Windows developers use WSL for cross-platform projects and kernel debugging.</p>
+                <p><strong>Impact:</strong> Enabled better integration between Windows and Linux.</p>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">2️⃣ Canonical (Ubuntu on WSL)</h2>
+                <p><strong>Use Case:</strong> Canonical collaborated with Microsoft to make Ubuntu a first-class experience on WSL.</p>
+                <p><strong>Impact:</strong> Boosted enterprise adoption for cloud-native development.</p>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">3️⃣ Docker & Kubernetes on WSL2</h2>
+                <p><strong>Use Case:</strong> Developers use WSL2 to run containers and Kubernetes without VMs.</p>
+                <p><strong>Impact:</strong> Improved efficiency for cloud-native workflows.</p>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">4️⃣ Facebook (Meta) – AI Development</h2>
+                <p><strong>Use Case:</strong> Meta engineers use WSL2 for AI/ML workflows (React, PyTorch, TensorFlow).</p>
+                <p><strong>Impact:</strong> Eliminated the need for dedicated Linux machines.</p>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">5️⃣ Game Development – Valve’s Steam Deck</h2>
+                <p><strong>Use Case:</strong> Used WSL to test Proton and Linux-based game builds.</p>
+                <p><strong>Impact:</strong> Faster development cycles and debugging.</p>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">6️⃣ Cybersecurity – Ethical Hacking</h2>
+                <p><strong>Use Case:</strong> WSL2 runs security tools like Metasploit, Nmap, Wireshark, and Burp Suite.</p>
+                <p><strong>Impact:</strong> Provides a lightweight and efficient security testing environment.</p>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">7️⃣ AI & Machine Learning</h2>
+                <p><strong>Use Case:</strong> Data scientists run Jupyter, PyTorch, and TensorFlow on WSL2.</p>
+                <p><strong>Impact:</strong> Enables AI/ML workflows without dedicated Linux hardware.</p>
+            </div>
+            
+            <div class="content">
+                <h2 class="subtitle">Conclusion</h2>
+                <p>WSL has transformed development, DevOps, AI, gaming, and cybersecurity industries by enabling seamless Linux workflows on Windows.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+
+
+        <div class="container">
+            <h1 class="title">WSL Configuration & Optimization Summary</h1>
+            <h2 class="subtitle">Comprehensive Guide for Performance Optimization</h2>
+            
+            <div class="box">
+                <h3 class="title is-4">1️⃣ WSL System Information</h3>
+                <pre><code>wsl --version
+WSL version: 2.4.10.0
+Kernel version: 5.15.167.4-1
+Windows version: 10.0.19045.5371</code></pre>
+                
+                <h4 class="title is-5">Installed WSL Distros:</h4>
+                <pre><code>wsl --list --verbose
+NAME            STATE           VERSION
+* Ubuntu-22.04  Stopped         2
+  Ubuntu        Stopped         2</code></pre>
+            </div>
+            
+            <div class="box">
+                <h3 class="title is-4">2️⃣ WSL Resource Configuration</h3>
+                <h4 class="title is-5">WSL Configuration (.wslconfig)</h4>
+                <pre><code>[wsl2]
+memory=8GB
+processors=4
+swap=45GB
+swapFile=C:\\wsl-swap.vhdx</code></pre>
+                <p>To apply changes:</p>
+                <pre><code>wsl --shutdown
+wsl</code></pre>
+            </div>
+            
+            <div class="box">
+                <h3 class="title is-4">3️⃣ Swap Configuration & Fixing Issues</h3>
+                <p>If WSL swap creation fails with "Access Denied" error, run:</p>
+                <pre><code>fsutil file createnew C:\wsl-swap.vhdx 48318382080
+icacls C:\wsl-swap.vhdx /grant "NT AUTHORITY\\SYSTEM:(F)"</code></pre>
+            </div>
+            
+            <div class="box">
+                <h3 class="title is-4">4️⃣ Benchmarking WSL Swap Performance</h3>
+                <p>Run the following command inside WSL:</p>
+                <pre><code>dd if=/dev/zero of=/mnt/c/wsl-swap-benchmark bs=1G count=1 oflag=direct
+dd if=/mnt/c/wsl-swap-benchmark of=/dev/null bs=1G count=1 iflag=direct</code></pre>
+            </div>
+            
+            <div class="box">
+                <h3 class="title is-4">5️⃣ Stress Testing CPU & RAM</h3>
+                <pre><code>sudo apt update && sudo apt install stress -y
+stress --cpu 4 --vm 2 --vm-bytes 12G --timeout 60s</code></pre>
+            </div>
+            
+            <div class="box">
+                <h3 class="title is-4">6️⃣ Performance Observations</h3>
+                <ul>
+                    <li><strong>More Available RAM:</strong> 3.7GB (previously 1.2GB)</li>
+                    <li><strong>Better Swap Performance:</strong> ~1000-1500 MB/s</li>
+                    <li><strong>Improved System Responsiveness:</strong> Less sluggish under load</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Open source Security Stack";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+        <blog-header>
+            <span slot="bread-crumb-current-page">Security Offering</span>
+        </blog-header>
+
+        <section class="section">
+
+            <div class="container">
+                <h1 class="title">🔹 Complete Open-Source Security Stack Mapped to NIST CSF</h1>
+                <p class="subtitle">This revised list ensures <strong>end-to-end security coverage</strong> across <strong>Identify, Protect, Detect, Respond, and Recover</strong>, while integrating <strong>SSO, centralized logging, and observability.</strong></p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="title">✅ Final Open-Source Security Stack (Categorized by NIST CSF)</h2>
+
+                <h3 class="title is-4">1️⃣ Identify 🔍 (Asset Management, Compliance, Vulnerability Management)</h3>
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr><th>Category</th><th>Best Open-Source Tools 🚀</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Asset & Inventory Management</td><td>✅ Snipe-IT, GLPI, Osquery</td></tr>
+                        <tr><td>Risk & Compliance Management (GRC)</td><td>✅ Eramba, OpenGRC, Steampipe Compliance Mod</td></tr>
+                        <tr><td>Vulnerability Management</td><td>✅ OpenVAS (Greenbone), Nuclei, Trivy, Grype, OWASP Dependency-Check</td></tr>
+                        <tr><td>Cloud Security & Compliance</td><td>✅ Steampipe Compliance Mod (AWS, Azure, GCP), ScoutSuite, Prowler</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="title is-4">2️⃣ Protect 🔒 (Endpoint Security, Hardening, Encryption)</h3>
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr><th>Category</th><th>Best Open-Source Tools 🚀</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Firewall & Network Security</td><td>✅ pfSense, OPNSense, nftables, iptables</td></tr>
+                        <tr><td>Endpoint Security & XDR</td><td>✅ Wazuh (SIEM/XDR), OSSEC, Velociraptor, Sysmon (Windows/Linux)</td></tr>
+                        <tr><td>Web Server Security</td><td>✅ ModSecurity (WAF), NAXSI (Nginx WAF), CIS Benchmarks, testssl.sh</td></tr>
+                        <tr><td>Database Security</td><td>✅ pgAudit, CIS Benchmarks, MySQLTuner, sqlmap</td></tr>
+                        <tr><td>Infrastructure Security</td><td>✅ Lynis, CIS-CAT, OpenSCAP, Auditd, SELinux, AppArmor</td></tr>
+                        <tr><td>Secrets Management & Encryption</td><td>✅ Vault (HashiCorp), SOPS (Mozilla), GnuPG</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="title is-4">3️⃣ Detect 👀 (SIEM, IDS, Threat Intelligence, Log Monitoring)</h3>
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr><th>Category</th><th>Best Open-Source Tools 🚀</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>SIEM & Log Monitoring</td><td>✅ Wazuh, PostgreSQL JSONB (Log Storage), Grafana Loki, Graylog</td></tr>
+                        <tr><td>Intrusion Detection (IDS/IPS)</td><td>✅ Suricata, Zeek (Bro IDS), Snort, CrowdSec</td></tr>
+                        <tr><td>Threat Intelligence</td><td>✅ MISP, OpenCTI, Yeti, TheHive Cortex</td></tr>
+                        <tr><td>Application Security Testing (SAST & DAST)</td><td>✅ Semgrep, SonarQube, CodeQL (SAST), OWASP ZAP, Nikto, Wapiti (DAST)</td></tr>
+                        <tr><td>Network Traffic Analysis & Packet Capture</td><td>✅ Wireshark, tcpdump, Zeek (Bro IDS), Arkime</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="title is-4">4️⃣ Respond 🚀 (Incident Response, SOAR, Automated Threat Mitigation)</h3>
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr><th>Category</th><th>Best Open-Source Tools 🚀</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Incident Response & SOAR</td><td>✅ Shuffle (SOAR), TheHive (Incident Response), Velociraptor (Forensics), GRR</td></tr>
+                        <tr><td>Adversary Emulation</td><td>✅ CALDERA, Atomic Red Team, Red Team Automation (RTA)</td></tr>
+                        <tr><td>Automated Threat Mitigation</td><td>✅ Wazuh Active Response, CrowdSec (IPS), FleetDM</td></tr>
+                        <tr><td>Phishing & Social Engineering</td><td>✅ GoPhish, Evilginx2, King Phisher</td></tr>
+                        <tr><td>Forensics & Malware Analysis</td><td>✅ Volatility, Cuckoo Sandbox, Velociraptor</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="title is-4">5️⃣ Recover 🔄 (Backup, Disaster Recovery, Post-Incident Reporting)</h3>
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr><th>Category</th><th>Best Open-Source Tools 🚀</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Backup & Disaster Recovery</td><td>✅ Bacula, Restic, Kopia, ReaR (Relax-and-Recover)</td></tr>
+                        <tr><td>Post-Incident Reporting & Compliance</td><td>✅ Eramba (Audit Tracking), TheHive (Case Management), GRR (Google Rapid Response)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="title is-4">6️⃣ Observability & Reliability (Monitoring, System Performance, Uptime, Self-Healing)</h3>
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr><th>Category</th><th>Best Open-Source Tools 🚀</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Infrastructure Monitoring</td><td>✅ Prometheus, Zabbix, Nagios, Netdata</td></tr>
+                        <tr><td>Log & Event Aggregation</td><td>✅ Grafana Loki, Fluentd, Graylog</td></tr>
+                        <tr><td>Network Monitoring</td><td>✅ ntopng, Wireshark, Suricata, Zeek (Bro IDS)</td></tr>
+                        <tr><td>Service & Application Reliability</td><td>✅ Grafana, OpenTelemetry, VictoriaMetrics</td></tr>
+                        <tr><td>Uptime & SLA Monitoring</td><td>✅ Uptime Kuma, Prometheus Alertmanager, Monit</td></tr>
+                        <tr><td>Chaos Engineering & Resilience Testing</td><td>✅ Chaos Mesh, Gremlin OSS, Pumba</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+                <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
