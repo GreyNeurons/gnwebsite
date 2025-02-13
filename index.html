@@ -69,6 +69,10 @@
       document.addEventListener('DOMContentLoaded', function () {
         const burger = document.querySelector('.navbar-burger');
         const navBar = document.getElementById('main-navBar');
+        
+        // 🔹 NEW: Select the Resources dropdown and link
+        const blogDropdown = document.getElementById('blog-dropdown');
+        const blogLink = blogDropdown.querySelector('.navbar-link');
     
         function toggleMenu() {
           burger.classList.toggle('is-active');
@@ -78,7 +82,6 @@
           burger.setAttribute('aria-expanded', burger.classList.contains('is-active'));
         }
     
-        // Ensure the menu is initially hidden on mobile
         function checkScreenSize() {
           if (window.innerWidth > 1023) {
             // Desktop: Ensure menu is always visible, hide burger
@@ -90,6 +93,19 @@
           }
         }
     
+        // 🔹 NEW: Toggle the "Resources" dropdown on click
+        blogLink.addEventListener('click', function (event) {
+          event.preventDefault(); // Prevent default link behavior
+          blogDropdown.classList.toggle('is-active');
+        });
+    
+        // 🔹 NEW: Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+          if (!blogDropdown.contains(event.target) && !blogLink.contains(event.target)) {
+            blogDropdown.classList.remove('is-active');
+          }
+        });
+    
         // Attach event listener for burger click
         burger.addEventListener('click', toggleMenu);
     
@@ -98,6 +114,7 @@
         window.addEventListener('resize', checkScreenSize);
       });
     </script>
+    
     
     
     
