@@ -43,7 +43,33 @@
           <a href="#id-trainings" class="navbar-item has-background-dark">Trainings & Workshops</a>
           <a href="#id-products" class="navbar-item has-background-dark">Products & Offerings</a>
 
-          <a href="articles.html" class="navbar-item has-background-dark">Blogs</a>
+<!-- Blog Dropdown Menu (Works on Desktop & Mobile) -->
+<div class="navbar-item has-dropdown" id="blog-dropdown">
+  <a class="navbar-link has-background-dark has-text-white">Resources</a>
+  <div class="navbar-dropdown has-background-dark">
+    <a href="articles.html" class="navbar-item has-background-dark has-text-white">Blogs</a>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const blogDropdown = document.getElementById('blog-dropdown');
+
+    blogDropdown.addEventListener('click', function (event) {
+      event.stopPropagation(); // Prevents event bubbling
+      this.classList.toggle('is-active'); // Toggles the dropdown
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+      if (!blogDropdown.contains(event.target)) {
+        blogDropdown.classList.remove('is-active');
+      }
+    });
+  });
+</script>
+
           <!--<a href="tweets.html" class="button is-primary mt-5">Twitter</a> -->
           <a href="#id-contact-us" class="navbar-item has-background-dark">About Us</a>
         </div>
