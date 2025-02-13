@@ -199,24 +199,7 @@
 
   </div>
   
-      <!-- Floating Back to Top Button -->
-      <button id="backToTop" class="back-to-top" onclick="scrollToTop()">⬆</button>
-
-      <script defer>
-          const backToTopButton = document.getElementById("backToTop");
-  
-          window.addEventListener("scroll", () => {
-              if (window.scrollY > 200) { // Show after scrolling 200px
-                  backToTopButton.classList.add("show-button");
-              } else {
-                  backToTopButton.classList.remove("show-button");
-              }
-          });
-  
-          function scrollToTop() {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-          }
-      </script>
+  <back-to-top></back-to-top>
 
   <!--virtual CISO services-->
   <div class ="section has-text-grey-light has-background-dark" id="id-virtual-ciso">
@@ -438,6 +421,7 @@
     
   <script defer src="/js/blog-footer.js"></script>
   <script defer src="/js/util.js"></script>
+  <script defer src="js/back-to-top.js" ></script> <!-- Load the script -->
 
 </body>
 
