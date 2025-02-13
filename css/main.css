@@ -94,11 +94,7 @@ hr.gn-main {
     color: #f8f8f8 !important;  /* Light hover effect */
 }
 
-/* Ensure navbar remains visible */
-.navbar-menu {
-    min-height: 3.25rem; /* Prevents collapse */
-    display: flex !important; /* Forces proper display */
-}
+
 
 .card:nth-child(odd) {
   background-color: #f4f4f4; /* Light Gray */
@@ -106,4 +102,28 @@ hr.gn-main {
 
 .card:nth-child(even) {
   background-color: #e3f2fd; /* Soft Blue */
+}
+
+
+/* Hide the burger menu on large screens */
+@media screen and (min-width: 1024px) {
+  .navbar-burger {
+    display: none !important;  /* Hide burger on desktops */
+  }
+  .navbar-menu {
+    display: flex !important;  /* Ensure menu is visible on desktops */
+  }
+}
+
+/* Show the burger menu and hide the navbar on small screens */
+@media screen and (max-width: 1023px) {
+  .navbar-burger {
+    display: block;  /* Show burger on mobile */
+  }
+  .navbar-menu {
+    display: none;  /* Hide menu by default */
+  }
+  .navbar-menu.is-active {
+    display: block;  /* Show menu when active */
+  }
 }

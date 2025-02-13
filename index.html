@@ -22,60 +22,89 @@
   <div class="section has-background-dark has-text-white">
 
     <nav id="navbar" class="navbar" role="navigation" aria-label="GreyNeurons menu bar">
-      
-      <div id="main-navBar" class="navbar-menu has-background-dark">
-        <div class="navbar-start">
-          <div class="content">
-            <p class = "title is-size-5 has-text-white is-family-monospace">
-              GreyNeurons
-            </p>
-            <p class = "subtitle has-text-grey-light is-family-monospace is-size-6">
-              Experience the wisdom
-            </p>
-          </div>
-          
+  
+      <!-- Navbar brand and burger menu -->
+      <div class="navbar-brand has-background-dark">
+        <div class="content">
+          <p class="title is-size-5 has-text-white is-family-monospace">
+            GreyNeurons
+          </p>
+          <p class="subtitle has-text-grey-light is-family-monospace is-size-6">
+            Experience the wisdom
+          </p>
         </div>
     
+        <!-- Burger menu -->
+        <a role="button" class="navbar-burger has-text-white" 
+        aria-label="menu" aria-expanded="false" data-target="main-navBar"
+        tabindex="0"
+        onkeydown="if(event.key === 'Enter' || event.key === ' ') this.click();">
+       <span aria-hidden="true"></span>
+       <span aria-hidden="true"></span>
+       <span aria-hidden="true"></span>
+        </a>
+      </div>
+    
+      <div id="main-navBar" class="navbar-menu has-background-dark">
         <div class="navbar-end">
           <a href="#id-virtual-cto" class="navbar-item has-background-dark">Virtual CTO Services</a>
           <a href="#id-virtual-ciso" class="navbar-item has-background-dark">Virtual CISO Services</a>
-
           <a href="#id-trainings" class="navbar-item has-background-dark">Trainings & Workshops</a>
           <a href="#id-products" class="navbar-item has-background-dark">Products & Offerings</a>
-
-<!-- Blog Dropdown Menu (Works on Desktop & Mobile) -->
-<div class="navbar-item has-dropdown" id="blog-dropdown">
-  <a class="navbar-link has-background-dark has-text-white">Resources</a>
-  <div class="navbar-dropdown has-background-dark">
-    <a href="articles.html" class="navbar-item has-background-dark has-text-white">Blogs</a>
-
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const blogDropdown = document.getElementById('blog-dropdown');
-
-    blogDropdown.addEventListener('click', function (event) {
-      event.stopPropagation(); // Prevents event bubbling
-      this.classList.toggle('is-active'); // Toggles the dropdown
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function (event) {
-      if (!blogDropdown.contains(event.target)) {
-        blogDropdown.classList.remove('is-active');
-      }
-    });
-  });
-</script>
-
-          <!--<a href="tweets.html" class="button is-primary mt-5">Twitter</a> -->
+    
+          <!-- Blog Dropdown Menu -->
+          <div class="navbar-item has-dropdown" id="blog-dropdown">
+            <a class="navbar-link has-background-dark has-text-white">Resources</a>
+            <div class="navbar-dropdown has-background-dark">
+              <a href="articles.html" class="navbar-item has-background-dark has-text-white">Blogs</a>
+            </div>
+          </div>
+    
           <a href="#id-contact-us" class="navbar-item has-background-dark">About Us</a>
         </div>
-
       </div>
     </nav>
+    
+    <script defer>
+      document.addEventListener('DOMContentLoaded', function () {
+        const burger = document.querySelector('.navbar-burger');
+        const navBar = document.getElementById('main-navBar');
+    
+        function toggleMenu() {
+          burger.classList.toggle('is-active');
+          navBar.classList.toggle('is-active');
+    
+          // Update accessibility attribute
+          burger.setAttribute('aria-expanded', burger.classList.contains('is-active'));
+        }
+    
+        // Ensure the menu is initially hidden on mobile
+        function checkScreenSize() {
+          if (window.innerWidth > 1023) {
+            // Desktop: Ensure menu is always visible, hide burger
+            navBar.classList.add('is-active');
+            burger.classList.remove('is-active');
+          } else {
+            // Mobile: Ensure menu is collapsed initially
+            navBar.classList.remove('is-active');
+          }
+        }
+    
+        // Attach event listener for burger click
+        burger.addEventListener('click', toggleMenu);
+    
+        // Check screen size on load and on resize
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+      });
+    </script>
+    
+    
+    
+    
+
+
+
     <hr class = "gn-main"></hr>
 
     <div class ="card is-size-4 has-background-dark has-text-grey-light has-text-left">
