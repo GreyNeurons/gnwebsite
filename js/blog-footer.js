@@ -9,7 +9,7 @@ class BlogFooter extends HTMLElement {
       <link rel="stylesheet" href="/css/main.css">
 
       <!-- Your static HTML code here -->
-      <div class="block">
+      <div class="section has-text-grey-light has-background-dark">
         <div class="columns">
 
           <div class="column has-background-dark has-text-center">
@@ -27,8 +27,7 @@ class BlogFooter extends HTMLElement {
           </div>
         </div>
       </div>
-      
-      <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d46481215ded45428bf6e7854af04c53"}'></script><!-- End Cloudflare Web Analytics -->
+
 
     `;
   }
