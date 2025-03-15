@@ -117,4 +117,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function toggleVisibility(element, isVisible) {
         element.classList.toggle("visible", isVisible);
     }
+
+    // Populate Industry Dropdown from IndexedDB
+    async function populateIndustries() {
+        const industries = await getAllData("industries");
+        industrySelect.innerHTML = "<option value=''>Select Industry</option>";
+        industries.forEach(industry => {
+            let option = new Option(industry.name, industry.id);
+            industrySelect.appendChild(option);
+        });
+        industrySelect.disabled = false;
+    }
+        
+    // Initialize the dropdowns on page load
+    populateIndustries();
 });
