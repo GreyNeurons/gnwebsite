@@ -7,175 +7,107 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-color: #f4f4f4;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
         }
+        
         .container {
-            background: white;
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 50%;
-            margin: auto;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
+            background-color: #fff;
+            border: 1px solid #ccc;
             border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        button:hover {
-            background-color: #0056b3;
+        
+        .visible {
+            display: block;
         }
+        
+        h1 {
+            font-size: 24px;
+            margin-top: 0;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
         .question {
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-weight: bold;
+            margin-top: 20px;
         }
-        .incident {
-            font-size: 16px;
-            color: #555;
-            font-style: italic;
-            margin-bottom: 15px;
-        }
+        
         .options button {
             display: block;
-            width: 100%;
-            text-align: left;
+            margin: 5px 0;
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
         }
+        
         .result-box {
-            background-color: white;
+            margin: 10px 0;
             padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="game-container">
+    <div id="game-container" class="container visible">
         <h1>Cybersecurity Awareness Training</h1>
-        <label for="industry">Select Industry:</label>
+        <label for="industry">Industry:</label>
         <select id="industry">
             <option value="IT">IT</option>
             <option value="Finance">Finance</option>
             <option value="Healthcare">Healthcare</option>
         </select>
-        <br><br>
-        <label for="role">Select Role:</label>
+        <label for="role">Role:</label>
         <select id="role">
-            <option value="Developer">Developer</option>
+            <option value="Employee">Employee</option>
             <option value="Manager">Manager</option>
-            <option value="Analyst">Analyst</option>
+            <option value="Executive">Executive</option>
         </select>
-        <br><br>
-        <label for="location">Enter Location:</label>
-        <input type="text" id="location">
-        <br><br>
-        <button id="start-button">Start Training</button>
+        <label for="location">Location:</label>
+        <select id="location">
+            <option value="India">India</option>
+            <option value="USA">USA</option>
+        </select>
+        <button id="start-button">Start Quiz</button>
     </div>
-    
-    <div class="container" id="question-container" style="display: none;">
-        <h2>Question:</h2>
-        <div id="incident-container" class="incident"></div>
+    <div id="question-container" class="container">
         <div id="quiz-container"></div>
+        <div id="incident-container"></div>
     </div>
-    
-    <div class="container" id="result-container" style="display: none;"></div>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const container = document.getElementById("game-container");
-            const startButton = document.getElementById("start-button");
-            const industrySelect = document.getElementById("industry");
-            const roleSelect = document.getElementById("role");
-            const locationInput = document.getElementById("location");
-            const questionContainer = document.getElementById("question-container");
-            const quizContainer = document.getElementById("quiz-container");
-            const incidentContainer = document.getElementById("incident-container");
-            const resultContainer = document.getElementById("result-container");
+    <div id="result-container" class="container"></div>
 
-            let userProfile = {};
-            let currentQuestionIndex = 0;
-            let score = 0;
-            let userResponses = [];
-
-            const questionBank = [
-                { 
-                    "question": "You receive an email from your bank asking for your password. What should you do?", 
-                    "options": ["Reply with your password", "Ignore the email", "Verify with the bank's official website", "Click the link and reset"], 
-                    "answer": "Verify with the bank's official website",
-                    "incident": "A major IT company in New York recently suffered a phishing attack where employees unknowingly provided their passwords, leading to a data breach."
-                },
-                { 
-                    "question": "A colleague asks you to share your login details for an urgent task. What should you do?", 
-                    "options": ["Share only for this instance", "Deny and report", "Write it on a sticky note and give it to them", "Use a weak password so they can remember"], 
-                    "answer": "Deny and report",
-                    "incident": "In a well-known finance firm, an intern shared their login details with a colleague. This resulted in unauthorized access to financial records, leading to legal action."
-                }
-            ];
-
-            function startGame() {
-                userProfile = {
-                    industry: industrySelect.value,
-                    role: roleSelect.value,
-                    location: locationInput.value
-                };
-                container.style.display = "none";
-                questionContainer.style.display = "block";
-                loadQuestion();
-            }
-
-            function loadQuestion() {
-                if (currentQuestionIndex >= questionBank.length) {
-                    showResults();
-                    return;
-                }
-                
-                let questionData = questionBank[currentQuestionIndex];
-                quizContainer.innerHTML = `<p class='question'>${questionData.question}</p>`;
-                incidentContainer.innerHTML = `<p><strong>Real Incident:</strong> ${questionData.incident}</p>`;
-                quizContainer.innerHTML += "<div class='options'></div>";
-                
-                let optionsContainer = document.querySelector(".options");
-                optionsContainer.innerHTML = "";
-                questionData.options.forEach(option => {
-                    let button = document.createElement("button");
-                    button.innerText = option;
-                    button.onclick = () => checkAnswer(option, questionData);
-                    optionsContainer.appendChild(button);
-                });
-                quizContainer.appendChild(optionsContainer);
-            }
-
-            function checkAnswer(selected, questionData) {
-                let isCorrect = selected === questionData.answer;
-                if (isCorrect) {
-                    score++;
-                }
-                userResponses.push({ question: questionData.question, selected, correct: questionData.answer, isCorrect });
-                currentQuestionIndex++;
-                quizContainer.innerHTML = "";
-                incidentContainer.innerHTML = "";
-                loadQuestion();
-            }
-
-            function showResults() {
-                questionContainer.style.display = "none";
-                resultContainer.style.display = "block";
-                let resultHTML = `<h2>Cybersecurity Awareness Training Complete!</h2><p>Your Score: ${score}/${questionBank.length}</p>`;
-                userResponses.forEach(response => {
-                    resultHTML += `<div class='result-box'><p><strong>Question:</strong> ${response.question}</p><p><strong>Your Answer:</strong> ${response.selected}</p><p><strong>Correct Answer:</strong> ${response.correct}</p><p style='color:${response.isCorrect ? 'green' : 'red'}'>${response.isCorrect ? 'Correct' : 'Incorrect'}</p></div>`;
-                });
-                resultContainer.innerHTML = resultHTML;
-            }
-
-            startButton.addEventListener("click", startGame);
-        });
-    </script>
+    <script src="indexedDB.js"></script>
+    <script src="cstraining.js"></script>
 </body>
 </html>
