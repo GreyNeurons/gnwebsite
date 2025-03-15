@@ -9,20 +9,49 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 50px;
+            background-color: #f4f4f4;
         }
-        #question-container, #result-container {
-            display: none;
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
         }
         button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
             margin: 10px;
-            padding: 10px;
             font-size: 16px;
             cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+        .result-box {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="game-container">
+    <div class="container" id="game-container">
         <h1>Cybersecurity Awareness Training</h1>
         <label for="industry">Select Industry:</label>
         <select id="industry">
@@ -44,12 +73,12 @@
         <button id="start-button">Start Training</button>
     </div>
     
-    <div id="question-container">
+    <div class="container" id="question-container" style="display: none;">
         <h2>Question:</h2>
         <div id="quiz-container"></div>
     </div>
     
-    <div id="result-container"></div>
+    <div class="container" id="result-container" style="display: none;"></div>
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -98,16 +127,17 @@
                 }
                 
                 let questionData = questionBank[currentQuestionIndex];
-                quizContainer.innerHTML = `<h3>${questionData.question}</h3>`;
-                quizContainer.innerHTML += "<div id='options-container'></div>";
+                quizContainer.innerHTML = `<p class='question'>${questionData.question}</p>`;
+                quizContainer.innerHTML += "<div class='options'></div>";
                 
-                let optionsContainer = document.getElementById("options-container");
+                let optionsContainer = document.querySelector(".options");
                 questionData.options.forEach(option => {
                     let button = document.createElement("button");
                     button.innerText = option;
                     button.onclick = () => checkAnswer(option, questionData);
                     optionsContainer.appendChild(button);
                 });
+                quizContainer.appendChild(optionsContainer);
             }
 
             function checkAnswer(selected, questionData) {
@@ -135,24 +165,16 @@
                 resultHTML += `<h3>Review Your Answers:</h3>`;
                 
                 userResponses.forEach(response => {
-                    resultHTML += `<p><strong>Question:</strong> ${response.question}</p>`;
-                    resultHTML += `<p><strong>Your Answer:</strong> ${response.selected}</p>`;
-                    resultHTML += `<p><strong>Correct Answer:</strong> ${response.correct}</p>`;
-                    resultHTML += `<p style="color: ${response.isCorrect ? 'green' : 'red'}">${response.isCorrect ? 'Correct' : 'Incorrect'}</p>`;
-                    resultHTML += `<hr>`;
+                    resultHTML += `<div class='result-box'>
+                        <p><strong>Question:</strong> ${response.question}</p>
+                        <p><strong>Your Answer:</strong> ${response.selected}</p>
+                        <p><strong>Correct Answer:</strong> ${response.correct}</p>
+                        <p style="color: ${response.isCorrect ? 'green' : 'red'}">${response.isCorrect ? 'Correct' : 'Incorrect'}</p>
+                    </div>`;
                 });
                 
                 resultHTML += `<button onclick="downloadCertificate()">Download Certificate</button>`;
                 resultContainer.innerHTML = resultHTML;
-            }
-
-            function downloadCertificate() {
-                let certText = `Cybersecurity Awareness Training\n\nName: [User]\nIndustry: ${userProfile.industry}\nRole: ${userProfile.role}\nScore: ${score}/${questionBank.length}\n\nCertified!`;
-                let blob = new Blob([certText], { type: "text/plain" });
-                let link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = "certificate.txt";
-                link.click();
             }
 
             startButton.addEventListener("click", startGame);
