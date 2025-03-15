@@ -65,6 +65,7 @@
             let userProfile = {};
             let currentQuestionIndex = 0;
             let score = 0;
+            let userResponses = [];
 
             const questionBank = [
                 { 
@@ -104,26 +105,45 @@
                 questionData.options.forEach(option => {
                     let button = document.createElement("button");
                     button.innerText = option;
-                    button.onclick = () => checkAnswer(option, questionData.answer);
+                    button.onclick = () => checkAnswer(option, questionData);
                     optionsContainer.appendChild(button);
                 });
             }
 
-            function checkAnswer(selected, correct) {
-                if (selected === correct) {
+            function checkAnswer(selected, questionData) {
+                let isCorrect = selected === questionData.answer;
+                if (isCorrect) {
                     score++;
                 }
+                userResponses.push({
+                    question: questionData.question,
+                    selected: selected,
+                    correct: questionData.answer,
+                    isCorrect: isCorrect
+                });
                 currentQuestionIndex++;
-                quizContainer.innerHTML = ""; // Clear previous question
+                quizContainer.innerHTML = "";
                 loadQuestion();
             }
 
             function showResults() {
                 questionContainer.style.display = "none";
                 resultContainer.style.display = "block";
-                resultContainer.innerHTML = `<h2>Cybersecurity Awareness Training Complete!</h2>
-                                            <p>Your Score: ${score}/${questionBank.length}</p>
-                                            <button onclick="downloadCertificate()">Download Certificate</button>`;
+                
+                let resultHTML = `<h2>Cybersecurity Awareness Training Complete!</h2>`;
+                resultHTML += `<p>Your Score: ${score}/${questionBank.length}</p>`;
+                resultHTML += `<h3>Review Your Answers:</h3>`;
+                
+                userResponses.forEach(response => {
+                    resultHTML += `<p><strong>Question:</strong> ${response.question}</p>`;
+                    resultHTML += `<p><strong>Your Answer:</strong> ${response.selected}</p>`;
+                    resultHTML += `<p><strong>Correct Answer:</strong> ${response.correct}</p>`;
+                    resultHTML += `<p style="color: ${response.isCorrect ? 'green' : 'red'}">${response.isCorrect ? 'Correct' : 'Incorrect'}</p>`;
+                    resultHTML += `<hr>`;
+                });
+                
+                resultHTML += `<button onclick="downloadCertificate()">Download Certificate</button>`;
+                resultContainer.innerHTML = resultHTML;
             }
 
             function downloadCertificate() {
