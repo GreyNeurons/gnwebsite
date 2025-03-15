@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
         userProfile = {
             industry: industrySelect.value,
             role: roleSelect.value,
-            location: locationInput.value
         };
         toggleVisibility(gameContainer, false);
         toggleVisibility(questionContainer, true);
