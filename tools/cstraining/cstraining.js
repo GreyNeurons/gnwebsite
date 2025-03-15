@@ -131,4 +131,24 @@ document.addEventListener("DOMContentLoaded", function () {
         
     // Initialize the dropdowns on page load
     populateIndustries();
+
+    // Populate Role Dropdown based on selected Industry
+    async function populateRoles() {
+        roleSelect.innerHTML = "<option value=''>Select Role</option>";
+        roleSelect.disabled = true;
+        let industryId = industrySelect.value;
+        if (!industryId) return;
+
+        const roles = await getAllData("roles");
+        const filteredRoles = roles.filter(role => role.industry_id == industryId);
+        
+        filteredRoles.forEach(role => {
+            let option = new Option(role.name, role.id);
+            roleSelect.appendChild(option);
+        });
+        roleSelect.disabled = false;
+    }
+    industrySelect.addEventListener("change", populateRoles);
+
+
 });
