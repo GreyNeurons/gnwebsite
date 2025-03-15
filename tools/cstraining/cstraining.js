@@ -13,32 +13,35 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentQuestionIndex = 0;
     let score = 0;
     let userResponses = [];
+    let questionBank = [];
 
-    const questionBank = [
-        { 
-            question: "You receive an email from your bank asking for your password. What should you do?", 
-            options: ["Reply with your password", "Ignore the email", "Verify with the bank's official website", "Click the link and reset"], 
-            answer: "Verify with the bank's official website",
-            incident: "A major IT company in New York recently suffered a phishing attack where employees unknowingly provided their passwords, leading to a data breach."
-        },
-        { 
-            question: "A colleague asks you to share your login details for an urgent task. What should you do?", 
-            options: ["Share only for this instance", "Deny and report", "Write it on a sticky note and give it to them", "Use a weak password so they can remember"], 
-            answer: "Deny and report",
-            incident: "In a well-known finance firm, an intern shared their login details with a colleague. This resulted in unauthorized access to financial records, leading to legal action."
-        }
-    ];
 
     startButton.addEventListener("click", startTraining);
 
-    function startTraining() {
-        userProfile = {
-            industry: industrySelect.value,
-            role: roleSelect.value,
-        };
-        toggleVisibility(gameContainer, false);
-        toggleVisibility(questionContainer, true);
+    async function startTraining() {
+        let industryId = industrySelect.value;
+        let roleId = roleSelect.value;
+        if (!industryId || !roleId) return;
+        
+        questionBank = await getAllData("questions");
+        questionBank = questionBank.filter(q => q.industry_id == industryId && q.role_id == roleId);
+        
+        if (questionBank.length === 0) {
+            alert("No questions available for this selection.");
+            return;
+        }
+        
+        gameContainer.style.display = "none";
+        questionContainer.style.display = "block";
+        currentQuestionIndex = 0;
+        score = 0;
+        userResponses = [];
         loadQuestion();
+
+        //======
+        //toggleVisibility(gameContainer, false);
+        //toggleVisibility(questionContainer, true);
+        //loadQuestion();
     }
 
     function loadQuestion() {
@@ -76,14 +79,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function checkAnswer(selectedOption, questionData) {
-        const isCorrect = selectedOption === questionData.answer;
+        const isCorrect = selectedOption === questionData.correct_answer;
         if (isCorrect) {
             score++;
         }
         userResponses.push({
             question: questionData.question,
             selected: selectedOption,
-            correct: questionData.answer,
+            correct: questionData.correct_answer,
             isCorrect
         });
         currentQuestionIndex++;
