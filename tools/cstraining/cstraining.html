@@ -4,101 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cybersecurity Awareness Training</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .container {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .visible {
-            display: block;
-        }
-        
-        h1 {
-            font-size: 24px;
-            margin-top: 0;
-        }
-        
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        
-        select, input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .question {
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        
-        .options button {
-            display: block;
-            margin: 5px 0;
-            padding: 10px 20px;
-            background-color: #f1f1f1;
-            color: #333;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .result-box {
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <div id="game-container" class="container visible">
         <h1>Cybersecurity Awareness Training</h1>
         <label for="industry">Industry:</label>
-        <select id="industry">
-            <!-- Seeded options from the database -->
-        </select> 
+        <select id="industry"></select> 
         <label for="role">Role:</label>
-        <select id="role">
-            <!-- 
-                Added dynamically from the database after industry is selected
-            --> 
-        </select>
-
+        <select id="role"></select>
         <button id="start-button">Start Quiz</button>
     </div>
+    
     <div id="question-container" class="container">
         <div id="quiz-container"></div>
         <div id="incident-container"></div>
     </div>
+    
     <div id="result-container" class="container"></div>
 
     <script src="indexedDB.js"></script>
