@@ -1,0 +1,168 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Open source Security Stack";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+        <blog-header>
+            <span slot="bread-crumb-current-page">Security Offering</span>
+        </blog-header>
+
+ 
+        <section>
+            <!-- insert content here -->
+            <div class = "blog-container">
+                    <!-- INSERT CONTENT HERE -->
+                    <div class="content">
+                        <h1 class="title">Running LLMs Locally with Ollama: No GPU, No Cloud, No Excuses</h1>
+                        <p>
+                          <a href="https://medium.com/@rkanade/using-wsl-for-ai-app-development-2e2dcd3da033" target="_blank" rel="noopener noreferrer">
+                            In a previous post
+                          </a>, I discussed setting up WSL2 on a Windows machine, focusing on limiting CPU and memory utilization and configuring an additional swap disk. Building upon that, this article will guide you through setting up Ollama and VS Code to prepare for AI application development.
+                        </p>
+                
+                        <h3 class="title is-4">Introduction to Ollama</h3>
+                        <p><strong>Ollama</strong> makes running open-source LLMs locally dead simple — <strong>no cloud, no API keys, no GPU</strong> needed. Just one command (<code>ollama run phi</code>) and you're chatting with a model that lives entirely on your machine.</p>
+                        <p>Built by a small team of ex-devtool and ML engineers at <strong>Ollama Inc.</strong>, the project wraps the powerful but low-level <code>llama.cpp</code> engine in a smooth developer experience — handling model downloads, quantization, and inference behind the scenes.</p>
+                        <p>Whether you’re hacking on a side project, building an AI CLI tool, or just exploring what local models can do, Ollama cuts through the setup pain and gets you straight to the fun part.</p>
+                        <p>Think of it as <strong>Homebrew, but for brains</strong> — local-first, developer-friendly, and privacy-respecting. It just works.</p>
+                        <p>Minimalism and simplicity are absolutely central to Ollama’s brand and product philosophy.</p>
+                
+                        <figure class="image is-4by3">
+                          <img src="https://cdn-images-1.medium.com/max/1200/1*USwEwlXYiz5w5xLORbavFg.png" alt="Ollama Home Page">
+                          <figcaption class="has-text-centered">Ollama Home Page</figcaption>
+                        </figure>
+                
+                        <h3 class="title is-4">Installing Ollama</h3>
+                        <p>Installation of Ollama is straightforward. Let's jump in.</p>
+                        <h4 class="subtitle is-5">Step-by-step: Install Ollama on WSL Ubuntu</h4>
+                
+                        <ul>
+                          <li>Ensure you are running WSL2 & not WSL1. Run the command below on Windows:</li>
+                        </ul>
+                        <pre><code>wsl --version</code></pre>
+                
+                        <ul>
+                          <li>Install dependencies:</li>
+                        </ul>
+                        <pre><code>sudo apt update
+                sudo apt install -y curl gpg</code></pre>
+                
+                        <ul>
+                          <li>Add Ollama’s GPG key, repo and install it:</li>
+                        </ul>
+                        <pre><code>curl -fsSL https://ollama.com/install.sh | sh</code></pre>
+                
+                        <ul>
+                          <li>Check if the Ollama service is installed:</li>
+                        </ul>
+                        <pre><code>sudo systemctl status ollama</code></pre>
+                
+                        <p>If the above command gives an error, run the following to enable the service:</p>
+                        <pre><code>sudo systemctl enable --now ollama</code></pre>
+                
+                        <p>If WSL is quirky about services, run manually:</p>
+                        <pre><code>ollama serve &</code></pre>
+                
+                        <p>Check CPU and RAM usage by running following commands respectively:</p>
+                        <pre><code>nproc</code></pre>
+                        <pre><code>free -h</code></pre>
+
+                
+                        <p><em><a href="https://medium.com/@rkanade/using-wsl-for-ai-app-development-2e2dcd3da033" target="_blank">Note: More details on WSL resource allocation and swap setup are in this earlier post.</a></em></p>
+                
+                        <p>Ollama supports CPU and GPU. But it <strong>won't use integrated GPUs like Intel UHD 620</strong> due to lack of ML acceleration capabilities (e.g., no CUDA, ROCm, or tensor cores).</p>
+                
+                        <h4 class="title is-4">Ollama Models</h4>
+                        <p>Ollama is to LLMs what Docker is to containers — it brings <strong>repeatability, portability, and simplicity</strong> to local model usage.</p>
+                
+                        <p><strong>Model Registry:</strong> Run <code>ollama run &lt;model&gt;</code> to pull from the central registry if not cached locally.</p>
+                        <p><strong>Model Images:</strong> Models like <code>mistral</code>, <code>phi</code>, and <code>tinydolphin</code> are packaged with weights and metadata in <code>.gguf</code> format.</p>
+                        <p><strong>Custom Models:</strong> Define a <code>Modelfile</code> based on existing models and build your own:</p>
+                        <pre><code>FROM mistral
+                SYSTEM "You are a helpful assistant."</code></pre>
+                        <pre><code>ollama create my-custom-model -f Modelfile</code></pre>
+                
+                        <p><strong>Download a model:</strong></p>
+                        <pre><code>ollama run mistral</code></pre>
+                
+                        <p><strong>List downloaded models:</strong></p>
+                        <pre><code>ollama list</code></pre>
+                
+                        <p><strong>Sample output:</strong></p>
+                        <pre><code>NAME               ID              SIZE      MODIFIED
+                smollm2:1.7b       cef4a1e09247    1.8 GB    2 weeks ago
+                ...</code></pre>
+                
+                        <p><strong>Running the smallest local model:</strong></p>
+                        <pre><code>ollama run smollm2:1.7b</code></pre>
+                
+                        <h4 class="title is-4">Ollama vs. ChatGPT Review</h4>
+                        <p>Ollama rewrote my intro for clarity. I then fed both versions to ChatGPT-4o. Here's what it had to say.</p>
+                        
+                        <h5>Version 1 ( Original paragraph written by me)</h5>
+                        <blockquote>
+                          In one of the earlier posts , I had described about WSL2 and how we set it up on a Windows Machine specifically configuring it to limit the max CPU and Memory Utilization and setting up an additional swap disk. In this article, we will take this forward and see how we setup Ollama, VS Code to get ready for AI app development.
+                        </blockquote>
+
+                        <h5>Version 2 ( Proposed paragraph from Ollama )</h5>
+                        <blockquote>
+                          In one of the earlier posts, I described WSL2 and how it can be set up on a Windows machine. Specifically, this involves configuring it to limit CPU and memory utilization, as well as setting up an additional swap disk. In this article, we will take that further and explore how to prepare your environment for AI application development using tools like Ollama and VS Code.
+                        </blockquote>
+                
+                        <p><strong>Why Version 2 Wins:</strong></p>
+                        <ul>
+                          <li>Better grammar</li>
+                          <li>Clear structure</li>
+                          <li>Smoother flow</li>
+                          <li>Professional tone</li>
+                          <li>Proper verb use</li>
+                        </ul>
+                
+                        <h4 class="title is-4">Final Thoughts</h4>
+                        <p>Ollama is easy to set up. It’s not great for real-time chat, but perfect as a background dev assistant.</p>
+                        <ul>
+                          <li>Code review suggestions</li>
+                          <li>Document summarization</li>
+                          <li>Test case generation</li>
+                          <li>Auto-generating FAQs</li>
+                        </ul>
+                
+                        <p>Have other cool use cases? Drop them in the comments.</p>
+                
+                        <hr>
+                        <p>If you’re into real-world takes on <strong>software, security, AI, and engineering teams</strong>, check out my newsletter:</p>
+                        <p><a href="https://greyneuronsconsulting.com/newsletter/nl-home.html" target="_blank">👉 Subscribe here</a> — low noise, high signal.</p>
+                
+                        <h4 class="title is-4">Need a Fractional CTO or CISO?</h4>
+                        <p>We help startups move faster without cutting corners. <a href="https://www.linkedin.com/in/rkanade/" target="_blank">Connect on LinkedIn</a> to chat.</p>
+                
+                        <hr>
+                        <p class="has-text-grey-light"><em>Written by a human. Polished by AI. Sanity-checked by both.</em></p>
+                      </div>
+                    </div>
+
+            </div>
+        </section>
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
