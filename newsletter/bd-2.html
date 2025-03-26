@@ -1,0 +1,94 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "GreyNeurons Bookmark Dispatch 2";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Newsletters" breadcrumb-url="/newsletter/nl-home.html">
+        <span slot="bread-crumb-current-page">Tech Cornucopia 1</span>
+      </blog-header>
+
+ 
+        <section class="section">
+            <div class="container content">
+                <h1 class="title is-centered">The Bookmark Dispatch - 2</h1>
+
+
+                <div class="box">
+                    What happens when you combine Nmap’s raw scanning power with ChatGPT’s intelligence? Wazuh’s latest integration shows how to automate security auditing while getting context-rich insights on vulnerabilities—all without leaving your SIEM. 
+                    
+                    <a href="https://wazuh.com/blog/nmap-and-chatgpt-security-auditing/?utm_source=bleepingcomputer.com&utm_medium=referral&utm_campaign=wazuh_bleepingcomputer" target="_blank" rel="noopener noreferrer">Read more ...</a>
+
+                </div>
+
+                <div class="box">
+                    Why did Microsoft's TypeScript team choose Go over Rust or C# for their compiler rewrite? Discover how Go's native code compilation and garbage collection influenced this strategic decision, aiming to enhance performance and developer experience. 
+                    
+                    <a href="https://www.architecture-weekly.com/p/typescript-migrates-to-go-whats-really" target="_blank" rel="noopener noreferrer">Read more ...</a>.
+
+                </div>
+
+                <div class="box">
+                    In his article "Here's how I use LLMs to help me write code" Simon Willison shares his experiences and strategies for effectively utilizing large language models (LLMs) in software development. He emphasizes that while LLMs can significantly boost productivity, they require careful guidance and validation. Willison discusses setting realistic expectations, understanding the importance of context, and the necessity of thoroughly testing AI-generated code. He also highlights that LLMs serve as tools to amplify existing expertise rather than replace the need for human oversight and skill. 
+                    <a href="https://simonwillison.net/2025/Mar/11/using-llms-for-code/?utm_source=greyneuronsconsulting.com&utm_medium=referral&utm_campaign=greyneurons-bookmark-dispatch-2" target="_blank" rel="noopener noreferrer">Read more ...</a>.
+                </div>
+
+            </div>
+          
+            <div class="container content">
+              <h2><strong>SQL Tips</strong></h2>
+                <div class="box">
+                Use NOT EXISTS Instead of LEFT JOIN + IS NULL for Anti-Joins
+                Tip: When filtering rows that do not have a match in another table, prefer NOT EXISTS over LEFT JOIN ... IS NULL It's usually faster and more readable.
+                
+                
+                    <div class="box">
+                        ✅ PostgreSQL Example
+                        <pre><code class="SQL">
+                            SELECT c.id, c.name FROM customers c 
+                            WHERE 
+                            NOT EXISTS ( SELECT 1 FROM orders o WHERE o.customer_id = c.id ); 
+                        </code></pre>
+                    </div>
+
+                    <div class="box">
+                        ⚠️ What to Avoid (Less Efficient):
+                        <pre><code class="SQL">
+                            SELECT c.id, c.name 
+                            FROM customers c LEFT JOIN orders o 
+                            ON c.id = o.customer_id WHERE o.customer_id IS NULL; 
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+         
+            <div class="container content">
+              <h2><strong>Words of Wisdom</strong></h2>
+              <blockquote>
+                <p><i>The best way to predict the future is to invent it. — Alan Kay</i></p>
+              </blockquote>
+            </div>
+
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
