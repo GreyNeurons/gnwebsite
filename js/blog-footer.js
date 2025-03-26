@@ -22,6 +22,16 @@ class BlogFooter extends HTMLElement {
               </p>
             </div>
           </div>
+          <div class="column has-background-dark has-text-center">
+
+              <div class="column is-8">
+                <div class="beehiiv-embed-wrapper">
+                <iframe src="https://embeds.beehiiv.com/8fd667ce-4b02-4034-97b7-b96e88fd9afc?slim=true" data-test-id="beehiiv-embed" height="52" frameborder="0" scrolling="no" style="margin: 0; border-radius: 0px !important; background-color: transparent;"></iframe>
+
+                </div>
+              </div>
+          </div>
+
           <div class="column has-background-dark">
             <div class="content has-text-white has-text-right is-size-7 is-family-monospace"> &copy; 2025 by GreyNeurons Consulting LLP. All rights reserved. </div>
           </div>
