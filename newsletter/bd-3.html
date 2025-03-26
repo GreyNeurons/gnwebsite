@@ -1,0 +1,106 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "GreyNeurons Bookmark Dispatch 3";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Newsletter" breadcrumb-url="/newsletter/nl-home.html">
+        <span slot="bread-crumb-current-page">Bookmark Dispatch 3</span>
+      </blog-header>
+
+ 
+        <section class="section">
+            <div class="container content">
+                <h1 class="title is-centered">The Bookmark Dispatch - 3</h1>
+
+                What do you get when you ask ChatGPT to build a Like button? Turns out—not quite what you’d expect. This edition covers AI experiments, clever new tools, security holes you need to patch, and a classic dev book that still holds up. Lets go!
+                <hr class = "gn-main"></hr>
+
+                <div class = "box">
+                    <strong>Quick Thought: Vibe Coding vs. Long-Haul Software</strong><br>
+
+                    As AI lowers the barrier to code generation, we’re entering a world where <strong>code becomes content</strong> — created by non-coders, often ephemeral, and driven more by vibes than specs.
+
+                    This kind of code won’t require installs or setups. It’ll run in the browser, live fast, and die young. JavaScript wins by default.
+
+                    But software that </trong>must endure</strong> — enterprise systems, infrastructure, safety-critical code — demands determinism. That’s still the domain of human developers, with AI as an assistant, not a replacement.
+                </div>
+
+                <hr class = "gn-main"></hr>
+
+                <div class = "box">
+                    In this article, I explore an experiment where <strong>I challenged ChatGPT to create a "Like" button for a static website </strong> without setting up a server. Initially, ChatGPT suggested traditional server-based solutions. When prompted for a serverless approach, it proposed using a <strong>central PouchDB-powered webpage</strong> as a sync hub. Despite the innovative idea, implementing this solution revealed significant challenges, highlighting the current limitations of AI-generated code and underscoring the importance of human expertise in software development.​
+
+                    For a detailed account of the experiment and key takeaways, you can read the  <a href="https://medium.com/@rkanade/we-trusted-chatgpt-to-build-a-like-button-heres-what-happened-13679b45d509" rel="noopener noreferrer" target="_blank">full article here</a>.
+
+                </div>
+
+                <hr class = "gn-main"></hr>
+
+                <div class = "box">
+                    Cloudflare has introduced <strong>AI Labyrinth</strong>, a free, opt-in tool designed to combat unauthorized web-scraping bots that collect data for AI training without consent. When such bots are detected, <strong>AI Labyrinth redirects them into a series of AI-generated decoy pages, effectively trapping them in a maze of irrelevant content</strong>. This approach not only <strong>wastes the resources of misbehaving bots but also aids in identifying and fingerprinting new bot patterns</strong>, enhancing overall detection capabilities. Website administrators can enable AI Labyrinth through the Bot Management section of their Cloudflare dashboard. 
+                    <a href="https://blog.cloudflare.com/ai-labyrinth/?utm_source=greyneuronsconsulting.com&utm_medium=newsletter&utm_campaign=greyneurons-bookmark-dispatch-3/" target="_blank" rel="noopener noreferrer">Read More ...</a> 
+                </div>
+
+                <hr class = "gn-main"></hr>
+
+                <div class="box">
+                    ​In a recent revelation, a critical vulnerability, CVE-2025-29927, has been identified in Next.js, the popular React framework. This flaw allows attackers to bypass middleware-based authorization checks by exploiting the x-middleware-subrequest header. By manipulating this internal header, unauthorized users can gain access to protected routes, potentially exposing sensitive data. The vulnerability affects versions 11.1.4 through 13.5.6, 14.x before 14.2.25, and 15.x before 15.2.3. Developers are urged to update to the latest patched versions immediately. 
+                    <a href="https://traefik.io/blog/security-alert-how-attackers-can-bypass-next-js-middleware-with-a-single-http-header/?utm_source=greyneuronsconsulting.com" target="_blank" rel="noopener noreferrer">
+                    Read more here
+                    </a>
+                </div>
+                <hr class = "gn-main"></hr>
+
+                <div class="box">
+
+                    <strong>Words of Wisdom : A reminder worth repeating in the AI age...
+                    </strong>
+                    <blockquote>
+                      <p><i>“Security is not a product, but a process.”
+                        — Bruce Schneier, cryptographer and security technologist</i></p>
+                    </blockquote>
+
+                </div>
+
+                <hr class = "gn-main"></hr>
+
+                <div class = "box">
+                    <strong>Code Complete</strong> is a seminal guide on software construction, emphasizing best practices for creating high-quality code. It covers various aspects of programming, from initial design to maintenance, and is widely regarded as an essential resource for developers seeking to enhance their craftsmanship.​
+
+                    In today's AI-assisted programming landscape, the principles outlined in Code Complete remain highly relevant. While AI tools can automate certain coding tasks, the foundational concepts of code structure, clarity, and maintainability are crucial for effective collaboration between human developers and AI assistants. As AI handles more routine coding, developers must focus on higher-level problem-solving and design—areas where Code Complete offers invaluable guidance.​
+
+                    For those looking to adapt to the evolving demands of software development, revisiting the timeless insights in Code Complete can provide a solid foundation for integrating AI tools effectively into the coding process.
+
+                    <a href="https://www.amazon.in/Code-Complete-Dv-Professional-Steve-Mcconnell/dp/0735619670/ref=sr_1_1?crid=FE5QFJ375OWZ&dib=eyJ2IjoiMSJ9.to4jYgRvZDxtbtDwTlL6kY0HURhXw7Ix71VoDzCa3gkJWCk7gOasJVw2Mm3OKnkvSRYSk88A00RTbTPESFGA2SqX0KYOCrLLeV2okJqVixhgwJV3VDMgKarOBBePL0SLGC4VhP1CW7mt6MbYpQJIY1Rx5Af_jTTRq7rEQqBYFVfjD404oufR6yXnv-yh66KgS_lUySRK5nejYpKH2ukLEfy2TCkWtx_WaY2EwZYIPjo.-YOeMnrARKH3x3-CQgBY-Bs3Te_-RmtsyXDwgl_8cAw&dib_tag=se&keywords=code+complete&qid=1742930206&sprefix=code+complete%2Caps%2C376&sr=8-1&utm_source=greyneuronsconsulting.com&utm_medium=newsletter&utm_campaign=greyneurons-bookmark-dispatch-3" target="_blank" rel="noopener noreferrer">
+                        Read more here
+                    </a>
+                </div>
+            </div>
+            
+
+
+
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
