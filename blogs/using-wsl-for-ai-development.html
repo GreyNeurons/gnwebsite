@@ -1,0 +1,235 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Ollama makes running open-source LLMs locally dead simple — no cloud, no API keys, no GPU needed. Just one command (ollama run phi) and you're chatting with a model that lives entirely on your machine.";
+        </script>
+            
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+        <blog-header>
+            <span slot="bread-crumb-current-page">Security Offering</span>
+        </blog-header>
+
+ 
+        <section>
+            <!-- insert content here -->
+            <div class="container box content">
+                <h1>Using WSL for AI App Development</h1>
+
+                <p>
+
+                Linux is an open-source, Unix-like operating system kernel created by Linus Torvalds in 1991. It was inspired by Unix but developed as a free and open alternative. Today, Linux powers servers, cloud infrastructure, Android devices, IoT, cybersecurity, DevOps, and AI research.
+                </p>
+
+
+                <div>
+                    Recently we have started working on a research project with a high level requirements as under:<br>
+                 
+                    ✅ Crawls public websites for topics of your interest ( e.g. Java ).<br>
+                    ✅ Extracts potential Java questions and generates high-quality answers consulting multiple LLMs.<br>
+                    ✅ Uses LLMs (Large Language Models) for Q&A generation, topic classification, and logical error analysis.<br>
+                    ✅ Runs a scheduled batch inference processing system for efficiency.<br>
+                    ✅ Uses PostgreSQL for structured data storage and LLMs for semantic search.<br>
+                    ✅ Optimizes inference performance on a local Linux environment using WSL and SSD-based swap.<br>
+                    ✅ Implements benchmarking & auto-routing for cost-effective LLM selection (local hosted models and cloud hosted like Groq, GPT-4).<br>
+                    
+                </div>
+
+                <hr class="gn-main"></hr>
+
+                <h2>Virtual Box vs WSL as our Linux platform</h2>
+                
+                Linux is the no brainer choice to develop , test and deploy but many developers, especially freshers and juniors, are more familiar with Windows and may not be comfortable setting up a dual-boot partition or getting a separate Linux machine. Given these constraints we had 2 choices either go with WSL or go with VirtualBox. Here is a brief comparison of WSL vs VirtualBox<br>
+
+                <h3>Performance</h3>
+
+                WSL is faster for lightweight tasks because it shares Windows resources.<br>
+                VirtualBox is slower since it runs a full virtual machine, requiring more system overhead.<br>
+                <h3>Resource Usage</h3>
+
+                WSL uses minimal resources and runs as a lightweight layer on Windows.<br>
+                VirtualBox allocates dedicated CPU, RAM, and storage, leading to higher resource consumption.<br>
+                <h3>Kernel & System Architecture</h3>
+
+                WSL 2 includes a built-in Linux kernel managed by Windows.<br>
+                VirtualBox runs a full independent Linux OS inside a VM.<br>
+
+                <h3>Networking</h3>
+
+                WSL 1 shares Windows’ network stack, while WSL 2 has its own virtual network interface.<br>
+                VirtualBox runs on a separate virtual network adapter, allowing full network isolation.<br>
+                
+                <h3>Use Case</h3>
+
+                WSL is ideal for development, scripting, AI/ML workloads, and DevOps tools without the overhead of a VM.<br>
+                VirtualBox is better for running full Linux distributions with GUI applications and system-level testing.<br>
+
+                <h3>Hardware Access</h3>
+
+                WSL has limited access to hardware, though WSL 2 offers GPU acceleration.<br>
+                VirtualBox provides full access to USB, GPU (with proper drivers), and other hardware devices.<br>
+
+                <h3>GUI Support</h3>
+
+                WSL now includes WSLg, which allows running Linux GUI apps natively.<br>
+                VirtualBox supports full Linux desktop environments, making it better for GUI-based applications.<br>
+
+                <h3>Installation & Setup</h3>
+
+                WSL is quick to set up via Windows features.<br>
+                VirtualBox requires ISO downloads, manual installation, and configuration.
+                We decided to go with WSL2 is very quick and easy to setup and WSL2 is quite matured and stable. In the rest of the article we will cover WSL1 vs WSL2, how to install and do some advanced configurations<br>
+
+                <hr class="gn-main"></hr>
+
+                <h2>WSL 1 vs. WSL 2: Key Differences</h2>
+                
+                <h3>Kernel:</h3>
+
+                WSL 1 uses the Windows NT kernel.<br>
+                WSL 2 runs a full Linux kernel inside a lightweight virtual machine.<br>
+
+                <h3>Performance:</h3>
+
+                WSL 1 is faster for file system operations.<br>
+                WSL 2 performs better for system calls and running Linux applications.<br>
+
+                <h3>Resource Usage:</h3>
+
+                WSL 1 uses fewer system resources.<br>
+                WSL 2 requires more resources but provides better functionality.<br.
+
+                <h3>Networking:</h3>
+
+                WSL 1 shares Windows’ network stack.<br>
+                WSL 2 has a separate network interface, like a virtual machine.<br>
+
+                <h3>Best For:</h3>
+
+                WSL 1 is best for simple command-line tools.<br>
+                WSL 2 is better for running full Linux applications and services.<br>
+
+                We shortlisted WSL 2 because we will be working Docker, AI workloads, databases, and system-level Linux tools.<br>
+
+                <hr class="gn-main"></hr>
+
+                <h2>Installing and Setting Up WSL on Windows</h2>
+
+                <h3>Check If WSL Is Installed</h3>
+                
+                Run the following command in PowerShell:<br>
+
+                <div>
+                    <code>
+                    wsl --list --verbose
+                    </code>
+                </div>
+                
+                📌 If WSL is installed, you’ll see a list of distributions.<br>
+                
+                📌 If not installed, install it with:<br>
+
+                    <code>wsl --install</code><br>
+
+                Default Linux distribution installed: Ubuntu
+
+                <h3>Verify Installation</h3>
+                <p>
+                    From command line run:<br>
+
+                    <code>wsl --version</code><br>
+
+                    <strong>Expected Output:</strong><br>
+
+                    <code>WSL version: 2.4.10.0 <br>
+                    Kernel version: 5.15.167.4-1</code><br>
+                </p>
+
+                <p>
+                For our team, it is important that we keep coding, browsing, emailing and attending meetings on Windows while WSL in the background<br>
+                — Crawls the web looking for open source content on our topic of interest ( example java ).<br>
+                — Runs the LLMs ( ollama / Mistral 7B model ) extract questions, answers , summarizing the content.<br>
+                — Find duplicates and discard them using pgVector database.<br>
+                — insert the responses from LLM into postgres database also running in WSL.<br>
+                </p>   
+                
+                <p>
+                Challenge is running local LLMs on CPU ( no GPUs ) is both CPU and Memory intensive. Inference especially is quite memory intensive and we do want to have as large a model as possible. By default, WSL can consume a large portion of system memory, impacting Windows performance where we do our meetings, write emails and code. So it is necessary we do following
+                </p>
+
+                <p>
+                    <li>Set an upper memory limit on how much RAM and CPU WSL can consume ( We followed the 50:50 rule giving 50% for WSL , 50% for Windows ).</li>
+                    <li>Running local AI models (e.g., llama.cpp or mistral-7b) is memory-intensive and not practical even for our use case where LLM inferences happen in background jobs unless we get more substantially more RAM to WSL.</li>
+
+                </p>
+
+                <p>
+                So how do you achieve the above ? By modify the WSL global settings file (.wslconfig) to manually limit and optimize resource allocation & allocate more SWAP from your SSD or HDD :
+
+                [wsl2]
+                memory=8GB        # Limit RAM usage to 50% (default is dynamic)
+                processors=4       # Restrict to 50% CPU cores
+                swap=45GB         # Enable swap on SSD (for heavy workloads)
+                swapFile=C:\wsl-swap.vhdx  # Swap file location
+                
+                </p>    
+
+                Apply the changes by restarting WSL:<br>
+
+                <code>wsl --shutdown</code><br>
+
+                <h3>Testing Resource Limits with stress Command</h3>
+                
+                To verify if WSL is correctly applying CPU, RAM, and swap settings, use the stress tool to simulate high workloads.<br>
+
+                Installing stress in WSL <br>
+                <code>sudo apt update && sudo apt install -y stress</code><br>
+                
+   
+                To stress-test CPU usage, run:<br>
+
+                <code>stress --cpu 4 --timeout 60</code><br>
+
+                This should only utilize 4 cores (as set in .wslconfig) and exit after 60 seconds.<br>
+
+                To stress test RAM usage allocate 7GB of RAM (just below the 8GB limit):<br>
+
+                <code>stress --vm 1 --vm-bytes 7G --timeout 60</code><br>
+
+                This ensures WSL stays within the allocated memory.<br>
+
+                Testing Swap File Usage<br>
+
+                To force memory pressure and test swap activation:<br>
+
+                <code>stress --vm 1 --vm-bytes 10G --timeout 60</code><br>
+
+                If swap is properly configured, the system should not crash and should start using SSD-based swap.
+
+                <hr class="gn-main"></hr>
+                <h2>Conclusion</h2>
+                WSL is a game-changer for developers needing Linux tools while working on Windows. By configuring resources efficiently, optimizing disk usage, you can unlock the full power of WSL & even use to develop and run AI Apps on your regular Windows Laptop.
+
+            </div>
+
+        </section>
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
