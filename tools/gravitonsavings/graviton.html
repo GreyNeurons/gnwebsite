@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AWS Graviton Savings Calculator</title>
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "GreyNeurons Bookmark Dispatch 2";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+
+
     <style>
         :root {
             --primary-color: #232f3e;
@@ -38,7 +52,7 @@
             text-align: center;
             margin-bottom: 30px;
             padding: 20px;
-            background-color: var(--primary-color);
+            background-color: darkgrey;
             color: white;
             border-radius: 8px;
         }
@@ -50,6 +64,7 @@
         .subtitle {
             font-size: 1.1rem;
             opacity: 0.9;
+            color : white;
         }
 
         .calculator-container {
@@ -206,12 +221,17 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>AWS Graviton Savings Calculator</h1>
-            <p class="subtitle">Compare costs between Graviton and other EC2 instance types</p>
-        </header>
+        <blog-header breadcrumb-label="Tools" breadcrumb-url="/tools/tools-index.html">
+
+            <span slot="bread-crumb-current-page"></span>
+          </blog-header>
+
 
         <div class="info-section">
+            <header>
+                <h1>AWS Graviton Savings Calculator</h1>
+                <p class="subtitle">Compare costs between Graviton and other EC2 instance types</p>
+            </header>
             <h2>What is AWS Graviton?</h2>
             <p>
                 AWS Graviton processors are custom built by Amazon Web Services using 64-bit Arm Neoverse cores. 
@@ -572,5 +592,12 @@
             calculateBtn.click();
         });
     </script>
+
+            <!-- Custom Footer Component -->
+            <blog-footer></blog-footer>
+
+            <!-- Include the JS file where BlogFooter is defined -->
+            <script defer src="/js/blog-footer.js"></script>
+            <script defer src="/js/blog-header.js"></script>
 </body>
 </html>
