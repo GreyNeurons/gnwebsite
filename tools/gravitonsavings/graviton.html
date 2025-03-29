@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Graviton Savings Calculator</title>
+    <style>
+        :root {
+            --primary-color: #232f3e;
+            --secondary-color: #ff9900;
+            --background-color: #f8f8f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #dddddd;
+            --success-color: #3eb489;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .calculator-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .input-section, .results-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #e68a00;
+        }
+
+        .results-section h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .result-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+        }
+
+        .savings {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--success-color);
+            margin: 15px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .graviton-row {
+            background-color: rgba(255, 153, 0, 0.1) !important;
+        }
+
+        #savings-chart {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        .info-section {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            margin-bottom: 15px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .info-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AWS Graviton Savings Calculator</h1>
+            <p class="subtitle">Compare costs between Graviton and other EC2 instance types</p>
+        </header>
+
+        <div class="info-section">
+            <h2>What is AWS Graviton?</h2>
+            <p>
+                AWS Graviton processors are custom built by Amazon Web Services using 64-bit Arm Neoverse cores. 
+                These processors are designed to deliver the best price performance for your cloud workloads running in Amazon EC2.
+            </p>
+            <p>
+                Graviton-based instances can provide up to 40% better price performance over comparable current generation x86-based instances
+                for a wide variety of workloads.
+            </p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Cost Efficiency</h3>
+                    <p>Graviton instances offer significant cost savings compared to equivalent x86 instances, with up to 40% better price-performance.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Energy Efficiency</h3>
+                    <p>Arm-based Graviton processors are more energy-efficient, resulting in lower power consumption and reduced carbon footprint.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Performance</h3>
+                    <p>Optimized for cloud workloads, Graviton instances provide excellent performance for containerized microservices, web servers, and data processing tasks.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Wide Compatibility</h3>
+                    <p>Most applications written in high-level languages (Python, Node.js, Java, Ruby, PHP, Go, .NET Core) run seamlessly on Graviton.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="calculator-container">
+            <div class="input-section">
+                <h2>Calculate Your Savings</h2>
+                <div class="form-group">
+                    <label for="instance-family">Instance Family</label>
+                    <select id="instance-family">
+                        <option value="general">General Purpose (t4g vs t3)</option>
+                        <option value="compute">Compute Optimized (c7g vs c6i)</option>
+                        <option value="memory">Memory Optimized (r7g vs r6i)</option>
+                        <option value="storage">Storage Optimized (im4gn vs im4n)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="instance-size">Instance Size</label>
+                    <select id="instance-size">
+                        <option value="medium">medium</option>
+                        <option value="large">large</option>
+                        <option value="xlarge">xlarge</option>
+                        <option value="2xlarge">2xlarge</option>
+                        <option value="4xlarge">4xlarge</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="region">AWS Region</label>
+                    <select id="region">
+                        <option value="us-east-1">US East (N. Virginia)</option>
+                        <option value="us-west-2">US West (Oregon)</option>
+                        <option value="eu-west-1">EU (Ireland)</option>
+                        <option value="ap-southeast-1">Asia Pacific (Singapore)</option>
+                        <option value="ap-south-1">Asia Pacific (Mumbai)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="hours">Hours per Month</label>
+                    <input type="number" id="hours" value="730" min="1" max="744">
+                </div>
+                <div class="form-group">
+                    <label for="instances">Number of Instances</label>
+                    <input type="number" id="instances" value="1" min="1" max="1000">
+                </div>
+                <button id="calculate-btn">Calculate Savings</button>
+            </div>
+
+            <div class="results-section">
+                <h2>Cost Comparison Results</h2>
+                <div id="results-container">
+                    <p>Select your instance options and click "Calculate Savings" to see the comparison.</p>
+                </div>
+                <div id="savings-chart"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Graviton Instance Types</h2>
+            <p>
+                AWS offers several Graviton-based instance families to meet different workload requirements:
+            </p>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Instance Family</th>
+                        <th>Use Case</th>
+                        <th>Graviton Version</th>
+                        <th>Comparable x86</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>T4g</td>
+                        <td>Burstable general purpose</td>
+                        <td>Graviton2</td>
+                        <td>T3 (Intel)</td>
+                    </tr>
+                    <tr>
+                        <td>M7g, M6g</td>
+                        <td>General purpose</td>
+                        <td>Graviton3, Graviton2</td>
+                        <td>M6i, M5 (Intel)</td>
+                    </tr>
+                    <tr>
+                        <td>C7g, C6g</td>
+                        <td>Compute optimized</td>
+                        <td>Graviton3, Graviton2</td>
+                        <td>C6i, C5 (Intel)</td>
+                    </tr>
+                    <tr>
+                        <td>R7g, R6g</td>
+                        <td>Memory optimized</td>
+                        <td>Graviton3, Graviton2</td>
+                        <td>R6i, R5 (Intel)</td>
+                    </tr>
+                    <tr>
+                        <td>X2gd</td>
+                        <td>Memory optimized with SSD</td>
+                        <td>Graviton2</td>
+                        <td>X2i (Intel)</td>
+                    </tr>
+                    <tr>
+                        <td>Im4gn</td>
+                        <td>Storage optimized</td>
+                        <td>Graviton2</td>
+                        <td>Im4n (Intel)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-section">
+            <h2>Migration Tips</h2>
+            <p>
+                Migrating to Graviton instances is straightforward for most applications. Here are some tips:
+            </p>
+            <ul style="margin-left: 20px; margin-bottom: 20px;">
+                <li>Most applications written in interpreted languages (Python, Node.js, Ruby, PHP) work without modification</li>
+                <li>Java applications running on JDK 8 or later work seamlessly on Graviton</li>
+                <li>For compiled languages like C/C++, recompile your code for ARM64 architecture</li>
+                <li>Use multi-architecture Docker images with the ARM64 variant</li>
+                <li>Test your workloads on Graviton instances before full migration</li>
+                <li>Consider using AWS Graviton-ready partner solutions</li>
+            </ul>
+            <p>
+                AWS provides detailed migration guides and tools to help you transition your workloads to Graviton instances.
+            </p>
+        </div>
+
+        <footer>
+            <p>This calculator provides estimated costs based on publicly available AWS pricing information. Actual costs may vary.</p>
+            <p>Developed as a client-side tool for educational purposes. No data is sent to any server.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // EC2 pricing data (simplified for demonstration)
+        // These prices are approximations and should be updated with current AWS pricing
+        const pricingData = {
+            "general": {
+                "graviton": {
+                    "name": "t4g",
+                    "medium": { "us-east-1": 0.0336, "us-west-2": 0.0336, "eu-west-1": 0.0372, "ap-southeast-1": 0.0408, "ap-south-1": 0.0372 },
+                    "large": { "us-east-1": 0.0672, "us-west-2": 0.0672, "eu-west-1": 0.0744, "ap-southeast-1": 0.0816, "ap-south-1": 0.0744 },
+                    "xlarge": { "us-east-1": 0.1344, "us-west-2": 0.1344, "eu-west-1": 0.1488, "ap-southeast-1": 0.1632, "ap-south-1": 0.1488 },
+                    "2xlarge": { "us-east-1": 0.2688, "us-west-2": 0.2688, "eu-west-1": 0.2976, "ap-southeast-1": 0.3264, "ap-south-1": 0.2976 },
+                    "4xlarge": { "us-east-1": 0.5376, "us-west-2": 0.5376, "eu-west-1": 0.5952, "ap-southeast-1": 0.6528, "ap-south-1": 0.5952 }
+                },
+                "x86": {
+                    "name": "t3",
+                    "medium": { "us-east-1": 0.0416, "us-west-2": 0.0416, "eu-west-1": 0.0464, "ap-southeast-1": 0.0508, "ap-south-1": 0.0456 },
+                    "large": { "us-east-1": 0.0832, "us-west-2": 0.0832, "eu-west-1": 0.0928, "ap-southeast-1": 0.1016, "ap-south-1": 0.0912 },
+                    "xlarge": { "us-east-1": 0.1664, "us-west-2": 0.1664, "eu-west-1": 0.1856, "ap-southeast-1": 0.2032, "ap-south-1": 0.1824 },
+                    "2xlarge": { "us-east-1": 0.3328, "us-west-2": 0.3328, "eu-west-1": 0.3712, "ap-southeast-1": 0.4064, "ap-south-1": 0.3648 },
+                    "4xlarge": { "us-east-1": 0.6656, "us-west-2": 0.6656, "eu-west-1": 0.7424, "ap-southeast-1": 0.8128, "ap-south-1": 0.7296 }
+                }
+            },
+            "compute": {
+                "graviton": {
+                    "name": "c7g",
+                    "medium": { "us-east-1": 0.0425, "us-west-2": 0.0425, "eu-west-1": 0.0467, "ap-southeast-1": 0.0510, "ap-south-1": 0.0467 },
+                    "large": { "us-east-1": 0.0850, "us-west-2": 0.0850, "eu-west-1": 0.0934, "ap-southeast-1": 0.1020, "ap-south-1": 0.0934 },
+                    "xlarge": { "us-east-1": 0.1700, "us-west-2": 0.1700, "eu-west-1": 0.1868, "ap-southeast-1": 0.2040, "ap-south-1": 0.1868 },
+                    "2xlarge": { "us-east-1": 0.3400, "us-west-2": 0.3400, "eu-west-1": 0.3736, "ap-southeast-1": 0.4080, "ap-south-1": 0.3736 },
+                    "4xlarge": { "us-east-1": 0.6800, "us-west-2": 0.6800, "eu-west-1": 0.7472, "ap-southeast-1": 0.8160, "ap-south-1": 0.7472 }
+                },
+                "x86": {
+                    "name": "c6i",
+                    "medium": { "us-east-1": 0.0510, "us-west-2": 0.0510, "eu-west-1": 0.0561, "ap-southeast-1": 0.0612, "ap-south-1": 0.0561 },
+                    "large": { "us-east-1": 0.1020, "us-west-2": 0.1020, "eu-west-1": 0.1122, "ap-southeast-1": 0.1224, "ap-south-1": 0.1122 },
+                    "xlarge": { "us-east-1": 0.2040, "us-west-2": 0.2040, "eu-west-1": 0.2244, "ap-southeast-1": 0.2448, "ap-south-1": 0.2244 },
+                    "2xlarge": { "us-east-1": 0.4080, "us-west-2": 0.4080, "eu-west-1": 0.4488, "ap-southeast-1": 0.4896, "ap-south-1": 0.4488 },
+                    "4xlarge": { "us-east-1": 0.8160, "us-west-2": 0.8160, "eu-west-1": 0.8976, "ap-southeast-1": 0.9792, "ap-south-1": 0.8976 }
+                }
+            },
+            "memory": {
+                "graviton": {
+                    "name": "r7g",
+                    "medium": { "us-east-1": 0.0556, "us-west-2": 0.0556, "eu-west-1": 0.0612, "ap-southeast-1": 0.0667, "ap-south-1": 0.0612 },
+                    "large": { "us-east-1": 0.1112, "us-west-2": 0.1112, "eu-west-1": 0.1224, "ap-southeast-1": 0.1334, "ap-south-1": 0.1224 },
+                    "xlarge": { "us-east-1": 0.2224, "us-west-2": 0.2224, "eu-west-1": 0.2448, "ap-southeast-1": 0.2668, "ap-south-1": 0.2448 },
+                    "2xlarge": { "us-east-1": 0.4448, "us-west-2": 0.4448, "eu-west-1": 0.4896, "ap-southeast-1": 0.5336, "ap-south-1": 0.4896 },
+                    "4xlarge": { "us-east-1": 0.8896, "us-west-2": 0.8896, "eu-west-1": 0.9792, "ap-southeast-1": 1.0672, "ap-south-1": 0.9792 }
+                },
+                "x86": {
+                    "name": "r6i",
+                    "medium": { "us-east-1": 0.0667, "us-west-2": 0.0667, "eu-west-1": 0.0734, "ap-southeast-1": 0.0800, "ap-south-1": 0.0734 },
+                    "large": { "us-east-1": 0.1334, "us-west-2": 0.1334, "eu-west-1": 0.1468, "ap-southeast-1": 0.1600, "ap-south-1": 0.1468 },
+                    "xlarge": { "us-east-1": 0.2668, "us-west-2": 0.2668, "eu-west-1": 0.2936, "ap-southeast-1": 0.3200, "ap-south-1": 0.2936 },
+                    "2xlarge": { "us-east-1": 0.5336, "us-west-2": 0.5336, "eu-west-1": 0.5872, "ap-southeast-1": 0.6400, "ap-south-1": 0.5872 },
+                    "4xlarge": { "us-east-1": 1.0672, "us-west-2": 1.0672, "eu-west-1": 1.1744, "ap-southeast-1": 1.2800, "ap-south-1": 1.1744 }
+                }
+            },
+            "storage": {
+                "graviton": {
+                    "name": "im4gn",
+                    "medium": { "us-east-1": 0.0834, "us-west-2": 0.0834, "eu-west-1": 0.0918, "ap-southeast-1": 0.1001, "ap-south-1": 0.0918 },
+                    "large": { "us-east-1": 0.1668, "us-west-2": 0.1668, "eu-west-1": 0.1836, "ap-southeast-1": 0.2002, "ap-south-1": 0.1836 },
+                    "xlarge": { "us-east-1": 0.3336, "us-west-2": 0.3336, "eu-west-1": 0.3672, "ap-southeast-1": 0.4004, "ap-south-1": 0.3672 },
+                    "2xlarge": { "us-east-1": 0.6672, "us-west-2": 0.6672, "eu-west-1": 0.7344, "ap-southeast-1": 0.8008, "ap-south-1": 0.7344 },
+                    "4xlarge": { "us-east-1": 1.3344, "us-west-2": 1.3344, "eu-west-1": 1.4688, "ap-southeast-1": 1.6016, "ap-south-1": 1.4688 }
+                },
+                "x86": {
+                    "name": "im4n",
+                    "medium": { "us-east-1": 0.1001, "us-west-2": 0.1001, "eu-west-1": 0.1102, "ap-southeast-1": 0.1201, "ap-south-1": 0.1102 },
+                    "large": { "us-east-1": 0.2002, "us-west-2": 0.2002, "eu-west-1": 0.2204, "ap-southeast-1": 0.2402, "ap-south-1": 0.2204 },
+                    "xlarge": { "us-east-1": 0.4004, "us-west-2": 0.4004, "eu-west-1": 0.4408, "ap-southeast-1": 0.4804, "ap-south-1": 0.4408 },
+                    "2xlarge": { "us-east-1": 0.8008, "us-west-2": 0.8008, "eu-west-1": 0.8816, "ap-southeast-1": 0.9608, "ap-south-1": 0.8816 },
+                    "4xlarge": { "us-east-1": 1.6016, "us-west-2": 1.6016, "eu-west-1": 1.7632, "ap-southeast-1": 1.9216, "ap-south-1": 1.7632 }
+                }
+            }
+        };
+
+        // DOM elements
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resultsContainer = document.getElementById('results-container');
+        let chart = null;
+
+        // Calculate and display results
+        calculateBtn.addEventListener('click', function() {
+            const instanceFamily = document.getElementById('instance-family').value;
+            const instanceSize = document.getElementById('instance-size').value;
+            const region = document.getElementById('region').value;
+            const hours = parseInt(document.getElementById('hours').value);
+            const instances = parseInt(document.getElementById('instances').value);
+
+            // Get pricing for selected options
+            const gravitonPrice = pricingData[instanceFamily].graviton[instanceSize][region];
+            const x86Price = pricingData[instanceFamily].x86[instanceSize][region];
+            
+            // Calculate costs
+            const gravitonCost = gravitonPrice * hours * instances;
+            const x86Cost = x86Price * hours * instances;
+            const savings = x86Cost - gravitonCost;
+            const savingsPercentage = (savings / x86Cost) * 100;
+            
+            // Get instance type names
+            const gravitonType = pricingData[instanceFamily].graviton.name;
+            const x86Type = pricingData[instanceFamily].x86.name;
+
+            // Display results
+            resultsContainer.innerHTML = `
+                <div class="result-card">
+                    <h3>Monthly Cost Comparison</h3>
+                    <p>Based on ${instances} instance(s) running ${hours} hours per month in ${region}</p>
+                    
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Instance Type</th>
+                                <th>Hourly Rate</th>
+                                <th>Monthly Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="graviton-row">
+                                <td>${gravitonType}-${instanceSize} (Graviton)</td>
+                                <td>$${gravitonPrice.toFixed(4)}</td>
+                                <td>$${gravitonCost.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>${x86Type}-${instanceSize} (x86)</td>
+                                <td>$${x86Price.toFixed(4)}</td>
+                                <td>$${x86Cost.toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="savings">
+                        Monthly Savings: $${savings.toFixed(2)} (${savingsPercentage.toFixed(1)}%)
+                    </div>
+                    
+                    <p>Annual Savings: $${(savings * 12).toFixed(2)}</p>
+                </div>
+            `;
+            
+            // Create or update chart
+            updateChart(gravitonCost, x86Cost, gravitonType, x86Type);
+        });
+
+        // Create or update the chart
+        function updateChart(gravitonCost, x86Cost, gravitonType, x86Type) {
+            const ctx = document.getElementById('savings-chart').getContext('2d');
+            
+            // Destroy previous chart if it exists
+            if (chart) {
+                chart.destroy();
+            }
+            
+            // Create new chart
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [`${gravitonType} (Graviton)`, `${x86Type} (x86)`],
+                    datasets: [{
+                        label: 'Monthly Cost ($)',
+                        data: [gravitonCost, x86Cost],
+                        backgroundColor: [
+                            'rgba(255, 153, 0, 0.7)',
+                            'rgba(35, 47, 62, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 153, 0, 1)',
+                            'rgba(35, 47, 62, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cost ($)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize with default values
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateBtn.click();
+        });
+    </script>
+</body>
+</html>
