@@ -1,0 +1,125 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Bookmark Dispatch 5";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Newsletter" breadcrumb-url="/newsletter/nl-home.html">
+        <span slot="bread-crumb-current-page">Bookmark Dispatch 5</span>
+      </blog-header>
+
+ 
+        <section class="section">
+            <div class = "container content">
+                <h1>Not Dead Yet: Why C Still Fights, Rust Isn’t a Sure Thing, and AI Isn’t Magic</h1>
+            
+                <p>    
+                    <i>A peek under the hood of Cursor AI, a bold C upgrade that could stall Rust, how Curl stays battle-ready without a rewrite, a glimpse into how Claude “thinks,” and the strange new era where code is just another kind of content</i>
+                    
+                    <hr></hr>
+                    
+                </p>
+
+
+                <p>
+                    Ever wonder how the Cursor AI code editor actually works under the hood? Roman Imankulov takes you on a behind-the-scenes tour, breaking down how it turns your vague coding requests into actual changes across your files. 
+                    
+                    He digs into how Cursor structures its prompts, how you can shape its behavior with a simple config file, and how it smartly uses OpenAI’s function-calling to do things like search your codebase or edit files. <br>
+                    
+                    It’s a solid peek into how modern AI dev tools really tick. 
+                    
+                    👉 <a href="https://roman.pt/posts/cursor-under-the-hood/">Read the full post</a>
+
+                    <hr></hr>
+                </p>
+     
+                <p>
+                    C has taken a beating lately for not being memory safe — and Rust is gaining traction precisely because of that. To make matters worse, CISA is now pushing software vendors to move away from memory-unsafe languages altogether. Major tech players have already started backing Rust, rewriting parts of their system software in it. <br>
+
+                    Against this backdrop, Robin Rowe’s proposal for the TrapC extension to C is potentially game-changing. According to the proposal, compiling C code with a TrapC-aware compiler automatically upgrades all pointers to Memory Safe Pointers, with built-in checks and enhanced error handling mechanisms.<br>
+
+                    Rowe asserts TrapC is on track to be released in 2025. If done well this can totally kill the C to Rust migration industry. It will be interesting to see how this unfolds.
+
+                    👉 <a href="https://thenewstack.io/memory-safe-c-trapcs-pitch-to-the-c-iso-working-group/">Read the full post</a>
+
+                    <hr></hr>
+
+                </p>
+
+                <p>
+                    <p>Curl runs on everything — from your laptop to your router to your fridge. With 20 billion installs (probably more), its creator Daniel Stenberg knows the stakes are high. In a refreshingly honest and funny FOSDEM talk, he explains how Curl stays secure without chasing trendy rewrites.</p>
+
+                    <p>Instead of ditching C, they double down on discipline. Dangerous functions like gets() and sprintf() are outright banned. They torture-test their code by forcing memory allocation failures just to make sure nothing crashes or leaks. Every single pull request triggers over 400,000 tests, now optimized to run in just 30 minutes. Even the indentation, spelling, and documentation style are automatically checked—yes, contractions like “isn’t” are forbidden.</p>
+
+                    <p>Stenberg also dives into their bug bounty program, which has paid out over $85,000 since 2019. But not everything submitted is gold — AI-generated “slop” now accounts for about 10–15% of all reports. Despite that, the team takes every bug seriously, and even acts as its own CVE-numbering authority to speed up disclosures.</p>
+
+                    <p>There’s no big re-write in sight — just a relentless commitment to doing things right, one test, one audit, one release at a time.</p>
+
+                    <p>
+                    👉 <a href="https://thenewstack.io/curls-daniel-stenberg-on-securing-180000-lines-of-c-code/">Read the full post</a>
+                    </p>
+
+                </p>
+                <p><hr></p>
+
+                <p>
+                    <p>In this 2 minutes video, Claude research team explains how Claude doesn’t just predict the next word — it strategizes, adapts, and sometimes totally fakes it.</p>
+
+                    <p>
+
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/Bj9BD2D3DzA?si=WGjSL4Gmr8vicQmk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                    </p>
+
+                    <p><hr></p>
+                </p>
+                
+                <p>
+                    <p><strong>Code as Content: A Thought</strong></p>
+
+                    <p>
+                    I’ve been thinking about this more lately — especially after reading a post on “vibe coding”. Just like software engineers are now casually writing blog posts or recording short explainers, AI is enabling non-coders to generate code as a form of content. Not to ship. Not to maintain. Just to share an idea or make a point.
+                    </p>
+                    
+                    <p>
+                    But here’s the catch: most of that code has a shelf life of maybe a few days. It’s not getting versioned, deployed, or even revisited. So installing things, setting up local environments — it all starts to feel like overkill.
+                    </p>
+
+                    <p> This kind of throwaway, in-browser code? JavaScript wins by default.</p>
+                   
+                    <p>
+                    Meanwhile, long-lived software — enterprise systems, avionics, anything with safety requirements — still demands structure, determinism, and actual engineering. That code will be written by humans (for now), likely with AI assisting quietly in the background.
+                    </p>
+                    
+                    <p>
+                        So yeah, not all code is built to last. Some of it is built to click.
+                    </p>
+
+
+                    <p><hr></p>
+                </p>
+
+            </div>
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
