@@ -1,0 +1,34 @@
+[
+  {
+    "type": "m5.large",
+    "vcpus": 2,
+    "memory": 8,
+    "architecture": "x86",
+    "price": 0.096,
+    "region": "us-east-1"
+  },
+  {
+    "type": "m6g.large",
+    "vcpus": 2,
+    "memory": 8,
+    "architecture": "arm",
+    "price": 0.077,
+    "region": "us-east-1"
+  },
+  {
+    "type": "m5.large",
+    "vcpus": 2,
+    "memory": 8,
+    "architecture": "x86",
+    "price": 0.112,
+    "region": "us-west-2"
+  },
+  {
+    "type": "m6g.large",
+    "vcpus": 2,
+    "memory": 8,
+    "architecture": "arm",
+    "price": 0.089,
+    "region": "us-west-2"
+  }
+]

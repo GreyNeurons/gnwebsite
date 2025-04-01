@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EC2 Graviton Comparison</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <h1>EC2 Graviton Savings Tool</h1>
+  <div id="filters">
+    <label>Region:
+      <select id="region-filter"></select>
+    </label>
+    <label>Size:
+      <select id="size-filter">
+        <option value="all">All</option>
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+      </select>
+    </label>
+  </div>
+  <div id="comparison-table"></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
