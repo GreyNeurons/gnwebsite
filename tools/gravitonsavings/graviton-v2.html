@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Graviton vs EC2 Cost Comparison</title>
+  <style>
+    :root {
+      --primary: #232f3e;
+      --secondary: #ff9900;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --success: #28a745;
+      --border-radius: 8px;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    @media (min-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+    }
+    
+    button {
+      background-color: var(--secondary);
+      color: var(--dark);
+      border: none;
+      border-radius: var(--border-radius);
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: #e68a00;
+    }
+    
+    .table-container {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: var(--light);
+      font-weight: bold;
+    }
+    
+    .savings {
+      color: var(--success);
+      font-weight: bold;
+    }
+    
+    .size-tag {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .size-small {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+    }
+    
+    .size-medium {
+      background-color: #e8f5e9;
+      color: #1b5e20;
+    }
+    
+    .size-large {
+      background-color: #fff3e0;
+      color: #e65100;
+    }
+    
+    .comparison-chart {
+      height: 300px;
+      margin: 1rem 0;
+    }
+    
+    .pill-button-group {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+      gap: 0.5rem;
+    }
+    
+    .pill-button {
+      border-radius: 20px;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      background-color: var(--light);
+      color: var(--dark);
+    }
+    
+    .pill-button.active {
+      background-color: var(--secondary);
+      color: white;
+    }
+    
+    .savings-summary {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-radius: var(--border-radius);
+    }
+    
+    .savings-item {
+      text-align: center;
+    }
+    
+    .savings-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--success);
+    }
+    
+    .savings-label {
+      font-size: 0.9rem;
+      color: var(--dark);
+    }
+    
+    .hover-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    
+    .badge-success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AWS Graviton vs EC2 Cost Comparison</h1>
+  </header>
+  
+  <div class="container">
+    <div class="card">
+      <h2>Instance Management</h2>
+      <form id="instance-form">
+        <div class="form-group">
+          <label for="instance-name">Instance Name</label>
+          <input type="text" id="instance-name" placeholder="e.g., Web Server" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="instance-type">Current EC2 Instance Type</label>
+          <select id="instance-type" required>
+            <option value="">Select instance type</option>
+            <optgroup label="Small">
+              <option value="t3.small">t3.small</option>
+              <option value="t3.medium">t3.medium</option>
+              <option value="m5.large">m5.large</option>
+            </optgroup>
+            <optgroup label="Medium">
+              <option value="m5.xlarge">m5.xlarge</option>
+              <option value="m5.2xlarge">m5.2xlarge</option>
+              <option value="c5.xlarge">c5.xlarge</option>
+            </optgroup>
+            <optgroup label="Large">
+              <option value="c5.2xlarge">c5.2xlarge</option>
+              <option value="r5.2xlarge">r5.2xlarge</option>
+              <option value="m5.4xlarge">m5.4xlarge</option>
+            </optgroup>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="instance-region">Region</label>
+          <select id="instance-region" required>
+            <option value="us-east-1">US East (N. Virginia)</option>
+            <option value="us-west-2">US West (Oregon)</option>
+            <option value="eu-west-1">EU (Ireland)</option>
+            <option value="ap-northeast-1">Asia Pacific (Tokyo)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="instance-hours">Usage Hours per Month</label>
+          <input type="number" id="instance-hours" min="1" max="744" value="730" required>
+        </div>
+        
+        <button type="submit">Add Instance</button>
+      </form>
+    </div>
+    
+    <div class="dashboard">
+      <div class="card">
+        <h2>Cost Savings Overview</h2>
+        <div class="pill-button-group">
+          <button class="pill-button active" data-view="all">All</button>
+          <button class="pill-button" data-view="small">Small</button>
+          <button class="pill-button" data-view="medium">Medium</button>
+          <button class="pill-button" data-view="large">Large</button>
+        </div>
+        
+        <div class="comparison-chart">
+          <canvas id="savings-chart"></canvas>
+        </div>
+        
+        <div class="savings-summary">
+          <div class="savings-item">
+            <div class="savings-value" id="total-instances">0</div>
+            <div class="savings-label">Total Instances</div>
+          </div>
+          <div class="savings-item">
+            <div class="savings-value" id="total-monthly-savings">$0.00</div>
+            <div class="savings-label">Monthly Savings</div>
+          </div>
+          <div class="savings-item">
+            <div class="savings-value" id="percent-savings">0%</div>
+            <div class="savings-label">Percent Savings</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2>Graviton Recommendations</h2>
+        <div id="recommendations">
+          <p>Add instances to see recommendations</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Instance Comparison</h2>
+      <div class="table-container">
+        <table id="instances-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Size</th>
+              <th>Current Type</th>
+              <th>Graviton Equivalent</th>
+              <th>Monthly Cost (Current)</th>
+              <th>Monthly Cost (Graviton)</th>
+              <th>Monthly Savings</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Table data will be populated here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script>
+    // IndexedDB configuration
+    const DB_NAME = 'aws-comparison-db';
+    const DB_VERSION = 1;
+    const INSTANCES_STORE = 'instances';
+    let db;
+
+    // Price data (simplified for demo, in reality would be more extensive)
+    const instancePricing = {
+      // Small instances
+      't3.small': { price: 0.0208, graviton: 't4g.small', gravitonPrice: 0.0166, size: 'small' },
+      't3.medium': { price: 0.0416, graviton: 't4g.medium', gravitonPrice: 0.0333, size: 'small' },
+      'm5.large': { price: 0.096, graviton: 'm6g.large', gravitonPrice: 0.077, size: 'small' },
+      
+      // Medium instances
+      'm5.xlarge': { price: 0.192, graviton: 'm6g.xlarge', gravitonPrice: 0.154, size: 'medium' },
+      'm5.2xlarge': { price: 0.384, graviton: 'm6g.2xlarge', gravitonPrice: 0.308, size: 'medium' },
+      'c5.xlarge': { price: 0.17, graviton: 'c6g.xlarge', gravitonPrice: 0.136, size: 'medium' },
+      
+      // Large instances
+      'c5.2xlarge': { price: 0.34, graviton: 'c6g.2xlarge', gravitonPrice: 0.272, size: 'large' },
+      'r5.2xlarge': { price: 0.504, graviton: 'r6g.2xlarge', gravitonPrice: 0.4032, size: 'large' },
+      'm5.4xlarge': { price: 0.768, graviton: 'm6g.4xlarge', gravitonPrice: 0.616, size: 'large' }
+    };
+
+    // Initialize the database
+    function initDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        
+        request.onerror = event => {
+          console.error('Database error:', event.target.error);
+          reject(event.target.error);
+        };
+        
+        request.onsuccess = event => {
+          db = event.target.result;
+          console.log('Database opened successfully');
+          resolve(db);
+        };
+        
+        request.onupgradeneeded = event => {
+          const db = event.target.result;
+          
+          if (!db.objectStoreNames.contains(INSTANCES_STORE)) {
+            const store = db.createObjectStore(INSTANCES_STORE, { keyPath: 'id', autoIncrement: true });
+            store.createIndex('name', 'name', { unique: false });
+            store.createIndex('type', 'type', { unique: false });
+            store.createIndex('size', 'size', { unique: false });
+            console.log('Object store created');
+          }
+        };
+      });
+    }
+
+    // Add an instance
+    function addInstance(instance) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([INSTANCES_STORE], 'readwrite');
+        const store = transaction.objectStore(INSTANCES_STORE);
+        
+        const request = store.add(instance);
+        
+        request.onsuccess = event => {
+          console.log('Instance added with ID:', event.target.result);
+          resolve(event.target.result);
+        };
+        
+        request.onerror = event => {
+          console.error('Error adding instance:', event.target.error);
+          reject(event.target.error);
+        };
+      });
+    }
+
+    // Get all instances
+    function getAllInstances() {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([INSTANCES_STORE], 'readonly');
+        const store = transaction.objectStore(INSTANCES_STORE);
+        const request = store.getAll();
+        
+        request.onsuccess = event => {
+          resolve(event.target.result);
+        };
+        
+        request.onerror = event => {
+          console.error('Error getting instances:', event.target.error);
+          reject(event.target.error);
+        };
+      });
+    }
+
+    // Delete an instance
+    function deleteInstance(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction([INSTANCES_STORE], 'readwrite');
+        const store = transaction.objectStore(INSTANCES_STORE);
+        const request = store.delete(id);
+        
+        request.onsuccess = () => {
+          console.log('Instance deleted');
+          resolve();
+        };
+        
+        request.onerror = event => {
+          console.error('Error deleting instance:', event.target.error);
+          reject(event.target.error);
+        };
+      });
+    }
+
+    // Calculate cost for an instance
+    function calculateCost(instanceType, hours, region) {
+      // In a real app, you'd adjust for region
+      const pricing = instancePricing[instanceType];
+      if (!pricing) return { current: 0, graviton: 0, savings: 0 };
+      
+      const currentCost = pricing.price * hours;
+      const gravitonCost = pricing.gravitonPrice * hours;
+      const savings = currentCost - gravitonCost;
+      
+      return {
+        current: currentCost,
+        graviton: gravitonCost,
+        savings: savings,
+        savingsPercent: (savings / currentCost) * 100,
+        gravitonType: pricing.graviton,
+        size: pricing.size
+      };
+    }
+
+    // Update the instances table
+    async function updateInstancesTable(filterSize = 'all') {
+      const instances = await getAllInstances();
+      const tableBody = document.querySelector('#instances-table tbody');
+      tableBody.innerHTML = '';
+      
+      const filteredInstances = filterSize === 'all' 
+        ? instances 
+        : instances.filter(instance => instancePricing[instance.type].size === filterSize);
+      
+      if (filteredInstances.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="8" style="text-align: center;">No instances found</td>`;
+        tableBody.appendChild(row);
+        return;
+      }
+      
+      filteredInstances.forEach(instance => {
+        const costInfo = calculateCost(instance.type, instance.hours, instance.region);
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+          <td>${instance.name}</td>
+          <td><span class="size-tag size-${costInfo.size}">${costInfo.size}</span></td>
+          <td>${instance.type}</td>
+          <td>${costInfo.gravitonType}</td>
+          <td>$${costInfo.current.toFixed(2)}</td>
+          <td>$${costInfo.graviton.toFixed(2)}</td>
+          <td class="savings">$${costInfo.savings.toFixed(2)} (${costInfo.savingsPercent.toFixed(1)}%)</td>
+          <td><button class="delete-btn" data-id="${instance.id}">Delete</button></td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+      
+      // Add event listeners to delete buttons
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const id = parseInt(e.target.dataset.id, 10);
+          await deleteInstance(id);
+          updateDashboard();
+        });
+      });
+    }
+
+    // Update the savings chart
+    function updateSavingsChart(instances, filterSize = 'all') {
+      const filteredInstances = filterSize === 'all' 
+        ? instances 
+        : instances.filter(instance => instancePricing[instance.type].size === filterSize);
+      
+      const ctx = document.getElementById('savings-chart').getContext('2d');
+      
+      // Destroy existing chart if it exists
+      if (window.savingsChart) {
+        window.savingsChart.destroy();
+      }
+      
+      const labels = filteredInstances.map(instance => instance.name);
+      const currentCosts = filteredInstances.map(instance => {
+        const costInfo = calculateCost(instance.type, instance.hours, instance.region);
+        return costInfo.current;
+      });
+      
+      const gravitonCosts = filteredInstances.map(instance => {
+        const costInfo = calculateCost(instance.type, instance.hours, instance.region);
+        return costInfo.graviton;
+      });
+      
+      window.savingsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Current Cost',
+              data: currentCosts,
+              backgroundColor: '#6c757d',
+              borderColor: '#495057',
+              borderWidth: 1
+            },
+            {
+              label: 'Graviton Cost',
+              data: gravitonCosts,
+              backgroundColor: '#ff9900',
+              borderColor: '#e68a00',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Monthly Cost ($)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Update the recommendations section
+    function updateRecommendations(instances) {
+      const recommendationsDiv = document.getElementById('recommendations');
+      
+      if (instances.length === 0) {
+        recommendationsDiv.innerHTML = '<p>Add instances to see recommendations</p>';
+        return;
+      }
+      
+      // Group instances by size
+      const instancesBySize = {
+        small: instances.filter(instance => instancePricing[instance.type].size === 'small'),
+        medium: instances.filter(instance => instancePricing[instance.type].size === 'medium'),
+        large: instances.filter(instance => instancePricing[instance.type].size === 'large')
+      };
+      
+      // Calculate savings by size
+      const savingsBySize = {};
+      let totalSavings = 0;
+      let totalCurrentCost = 0;
+      
+      Object.keys(instancesBySize).forEach(size => {
+        const sizeInstances = instancesBySize[size];
+        let sizeSavings = 0;
+        let sizeCurrentCost = 0;
+        
+        sizeInstances.forEach(instance => {
+          const costInfo = calculateCost(instance.type, instance.hours, instance.region);
+          sizeSavings += costInfo.savings;
+          sizeCurrentCost += costInfo.current;
+        });
+        
+        savingsBySize[size] = {
+          savings: sizeSavings,
+          count: sizeInstances.length,
+          currentCost: sizeCurrentCost,
+          savingsPercent: sizeCurrentCost > 0 ? (sizeSavings / sizeCurrentCost) * 100 : 0
+        };
+        
+        totalSavings += sizeSavings;
+        totalCurrentCost += sizeCurrentCost;
+      });
+      
+      // Generate recommendations HTML
+      let html = '';
+      
+      Object.keys(savingsBySize).forEach(size => {
+        const sizeInfo = savingsBySize[size];
+        
+        if (sizeInfo.count > 0) {
+          html += `
+            <div class="card hover-card" style="margin-bottom: 1rem;">
+              <h3>${size.charAt(0).toUpperCase() + size.slice(1)} Instances <span class="badge">${sizeInfo.count} instances</span></h3>
+              <p>Monthly savings: <span class="savings">$${sizeInfo.savings.toFixed(2)} (${sizeInfo.savingsPercent.toFixed(1)}%)</span></p>
+              <p>Recommendation: ${getRecommendationText(size, sizeInfo.savingsPercent)}</p>
+            </div>
+          `;
+        }
+      });
+      
+      if (html === '') {
+        html = '<p>Add instances to see recommendations</p>';
+      }
+      
+      recommendationsDiv.innerHTML = html;
+    }
+
+    // Get recommendation text based on size and savings percentage
+    function getRecommendationText(size, savingsPercent) {
+      if (savingsPercent >= 20) {
+        return `<span class="badge badge-success">High Priority</span> Migrate to Graviton for significant savings`;
+      } else if (savingsPercent >= 10) {
+        return `Consider migrating to take advantage of cost reduction`;
+      } else {
+        return `Monitor pricing changes before migration`;
+      }
+    }
+
+    // Update the summary metrics
+    function updateSummaryMetrics(instances) {
+      const totalInstancesElement = document.getElementById('total-instances');
+      const totalMonthlySavingsElement = document.getElementById('total-monthly-savings');
+      const percentSavingsElement = document.getElementById('percent-savings');
+      
+      const totalInstances = instances.length;
+      
+      let totalSavings = 0;
+      let totalCurrentCost = 0;
+      
+      instances.forEach(instance => {
+        const costInfo = calculateCost(instance.type, instance.hours, instance.region);
+        totalSavings += costInfo.savings;
+        totalCurrentCost += costInfo.current;
+      });
+      
+      const percentSavings = totalCurrentCost > 0 ? (totalSavings / totalCurrentCost) * 100 : 0;
+      
+      totalInstancesElement.textContent = totalInstances;
+      totalMonthlySavingsElement.textContent = `$${totalSavings.toFixed(2)}`;
+      percentSavingsElement.textContent = `${percentSavings.toFixed(1)}%`;
+    }
+
+    // Update the entire dashboard
+    async function updateDashboard() {
+      const instances = await getAllInstances();
+      const currentFilter = document.querySelector('.pill-button.active').dataset.view;
+      
+      updateInstancesTable(currentFilter);
+      updateSavingsChart(instances, currentFilter);
+      updateRecommendations(instances);
+      updateSummaryMetrics(instances);
+    }
+
+    // Handle form submission
+    document.getElementById('instance-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('instance-name').value;
+      const type = document.getElementById('instance-type').value;
+      const region = document.getElementById('instance-region').value;
+      const hours = parseInt(document.getElementById('instance-hours').value, 10);
+      
+      const instance = {
+        name,
+        type,
+        region,
+        hours,
+        createdAt: new Date()
+      };
+      
+      await addInstance(instance);
+      
+      // Reset form
+      e.target.reset();
+      document.getElementById('instance-hours').value = '730';
+      
+      // Update the dashboard
+      updateDashboard();
+    });
+
+    // Handle filter buttons
+    document.querySelectorAll('.pill-button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.pill-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        e.target.classList.add('active');
+        
+        // Update the dashboard with the selected filter
+        updateDashboard();
+      });
+    });
+
+    // Initialize the app
+    async function init() {
+      try {
+        await initDatabase();
+        updateDashboard();
+      } catch (error) {
+        console.error('Initialization error:', error);
+        alert('Failed to initialize the application. Please check console for details.');
+      }
+    }
+
+    // Start the app
+    init();
+  </script>
+</body>
+</html>
