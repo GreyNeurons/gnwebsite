@@ -1,0 +1,177 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Claude 3.7 vs ChatGPT: A Hands-On Comparison for AWS Graviton Calculator Development";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blog" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page"></span>
+      </blog-header>
+
+ 
+        <section class="section">
+            <div class = "container content">
+                <h1>Claude 3.7 vs ChatGPT: A Hands-On Comparison for AWS Graviton Calculator Development</h1>
+                <h5><i>One prompt, three platforms - who delivered the better code?</i></h5>
+
+                <hr class="separator">
+
+                <p>                
+                    <h3>Part 1: Why This Tool?</h3>
+                    <p>                In one of my 
+                        <a href="/newsletter/bd-5.html" target="_blank" rel="noreferrer noopener">earlier articles</a>, 
+                        I argued that AWS Graviton should be your first choice for compute - mainly because it's roughly 40% cheaper than other EC2 instance types. That got me thinking: why not build a simple calculator that compares Graviton with the rest?
+                    </p>
+
+                    <p>
+                        The official AWS calculator? Way too complex for what I had in mind. I wasn't trying to reinvent the wheel - just build a focused tool to back up my recommendation with quick, side-by-side cost comparisons.
+                    </p>
+
+                    <p>                
+                        Separately, I had written about a <a href="/newsletter/cornucopia-1.html#tw" target="_blank" rel="noreferrer noopener">ThoughtWorks report</a> that claimed the <strong>productivity gains from AI tools were capped at around 15%</strong>. A friend pointed out that the report (released in Feb 2025) came <strong>before the Claude 3.7</strong> release 
+                        - and nudged me to give it a shot.
+
+                    </p>
+                    
+                    <p>                
+                        That resonated. I've always believed "vibe coding" is just another way of saying <a href="/newsletter/bd-5.html#vibe" target="_blank" rel="noreferrer noopener">"code as content."</a> So with that in mind, I figured - why not use Claude 3.7 and see how quickly I could spin up a lightweight Graviton calculator?</p>
+                    </p>
+                    
+                    <hr class="separator">
+                    
+
+                    <h3>Part 2: Baseline with ChatGPT</h3>
+                    
+                    <p>                I have been using ChatGPT for a long time so I did want to do a baseline version with by default I went to ChatGPT & gave the following sequence of prompts
+
+                    </p>
+
+                <h5>Prompts</h5>
+
+                <pre><code>
+                Recently I wrote about aws graviton how it is cheap etc. 
+                Now as a follow up I want to write a javascript based tool which compares 
+                graviton instances with our ec2 instances and shows the saving. 
+                We will need to group instances as small medium large so is apple to apple 
+                comparision. 
+                We can keep the data in indexdb. Ui should be as slick. 
+                Strictly client side tool only….
+                </code></pre>
+
+                <pre><code>
+                Let's filter on basis of region and large medium small 
+                and also support all types and regions
+                </code></pre>
+
+                <pre><code>
+                Is it possible for you to demo
+                </code></pre>
+                
+                As expected, ChatGPT <strong>couldn't demo</strong> the result - but it did generate multiple files and packaged them into a ZIP file. This whole process took about 15 minutes. While it was helpful, the <strong>final output wasn't a working tool - more of a starting point</strong>. You can check out the tool as generated 
+
+                <a href="/tools/gravitonsavings/ec2-graviton-compare/index.html" target="_blank" rel="noreferrer noopener">here</a>.
+
+                </p>
+
+                <hr class="separator">
+
+                  
+                <h3>Part 3: Using Cline + Claude</h3>
+                
+                <p> Next, I turned to Claude with the same prompts, aiming for an apples-to-apples comparison. I hit a snag - Claude wasn't letting me access Sonnet 3.7 at the time (possibly a temporary limit), and I was eager to finish the project.</p>
+
+                <p>That's when I switched to VS Code, where I had recently installed <strong>Cline</strong>. It appeared to be using Claude 3.7 under the hood.</p>
+                
+
+                <img src="/img/2025-04-02-11-10-34.png" alt="Cline Configuration page in VS Code" style="max-width: 100%; height: auto;">
+
+
+                <p>Trying <strong>Cline was already on my to-do list</strong>, so I gave it a <strong>shot using the same prompt</strong>:</p>
+
+                <img src="/img/2025-04-02-11-24-12.png" alt="Cline History snippet" style="max-width: 100%; height: auto;">
+
+                
+                <p><strong>Cline did a lot</strong>: understood my VS Code environment, made multiple API calls to Claude, and within 2 minutes, generated a fully functional JavaScript tool. This is what I officially released on my website. You can <a href="/tools/gravitonsavings/graviton.html" target="_blank" rel="noreferrer noopener">access the tool here</a>.</p>
+
+                <img src="/img/2025-04-02-11-33-26.png" alt="AWS Graviton Savings Calculator as generated by Cline + Claude 3.7" style="max-width: 100%; height: auto;">
+               
+                
+                <p><strong>I was blown away</strong>. Compared to what ChatGPT generated, the difference was night and day. I kept wondering - <strong>was this Claude's power or Cline's secret sauce</strong> (prompt enhancement, env awareness, etc.)?
+                </p>
+
+                <hr class="separator">
+
+
+                <h3>Part 4: Using Only Claude 3.7 Sonnet (No Cline)</h3>
+
+                <p>As soon as <strong>Claude Sonnet 3.7 access opened up</strong> again, I was back at it. I gave the <strong>exact same prompt again - this time directly into Claude</strong>.</p>
+
+                <pre><code>
+                Recently I wrote about aws graviton how it is cheap etc. 
+                Now as a follow up I want to write a javascript based tool which compares 
+                graviton instances with our ec2 instances and shows the saving. 
+                We will need to group instances as small medium large so is apple to apple 
+                comparision. 
+                We can keep the data in indexdb. Ui should be as slick. 
+                Strictly client side tool only….
+                </code></pre>
+
+
+                <p>And guess what? It nailed it - again. <strong>The final output was clean, complete, and included thoughtful touches: explanations, charts, and even a polished stylesheet</strong>. </p>
+
+                <p>You can check out the <a href="/tools/gravitonsavings/graviton-v2.html" target="_blank" rel="noreferrer noopener"> generated tool here </a>  and for folks in a rush here is a snapshot of the tool</p>
+
+                <img src="/img/2025-04-02-11-45-31.png" alt="AWS Graviton Savings Calculator as generated by Cline + Claude 3.7" style="max-width: 100%; height: auto;">
+                
+                
+                <hr class="separator">
+
+                
+                <p>                
+                    <h3>Closing Thoughts</h3>
+
+                    <p> Claude Sonnet 3.7 is <strong>impressive</strong>. What stood out:
+                        <p> - It added <strong>contextual UX details</strong> (like default styles, interactive elements).</p>
+                    <p> - It explained the <strong>tool's purpose inline</strong>.</p>
+                    <p> - The <strong>code quality was solid</strong> - no stitching required.</p>
+                </p>
+                    
+                    <p>In contrast, I was a bit <strong>disappointed by ChatGPT 4o</strong>. It never generated a working tool. It missed <strong>basic UI polish</strong> (no CSS), and <strong>required more hand-holding</strong>.</p>
+
+                    <p>Cline wasn't supposed to be part of this test - I only used it because Claude rate-limited me. But it turned out to be an interesting variable. Initially, <strong>I assumed Cline's environment awareness or prompt enhancement was the reason for the superior result.
+                    Turns out, that wasn't the case.</strong></p>
+
+                    <p><strong>Claude 3.7 Sonnet - without Cline - produced an equally strong output</strong>.
+                    This confirms what we all know but sometimes forget: <strong>AI is non-deterministic. The tools generated by "Cline + Claude" and "Claude alone" didn't match exactly. If I ran the same prompt again, I'd likely get something different - for better or worse.</strong>
+                    The same could apply to ChatGPT. It underperformed this time. Who knows what it would do tomorrow?</p>
+
+                    <p>This was <strong>my first vibe coding experience</strong> - and it felt like a great fit for quick, disposable tools like this. A perfect <strong>use case for code as content</strong>.</p>
+
+                </p>
+
+                <hr>
+
+            </div>
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
