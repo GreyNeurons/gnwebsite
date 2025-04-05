@@ -1,0 +1,132 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Bookmark Dispatch 6";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Newsletter" breadcrumb-url="/newsletter/nl-home.html">
+        <span slot="bread-crumb-current-page">Bookmark Dispatch 6</span>
+      </blog-header>
+
+ 
+        <section class="section">
+            <div class="container content">
+                <h1>
+                    Programming, Production, and a Talking Cow
+                </h1>
+                <h3><i>Exploring language trends, Figma's database scaling, and side-by-side LLM testing - plus the terminal cow you didn't know you needed</i></h3>
+  
+                <hr  class="separator">
+
+                <p>In this edition, we have pulled together a mix of things <strong>that actually made us pause, dig deeper, or laugh out loud</strong>. You'll find thoughts on where <strong>languages like Rust and Go are heading</strong>, a behind-the-scenes look at <strong>how Figma scaled their databases</strong> without crashing and burning, and a seriously <strong>useful VS Code extension for comparing LLMs</strong>. Oh, and for no good reason at all - except that it's awesome - we've <strong>got a terminal cow that talks back</strong>. </p>
+                
+                <p><strong>Let's jump in</strong>.</p>
+
+                <hr  class="separator">
+
+                <p>The programming landscape has <strong>always been dynamic</strong>, with languages evolving to meet the ever-changing demands of technology and industry. From enterprise systems to cloud-native applications and gaming, <strong>each programming language plays a unique role in shaping the technological world</strong> we live in. This blog takes an in-depth look at some of the most influential languages today - <strong>Java, C#, Rust, Go, and C/C++</strong> - and explores their strengths, challenges, and the <strong>roles they are likely to play in the next 20 to 30 years</strong>.</p>
+
+                <p>👉 <a href="https://rkanade.medium.com/the-programming-landscape-has-always-been-dynamic-with-languages-evolving-to-meet-the-0951386a8f27" target="_blank" rel="noreferrer noopener">Read full post here</a> </p>
+
+                <hr  class="separator">
+
+                <p>When Figma's <strong>user base exploded 100x</strong> since 2020, their databases started sweating - hard. Tables were <strong>hitting billions of rows</strong>, and their old scaling trick (just split data by feature into different DBs) was no longer cutting it.</p>
+
+                <p>So the team did what most devs dread: they redesigned the entire data layer <strong>to support horizontal sharding</strong>. And they pulled it off - with <strong>minimal downtime and zero fire drills</strong>.</p>
+
+
+                <p>They introduced "colos" - <strong>bundled tables that scale together in a clean</strong>, predictable way. To keep things flexible, they <strong>separated logical sharding from physical sharding</strong>, which let them <strong>move fast without blowing things</strong> up. And instead of rewriting half their codebase, they picked smart sharding keys like FileID to keep changes minimal and targeted.</p>
+
+
+                <p>It took <strong>9 months</strong>, but now <strong>Figma is ready to scale</strong> for the next 10x - without duct tape.</p>
+
+
+                <p>👉 <a href="https://www.figma.com/blog/how-figmas-databases-team-lived-to-tell-the-scale/" target="_blank" rel="noreferrer noopener">Read the full post</a></p>
+
+                <hr  class="separator">
+
+                <p>If you've ever wondered "which model answers this prompt best?", <strong>Prompt Octopus</strong> is your answer.</p>
+
+                <p>It's a VS Code extension that lets you <strong>select any prompt</strong> from your code, <strong>choose from 40+ LLMs</strong> (OpenAI, Anthropic, Mistral, Grok, etc.), and view their responses <strong>side by side</strong> - all from your editor. You can keep your API keys <strong>local</strong> for privacy, or use their <strong>hosted plan</strong> if that's easier. Your first 10 comparisons are totally free - no API keys required. If you end up loving it, the full hosted access is just $10 a month.</p>
+                
+                <p>Whether you're doing <strong>prompt engineering, model eval, or just trying to get better completions</strong> - this saves time and guesswork.</p>
+
+                👉 <a href="https://promptoctopus.com/" target="_blank" rel="noreferrer noopener">Read the full post</a>
+                
+                <hr  class="separator">
+
+                <p>You <strong>deploy a web app</strong>. Traffic rolls in. But under the hood, <strong>how do Apache, Nginx, MySQL, and PostgreSQL actually handle that load</strong> ?</p>
+
+
+                <p><strong>Apache</strong> is the old workhorse. Depending on its config, it can either use <strong>thread-per-request</strong> (with the worker or event MPMs) or go fully <strong>old-school with process-per-request</strong> (with the prefork MPM). In the latter, every <strong>single request spins up its own process</strong>. </p>
+
+                <p><strong>Nginx</strong> does things differently. It's <strong>event-driven and asynchronous</strong>. It <strong>doesn't spawn threads or processes per request</strong>. Instead, a few worker processes handle thousands of concurrent requests <strong>using non-blocking I/O</strong>. It's <strong>lean, fast, and doesn't break a sweat under high concurrency</strong> - exactly why it's become the default for modern web serving.</p>
+
+                <p><strong>Postgres</strong> uses a <strong>process-per-connection</strong> model. Each <strong>incoming DB connection gets its own OS process</strong>. It's safe and simple - but expensive at scale. Without a connection pooler like PgBouncer in front, things get heavy fast.</p>
+
+                <p><strong>MySQL</strong> is a bit more flexible. It uses a <strong>thread-per-connection</strong> model. Every client connection gets its own thread - lighter than Postgres's processes, but with slightly higher risk of shared-state issues. </p>
+
+                <p>These choices affect <strong>scalability</strong>, <strong>fault isolation</strong>, and <strong>performance tuning</strong>. Throw enough traffic at your app and you'll feel the difference - some stacks crumble, others cruise. Understanding these models helps you <strong>scale smarter and debug faster</strong>.</p>
+
+
+                <hr  class="separator">
+
+                <p>And before we wrap, something on the lighter side: cowsay. Completely unnecessary-but weirdly satisfying. This little <strong>Linux terminal tool</strong> takes any <strong>prompt you give</strong> it and has a <strong>talking ASCII cow repeat it back</strong> to you. Want a productivity boost? Not really. Want to make your terminal demo unexpectedly fun? Absolutely 😄</p>
+
+                <p>It even <strong>supports alternate characters like dragons, tux, and ghostbusters</strong> - because why not have a fire-breathing ASCII creature deliver your git blame message?</p>
+                
+                <p><strong>Try it yourself:</strong></p>
+
+                <p><pre><code>
+                cowsay "My code works. I have no idea why."
+                </code></pre> </p>
+
+
+                <strong>& watch the cow prompting you back</strong>
+                <pre><code>
+                
+                _________________________________
+                < My code works. I have no idea why. >
+                 ---------------------------------
+                        \   ^__^
+                         \  (oo)\_______
+                            (__)\       )\/\
+                                ||----w |
+                                ||     ||
+
+
+                </code></pre>
+
+                <p><i>These were the original LLMs. Invented in the ’80s. Prompt it, and it talks back 😄</i></p>
+
+                <hr class="separator">
+
+                <p><strong>That's it for now - from serious infra to silly cows, it's all part of the stack. See you in the terminal</strong>. </p>
+
+                <p><strong>Liked what you read? Sign up for our newsletter below</strong> 👇</p>
+                
+            </div>
+
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
