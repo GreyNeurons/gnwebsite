@@ -86,63 +86,120 @@
 
                 <p>Here's a snapshot of the tools we'll be exploring in depth throughout this series, categorized by NIST function</p>
 
-                <h5>Identify</h5>
-
-                <p><a href="https://snipeitapp.com/" target="_blank" rel="noreferrer noopener">Snipe-IT</a> - Asset inventory and tracking</p>
-
-                <p><a href="https://github.com/projectdiscovery/nuclei" target="_blank" rel="noreferrer noopener">Nuclei</a> - Vulnerability scanning</p>
-
-                <p><a href="https://steampipe.io/" target="_blank" rel="noreferrer noopener">Steampipe</a>  - Cloud compliance as code (CIS, SOC 2, etc.) (We'll show how to run compliance checks across AWS, Azure, and GCP in plain SQL - no Python scripts or cloud lock-in needed.)</p>
-
-                <p><a href="https://www.eramba.org/" target="_blank" rel="noreferrer noopener">Eramba (Community)</a> - GRC (governance, risk & compliance)</p>
-
-                <h5>Protect</h5>
-
-                <p><a href="https://wazuh.com/" target="_blank" rel="noreferrer noopener">Wazuh</a> - Host-based detection & response (SIEM/XDR)</p>
-
-                <p><a href="https://www.vaultproject.io/" target="_blank" rel="noreferrer noopener">Vault (HashiCorp)</a> - Secrets & credential management</p>
-
-                <p><a href="https://cisofy.com/" target="_blank" rel="noreferrer noopener">Lynis</a> - System hardening recommendations</p>
-
-                <p><a href="https://modsecurity.org/" target="_blank" rel="noreferrer noopener">ModSecurity</a> (with Nginx/Apache) - Open-source WAF engine (OWASP CRS, active rulesets)</p>
-
-                <p><a href="https://www.opengrep.dev/" target="_blank" rel="noreferrer noopener">Opengrep</a> - SAST (static application security testing)</p>
-
-                <p><a href="https://getgophish.com/" target="_blank" rel="noreferrer noopener">GoPhish</a> - Phishing & social engineering simulations (Want to simulate phishing in-house? We've got a step-by-step GoPhish guide coming soon.)</p>
-
-                <h3>Detect</h3>
-
-                <p><a href="https://github.com/pgaudit/pgaudit" target="_blank" rel="noreferrer noopener">pgAudit</a> - Database security (PostgreSQL auditing)</p>
-
-                <p><a href="https://github.com/major/MySQLTuner-perl" target="_blank" rel="noreferrer noopener">mySQLTuner</a> -Database security for MySQL</p>
-
-                <p><a href="https://suricata.io/" target="_blank" rel="noreferrer noopener">Suricata</a> - Network intrusion detection (IDS/IPS)</p>
-
-                <p><a href="https://www.misp-project.org/" target="_blank" rel="noreferrer noopener">MISP</a> - Threat intelligence feed management</p>
-
-                <p><a href="https://wazuh.com/" target="_blank" rel="noreferrer noopener">Wazuh</a> - SIEM: log collection, rules, and alerts (We'll dive into how to set it up quickly - and why it beats many commercial SIEMs - in a follow-up post.)</p>
-
-                <p><a href="https://trivy.dev/latest/" target="_blank" rel="noreferrer noopener">Trivy</a> - Container/OS packages/IaC scanning</p>
-
-                <p><a href="https://github.com/wapiti-scanner/wapiti" target="_blank" rel="noreferrer noopener">Wapiti</a> - Lightweight web app DAST (CLI) (In an upcoming piece, we'll show how Wapiti gives you quick wins in app security with almost no setup required.)</p>
-
-                <p><a href="https://www.zaproxy.org/" target="_blank" rel="noreferrer noopener">OWASP ZAP</a> - Full-fledged DAST (GUI + headless, plugin ecosystem)</p>
-
-
-                <h5>Respond</h5>
-
-                <p><a href="https://strangebee.com/" target="_blank" rel="noreferrer noopener">TheHive</a> - Incident case management</p>
-
-                <p><a href="https://shuffler.io/" target="_blank" rel="noreferrer noopener">Shuffle</a> - Security automation playbooks / SOAR</p>
-
-                <p><a href="https://github.com/Velocidex/velociraptor" target="_blank" rel="noreferrer noopener">Velociraptor</a> - Endpoint forensics and live response</p>
-
-                <h5>Recover</h5>
-
-                <p><a href="https://restic.net/" target="_blank" rel="noreferrer noopener">Restic</a> - Encrypted backups & disaster recovery</p>
-
-                <p><a href="https://www.eramba.org/" target="_blank" rel="noreferrer noopener">Eramba (Community)</a> - Audit tracking & compliance evidence</p>
-
+                <table border="1" cellspacing="0" cellpadding="5">
+                    <thead>
+                      <tr>
+                        <th>NIST Function</th>
+                        <th>Tool Name</th>
+                        <th>Purpose</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Identify Section -->
+                      <tr>
+                        <td rowspan="4">Identify</td>
+                        <td><a href="https://snipeitapp.com/" target="_blank" rel="noreferrer noopener">Snipe-IT</a></td>
+                        <td>Asset inventory and tracking</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://github.com/projectdiscovery/nuclei" target="_blank" rel="noreferrer noopener">Nuclei</a></td>
+                        <td>Vulnerability scanning</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://steampipe.io/" target="_blank" rel="noreferrer noopener">Steampipe</a></td>
+                        <td>Cloud compliance as code (CIS, SOC 2, etc.) (We'll show how to run compliance checks across AWS, Azure, and GCP in plain SQL - no Python scripts or cloud lock-in needed.)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://www.eramba.org/" target="_blank" rel="noreferrer noopener">Eramba (Community)</a></td>
+                        <td>GRC (governance, risk &amp; compliance)</td>
+                      </tr>
+                      <!-- Protect Section -->
+                      <tr>
+                        <td rowspan="6">Protect</td>
+                        <td><a href="https://wazuh.com/" target="_blank" rel="noreferrer noopener">Wazuh</a></td>
+                        <td>Host-based detection &amp; response (SIEM/XDR)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://www.vaultproject.io/" target="_blank" rel="noreferrer noopener">Vault (HashiCorp)</a></td>
+                        <td>Secrets &amp; credential management</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://cisofy.com/" target="_blank" rel="noreferrer noopener">Lynis</a></td>
+                        <td>System hardening recommendations</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://modsecurity.org/" target="_blank" rel="noreferrer noopener">ModSecurity</a> (with Nginx/Apache)</td>
+                        <td>Open-source WAF engine (OWASP CRS, active rulesets)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://www.opengrep.dev/" target="_blank" rel="noreferrer noopener">Opengrep</a></td>
+                        <td>SAST (static application security testing)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://getgophish.com/" target="_blank" rel="noreferrer noopener">GoPhish</a></td>
+                        <td>Phishing &amp; social engineering simulations (Want to simulate phishing in-house? We've got a step-by-step GoPhish guide coming soon.)</td>
+                      </tr>
+                      <!-- Detect Section -->
+                      <tr>
+                        <td rowspan="8">Detect</td>
+                        <td><a href="https://github.com/pgaudit/pgaudit" target="_blank" rel="noreferrer noopener">pgAudit</a></td>
+                        <td>Database security (PostgreSQL auditing)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://github.com/major/MySQLTuner-perl" target="_blank" rel="noreferrer noopener">mySQLTuner</a></td>
+                        <td>Database security for MySQL</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://suricata.io/" target="_blank" rel="noreferrer noopener">Suricata</a></td>
+                        <td>Network intrusion detection (IDS/IPS)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://www.misp-project.org/" target="_blank" rel="noreferrer noopener">MISP</a></td>
+                        <td>Threat intelligence feed management</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://wazuh.com/" target="_blank" rel="noreferrer noopener">Wazuh</a></td>
+                        <td>SIEM: log collection, rules, and alerts (We'll dive into how to set it up quickly - and why it beats many commercial SIEMs - in a follow-up post.)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://trivy.dev/latest/" target="_blank" rel="noreferrer noopener">Trivy</a></td>
+                        <td>Container/OS packages/IaC scanning</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://github.com/wapiti-scanner/wapiti" target="_blank" rel="noreferrer noopener">Wapiti</a></td>
+                        <td>Lightweight web app DAST (CLI) (In an upcoming piece, we'll show how Wapiti gives you quick wins in app security with almost no setup required.)</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://www.zaproxy.org/" target="_blank" rel="noreferrer noopener">OWASP ZAP</a></td>
+                        <td>Full-fledged DAST (GUI + headless, plugin ecosystem)</td>
+                      </tr>
+                      <!-- Respond Section -->
+                      <tr>
+                        <td rowspan="3">Respond</td>
+                        <td><a href="https://strangebee.com/" target="_blank" rel="noreferrer noopener">TheHive</a></td>
+                        <td>Incident case management</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://shuffler.io/" target="_blank" rel="noreferrer noopener">Shuffle</a></td>
+                        <td>Security automation playbooks / SOAR</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://github.com/Velocidex/velociraptor" target="_blank" rel="noreferrer noopener">Velociraptor</a></td>
+                        <td>Endpoint forensics and live response</td>
+                      </tr>
+                      <!-- Recover Section -->
+                      <tr>
+                        <td rowspan="2">Recover</td>
+                        <td><a href="https://restic.net/" target="_blank" rel="noreferrer noopener">Restic</a></td>
+                        <td>Encrypted backups &amp; disaster recovery</td>
+                      </tr>
+                      <tr>
+                        <td><a href="https://www.eramba.org/" target="_blank" rel="noreferrer noopener">Eramba (Community)</a></td>
+                        <td>Audit tracking &amp; compliance evidence</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
                 <hr class="separator">
                 <h3>Footnotes</h3>
                 
