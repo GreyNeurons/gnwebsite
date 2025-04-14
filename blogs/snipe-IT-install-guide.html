@@ -1,0 +1,190 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "A Ready-Made Cybersecurity Stack for SMBs Using Free, Open-Source Tools";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">Security Stack</span>
+      </blog-header>
+
+ 
+        <section class="section">
+            
+            <div class="blog-container content">
+              <h1>Track What You Own: Getting Started with Snipe-IT for SMB Asset Management</h1>
+              <p>Your first step toward security isn't firewalls or fancy detection systems - it's knowing what you own.</p>
+            
+              <p>In an <a href="/blogs/open-source-security-stack.html" target="_blank" rel="noreferrer noopener">earlier article</a>, we introduced the <strong>NIST Cybersecurity Framework</strong> - one of the most widely adopted standards for structuring an organization's security posture. We also explored how a curated set of open-source and free tools, chosen for their ease of installation and real-world usefulness, can be mapped to the five NIST functions: Identify, Protect, Detect, Respond, and Recover. </p>
+
+                
+                <p>In this article, we're jumping into one of the tools from that stack: <strong>Snipe-IT</strong>. It's a free, open-source asset management tool that helps you <strong>catalog your organization's assets such as laptops, phones, routers, licenses, cloud accounts</strong>, and more. In this guide, we'll walk you through setting it up locally and adding your first real-world assets - all mapped to the <strong>Identify function of the NIST</strong> Cybersecurity Framework.</p>
+            
+              <h2>About Snipe-IT</h2>
+              <p>Here is a comprehensive summary of Snipe-IT that covers everything you asked for:</p>
+              <ul>
+                <li><strong>Website</strong>: <a href="https://snipeitapp.com">https://snipeitapp.com</a></li>
+                <li><strong>Hosted SaaS Option</strong>: <a href="https://hosted.snipeitapp.com">https://hosted.snipeitapp.com</a></li>
+                <li><strong>GitHub</strong>: <a href="https://github.com/snipe/snipe-it">https://github.com/snipe/snipe-it</a></li>
+                <li><strong>Tech stack</strong>: Full-stack Laravel app, backend in PHP with MariaDB, jQuery-based frontend, and Docker support for easy deployment.</li>
+                <li><strong>License</strong>: AGPL v3 (GNU Affero General Public License)</li>
+                <li><strong>Initial Release</strong>: 2013</li>
+                <li><strong>Contributors</strong>: 200+</li>
+                <li><strong>Stars on GitHub</strong>: 8.6k+</li>
+                <li><strong>Forks</strong>: 2.6k+</li>
+                <li><strong>Open Issues</strong>: ~500 (mostly enhancements/feature requests)</li>
+                <li><strong>Releases</strong>: Frequent (every few weeks)</li>
+                <li><strong>Lead Maintainer</strong>: @snipe, aka Alison Gianotto</li>
+                <li><strong>Self-hosted maturity</strong>: ✅ Production-grade</li>
+                <li><strong>Docker support</strong>: ✅ Yes (official image)</li>
+                <li><strong>API support</strong>: Yes</li>
+              </ul>
+            
+              <h2>Installing Snipe-IT</h2>
+              <p>Snipe-IT runs best on Linux. If you're on Windows, don't worry - you can still use it by running it inside WSL (Windows Subsystem for Linux). There are two main ways to install it: the traditional Linux setup, or the Docker route. We're going with Docker, because it's usually the easiest option - no messing around with PHP versions, database drivers, or other system dependencies. Just spin it up and you're good to go. In our case, we'll be using WSL Ubuntu to install Snipe-IT.</p>
+              <p>Docker installation is fairly straightforward, and the Snipe-IT documentation covers it well - with a few small gotchas that we'll point out as we go along.</p>
+            
+              <h3>Prerequisites</h3>
+              <p>To stay focused on the Snipe-IT setup itself, we'll assume you already have WSL and the Docker Engine installed and running. If not, you can refer to the links in the Reference section to get those set up first.</p>
+            
+              <h3>Overview of Installation Steps</h3>
+              <ul>
+                <li>Create project directory</li>
+                <li>Download Docker files</li>
+                <li>Configure env</li>
+                <li>Generate APP_KEY</li>
+                <li>Start containers</li>
+                <li>Restart WSL (if needed)</li>
+                <li>Finish web setup</li>
+              </ul>
+            
+              <h3>Step #1: Setting up Snipe-IT directory</h3>
+              <p>From your WSL Ubuntu terminal, create the following directory under <code>/opt</code>, and then navigate into it.</p>
+              <pre><code>sudo mkdir -p /opt/snipeit
+            sudo chown $USER:$USER /opt/snipeit
+            cd /opt/snipeit</code></pre>
+              <p><code>sudo mkdir -p</code> ensures the full path is created<br>
+              <code>chown</code> gives your user permission to manage it without <code>sudo</code> every time</p>
+            
+              <h3>Step #2: Download docker compose and <code>.env</code> file</h3>
+              <p>Snipe-IT provides a <code>docker-compose.yml</code> file and a sample <code>.env</code> file to help you complete the Docker-based setup. The <code>docker-compose.yml</code> defines two key services: one for the application and one for the database. It also specifies named volumes for persisting data, so your database and uploaded files aren't lost when containers are restarted.</p>
+              <p>From your WSL terminal, navigate to the <code>/opt/snipeit</code> directory and then run the following command to download the official <code>docker-compose.yml</code> file for Snipe-IT:</p>
+              <pre><code>cd /opt/snipeit
+            curl https://raw.githubusercontent.com/snipe/snipe-it/master/docker-compose.yml --output docker-compose.yml</code></pre>
+              <p>This command downloads the file from the official Snipe-IT GitHub repo and saves it locally as <code>docker-compose.yml</code>.</p>
+              <p>Next, download the <code>.env</code> file, which contains all the necessary configuration settings for setting up the database, email notifications, and other environment-specific options:</p>
+              <pre><code>curl https://raw.githubusercontent.com/snipe/snipe-it/master/.env.docker --output .env</code></pre>
+              <p>This command saves the default example environment file as <code>.env</code>, which Snipe-IT will read when starting up.</p>
+              <p>To verify that both the <code>docker-compose.yml</code> and <code>.env</code> files have been downloaded correctly, run the following command:</p>
+              <pre><code>ls -a</code></pre>
+              <p>The <code>-a</code> flag ensures that even hidden files like <code>.env</code> are shown in the output.</p>
+              <p>You should see something like this:</p>
+              <pre><code>-rw-r--r-- 1 username username 858 Apr 13 13:32 docker-compose.yml
+            -rw-r--r-- 1 username username 2150 Apr 13 16:39 .env</code></pre>
+              <p>(The exact file sizes and timestamps may differ depending on when you downloaded them.)</p>
+            
+              <h3>Step 3: Configuring <code>.env</code> file</h3>
+              <p>If you look at the <code>docker-compose.yml</code> file, you'll notice several placeholders like <code>${APP_VERSION:-latest}</code>, <code>${DB_DATABASE}</code>, and others. These are environment variables, and their actual values are provided in the <code>.env</code> file.</p>
+              <p>Before you can successfully run the <code>docker-compose.yml</code>, it's important to configure the <code>.env</code> file with the correct values.</p>
+              <p>To do this, open the <code>.env</code> file in any text editor (for example, using nano):</p>
+              <pre><code>nano .env</code></pre>
+              <p>Then, update the following key parameters as shown below, and save the file when you're done:</p>
+              <pre><code>APP_VERSION=v8.0.4         # Stable release at the time of writing
+            APP_KEY=                   # Leave this empty for now - we'll generate it in the next step
+            DB_DATABASE=snipeit
+            DB_USERNAME=snipeit
+            DB_PASSWORD=&lt;setstrongpassword&gt;
+            MYSQL_ROOT_PASSWORD=&lt;setstrongpassword&gt;</code></pre>
+              <p>Replace <code>&lt;setstrongpassword&gt;</code> with secure passwords of your choice.</p>
+              <pre><code>APP_VERSION= v8.0.4 #stable release at time of writing.
+            APP_KEY= #Leave it empty for now
+            DB_DATABASE=snipeit
+            DB_USERNAME=snipeit
+            DB_PASSWORD=&lt;setstrongpassword&gt;
+            MYSQL_ROOT_PASSWORD=&lt;setstrongpassword&gt;</code></pre>
+              <p><strong>Why APP_KEY matters?</strong></p>
+              <p><code>APP_KEY</code> is a critical setting required by Laravel, the framework that Snipe-IT is built on. It acts as the encryption backbone for the application. It's required for securely encrypting session data, cookies, tokens, etc. Snipe-IT won't run without a valid <code>APP_KEY</code>. You should generate it once per deployment.<br>
+              ⚠️ Do not change it after setup, or you may break access to encrypted data (e.g., login sessions)</p>
+              <p>We'll generate the key in the next step using a built-in Laravel command.</p>
+            
+              <h3>Step 4: Generating the <code>APP_KEY</code></h3>
+              <p>From the Snipe-IT installation directory (<code>/opt/snipeit</code>), run the following command to generate a secure application key:</p>
+              <pre><code>docker compose run --rm app php artisan key:generate --show</code></pre>
+              <p>This will output something like:</p>
+              <pre><code>base64:3FhrbiZx3k1DjLo3n9WhzC9kAZNHdD0eOC/cCqKYLMY=</code></pre>
+              <p>📝 Copy the entire key exactly as it appears.</p>
+              <p>Now, open the <code>.env</code> file again using your text editor:</p>
+              <pre><code>nano .env</code></pre>
+              <p>Find the <code>APP_KEY</code> line and update it with the value you just copied:</p>
+              <pre><code>APP_KEY=base64:3FhrbiZx3k1DjLo3n9WhzC9kAZNHdD0eOC/cCqKYLMY=</code></pre>
+              <p>Save and exit the file.</p>
+            
+              <h3>Step 5: Start the containers</h3>
+              <p>Now that your <code>.env</code> file is configured and the <code>APP_KEY</code> is set, you can start the Snipe-IT application by running:</p>
+              <pre><code>docker compose up -d</code></pre>
+              <p>This command will start both the app and database containers in detached mode (i.e., in the background).</p>
+              <p><strong>🔄 Important (WSL Users): Restart WSL</strong></p>
+              <p>Based on experience, if you're using WSL, it's a good idea to restart WSL after the containers have been successfully set up. This ensures Docker networking behaves correctly - especially if you encounter issues accessing localhost. You can restart WSL by running:</p>
+              <pre><code>wsl --shutdown</code></pre>
+              <p>Then reopen your WSL terminal.</p>
+              <p>❗ When you restart WSL, all running Docker containers are stopped. You'll need to start them again manually. Run the following command to bring the containers back up:</p>
+              <pre><code>docker compose up -d</code></pre>
+            
+              <h3>Step 6: Access the Snipe-IT Web Interface</h3>
+              <p>Once the containers are running, open your browser and visit: <a href="http://localhost:8000">http://localhost:8000</a></p>
+              <p>📌 Port 8000 corresponds to the <code>APP_PORT=8000</code> setting in your <code>.env</code> file. If you've changed this, update the URL accordingly.</p>
+              <p>You'll now be guided through the Snipe-IT setup wizard to:</p>
+              <ul>
+                <li>Create your admin user</li>
+                <li>Set company name, logo, timezone</li>
+                <li>Configure default asset categories and statuses</li>
+              </ul>
+            
+              <h3>Step 7: Login to the web Application</h3>
+              <p>When you log in using the admin account created during the setup, you'll be greeted with the Snipe-IT dashboard. It provides a high-level overview of your assets, licenses, accessories, consumables, and more - all easily accessible from the sidebar.</p>
+              <p>You can start adding new records using the "Create New" button at the top right, or explore sections like Assets, People, and Settings from the left-hand menu.</p>
+              <p><em>snipe-IT home page</em></p>
+            
+              <h2>Conclusion</h2>
+              <p>With that, you've successfully completed the full setup of Snipe-IT using Docker on a WSL-based Ubuntu environment. We covered:</p>
+              <ul>
+                <li>Preparing your working directory under <code>/opt/snipeit</code></li>
+                <li>Downloading and configuring the <code>docker-compose.yml</code> and <code>.env</code> files</li>
+                <li>Generating the Laravel <code>APP_KEY</code></li>
+                <li>Starting the containers and accessing the web-based setup wizard</li>
+                <li>Logging in and landing on the dashboard, ready to manage your IT assets</li>
+              </ul>
+              <p>This approach offers a clean, repeatable way to deploy Snipe-IT locally or as a starting point for production rollout. Docker takes care of dependencies, and the environment stays portable and maintainable.</p>
+              <p><strong>🧠 Pro Tip:</strong> Once you're comfortable with the basics, you can explore extending the setup with HTTPS (via Nginx reverse proxy), automated backups, email alerts, LDAP integration, and more.</p>
+            
+              <h2>What's Next?</h2>
+              <p>Snipe-IT is your first layer of clarity. Next, we'll explore how to move from knowing what you own to knowing what's vulnerable with a fast, open-source scanner: <strong>Nuclei</strong>. </p>
+
+              <p>To get notified when we publish next articles in this series and many more interested articles from the world of software development, cybersecurity, and open-source, <strong>subscribe to our newsletter below</strong> 👇</p>
+             
+            </div>
+            
+
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
