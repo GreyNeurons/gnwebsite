@@ -46,6 +46,16 @@
         document.head.appendChild(script);
     }
 
+    // Inject Google AdSense only once
+    if (!document.getElementById('adsbygoogle')) {
+        const adsScript = document.createElement('script');
+        adsScript.async = true;
+        adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5824878456375803";
+        adsScript.id = 'adsbygoogle';
+        adsScript.setAttribute('crossorigin', 'anonymous');
+        document.head.appendChild(adsScript);
+    }
+
     // Show page only after styles and scripts have fully loaded
     if (document.readyState === "complete") {
         showPage();
