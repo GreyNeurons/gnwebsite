@@ -1,0 +1,97 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Bookmark Dispatch 7";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Newsletter" breadcrumb-url="/newsletter/nl-home.html">
+        <span slot="bread-crumb-current-page">Bookmark Dispatch 7</span>
+      </blog-header>
+
+ 
+        <section class="section">
+           
+            <div class="blog-container content">
+                <h1>Engineering by Defaults, Design, and Discipline</h1>
+                <p><i>Git configs that make sense, PostgreSQL architecture made simple, and 13 engineering laws that hit too close to home</i></p>
+
+                <hr class="separator" />
+
+                <h2>A good overview of PostgreSQL architecture</h2>
+              <p>This is a long read but worth it if you have just started working on Postgres and want to know the Postgres internals at a high level. I really liked the MVCC section where the author has done a great job of explaining it in simple words. The Index section also provides a good summary of various types of indexes and use cases where they are suitable. Overall a great read.</p>
+              <p>👉 <a href="#">Read the entire post here</a></p>
+            
+              <hr class="separator" />
+            
+              <h2>Tired of wrestling with Git’s defaults?</h2>
+              <p>Even Git’s core developers don’t use it stock. They tweak a bunch of settings to make it sane — like showing the full diff when writing a commit message (<code>commit.verbose = true</code>) or sorting branches by most recent commit (<code>branch.sort = -committerdate</code>). This post breaks down the must-have git config changes that make Git actually usable — no aliases or shell hacks, just vanilla Git made better.</p>
+              <p>👉 <a href="#">Read the full post here</a></p>
+            
+              <hr class="separator" />
+            
+              <h2>Why NVIDIA’s Still King of AI — and Why That Might Finally Change</h2>
+              <p>The AI hardware war is heating up. NVIDIA’s grip on the market isn’t just about raw GPU horsepower — it’s the stranglehold of CUDA and an unmatched software ecosystem that keeps everyone else playing catch‑up. AMD’s throwing in high‑VRAM contenders, Intel’s making a comeback with Gaudi, and Big Tech is rolling out in‑house silicon. Even scrappy startups like Groq and Cerebras are taking swings.</p>
+              <p>But here’s the billion‑dollar question: Can anyone actually challenge NVIDIA without first replicating its biggest moat — its software stack?</p>
+              <p>In this breakdown, I unpack:</p>
+              <ul>
+                <li>Why CUDA is NVIDIA’s ultimate weapon</li>
+                <li>The strengths (and setbacks) of AMD, Intel, and hyperscaler chips</li>
+                <li>The fragmented race for a common standard (SYCL, OneAPI, Triton, and friends)</li>
+                <li>And what it’ll really take to dethrone the AI hardware king</li>
+              </ul>
+              <p>Whether you’re building AI in‑house, or just trying to make sense of this fast‑moving landscape, this read gives you the map — and the minefield.</p>
+              <p>👉 <a href="#">Read the full post here</a></p>
+            
+              <hr class="separator" />
+            
+              <h2>How Many of These 13 Software Engineering “Laws” Do You Actually Know?</h2>
+              <p>Parkinson. Conway. Zawinski. Hyrum. Sturgeon. Goodhart.</p>
+              <p>No, this isn’t the cast of a bizarre startup sitcom — it’s a powerhouse lineup of mental models every software engineer and manager should have in their toolkit.</p>
+              <p>This post walks through 13 laws — from famous ones like “work expands to fill the time” to lesser‑known gems like “with enough users, even your bugs become features.”</p>
+              <p>Each law comes with real‑world engineering context, why it matters to you, and in some cases, a painfully accurate xkcd or comic that will hit too close to home.</p>
+              <p><strong>Warning:</strong> Once you read this, you won’t be able to unsee these laws in action in your own team.</p>
+              <p>Whether you’re managing engineers or still pretending you don’t need a manager, this one’s worth your time.</p>
+              <p>👉 <a href="#">Read the full post here</a></p>
+            
+              <hr class="separator" />
+            
+              <blockquote>
+                <p>Perfection (in design) is achieved not when there is nothing more to add, but rather when there is nothing more to take away.</p>
+                <footer>— Antoine de Saint‑Exupéry, widely cited in software design and minimalist engineering contexts</footer>
+              </blockquote>
+            
+              <hr class="separator" />
+            
+              <h2>Mistakes Engineers Make in Large Codebases (And Why Consistency is Your Only Lifeline)</h2>
+              <p>Personal projects won’t prepare you for this. Open source won’t either. Working in large, mature codebases — millions of lines deep, over a decade old, with hundreds of contributors — is a different beast altogether.</p>
+              <p>The biggest trap? Writing “clean” code that ignores legacy conventions. It feels good in the moment but silently makes everything worse. In big systems, consistency beats cleverness. Always.</p>
+              <p>Before adding that API endpoint or auth check, stop. Dig through the minefield. Reuse helpers, even if they’re ugly. Stick to the established weirdness. Why? Because that weirdness hides decades of edge cases that your neat logic will walk right into.</p>
+              <p>This piece by Sean Goedecke is a must‑read for any engineer working in (or dreading) legacy code. From testing strategies in unpredictable environments to being ruthless about deleting dead code, and resisting shiny new dependencies — this is real talk from someone who’s spent 10 years in the trenches.</p>
+              <p>If you’ve ever thought, “Why not just rewrite it?”, read this first.</p>
+              <p>👉 <a href="#">Read the entire post here</a></p>
+            </div>
+            
+
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+
