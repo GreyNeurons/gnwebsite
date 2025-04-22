@@ -12,7 +12,9 @@ tpl.innerHTML = `
     svg { width: 20px; height: 20px; }
     :host([hidden]) { display: none; }
   </style>
-
+ 
+  <div>SHARE</div>
+  
   <a id="facebook-share" target="_blank" title="Share on Facebook">
     <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.54 9.87v-6.99h-2.1v-2.88h2.1V9.41c0-2.07 1.23-3.22 3.11-3.22.9 0 1.84.16 1.84.16v2.02h-1.04c-1.03 0-1.35.64-1.35 1.29v1.56h2.3l-.37 2.88h-1.93v6.99A10 10 0 0 0 22 12"/></svg>
   </a>
