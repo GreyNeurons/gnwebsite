@@ -38,44 +38,44 @@
                 <p>In 2012, Microsoft engineer Bill Baker first used the pets vs. cattle analogy in his "Scaling SQL Server 2012" presentation? It was a <i>lightbulb moment</i> for ops teams everywhere—one single server is like a pet you name and nurse back to health; a herd of identical servers is like cattle you round up and replace without batting an eye.</p>
 
                 <p>Below is a side‑by‑side comparison of these two approaches:</p>
-                
-                <table>
-                    <thead>
-                      <tr>
-                        <th>Characteristic</th>
-                        <th>Pets</th>
-                        <th>Cattle</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>State</td>
-                        <td>Unique and lovingly maintained</td>
-                        <td>Disposable and interchangeable</td>
-                      </tr>
-                      <tr>
-                        <td>Recovery</td>
-                        <td>Manual healing and individual troubleshooting</td>
-                        <td>Automated replacement with minimal downtime</td>
-                      </tr>
-                      <tr>
-                        <td>Scaling</td>
-                        <td>Hard to clone due to unique configs</td>
-                        <td>Effortless scaling via orchestration</td>
-                      </tr>
-                      <tr>
-                        <td>Updates</td>
-                        <td>Patched in place, with risk of drift</td>
-                        <td>Updated by redeploying immutable images/packages</td>
-                      </tr>
-                      <tr>
-                        <td>Management</td>
-                        <td>Hands-on, manual operations</td>
-                        <td>Declarative, automated (IaC, Kubernetes, etc.)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                        <tr>
+                            <th>Characteristic</th>
+                            <th>Pets</th>
+                            <th>Cattle</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>State</td>
+                            <td>Unique and lovingly maintained</td>
+                            <td>Disposable and interchangeable</td>
+                        </tr>
+                        <tr>
+                            <td>Recovery</td>
+                            <td>Manual healing and individual troubleshooting</td>
+                            <td>Automated replacement with minimal downtime</td>
+                        </tr>
+                        <tr>
+                            <td>Scaling</td>
+                            <td>Hard to clone due to unique configs</td>
+                            <td>Effortless scaling via orchestration</td>
+                        </tr>
+                        <tr>
+                            <td>Updates</td>
+                            <td>Patched in place, with risk of drift</td>
+                            <td>Updated by redeploying immutable images/packages</td>
+                        </tr>
+                        <tr>
+                            <td>Management</td>
+                            <td>Hands-on, manual operations</td>
+                            <td>Declarative, automated (IaC, Kubernetes, etc.)</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>  
                 <p>Flash forward thirteen years, and most of us <strong>treat app servers exactly like cattle</strong> (hallelujah for containers and Kubernetes!). But when it comes to databases—the true guardians of our precious data—we still <strong>dote on them like pampered pets</strong>. Let's unpack why that is, and explore how we can nudge our data stores toward a more "cattle‑friendly" future.</p>
               
                 <hr class="separator"></hr>
