@@ -20,10 +20,13 @@ tpl.innerHTML = `
     <svg fill="#1877F2" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.54 9.87v-6.99h-2.1v-2.88h2.1V9.41c0-2.07 1.23-3.22 3.11-3.22.9 0 1.84.16 1.84.16v2.02h-1.04c-1.03 0-1.35.64-1.35 1.29v1.56h2.3l-.37 2.88h-1.93v6.99A10 10 0 0 0 22 12"/></svg>
   </a>
   
-  <!-- Twitter / X -->
-  <a id="twitter-share" class="icon-button" target="_blank" title="Share on X (Twitter)">
-    <svg fill="#1DA1F2" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.3 4.3 0 0 0 1.88-2.37 8.6 8.6 0 0 1-2.72 1.04 4.28 4.28 0 0 0-7.3 3.9A12.13 12.13 0 0 1 3.15 4.7a4.28 4.28 0 0 0 1.32 5.72 4.24 4.24 0 0 1-1.94-.54v.06a4.28 4.28 0 0 0 3.43 4.2 4.3 4.3 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.97A8.6 8.6 0 0 1 2 19.54a12.11 12.11 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19-.01-.39-.02-.58A8.7 8.7 0 0 0 24 5.5a8.6 8.6 0 0 1-2.54.7z"/></svg>
+  <!-- X (formerly Twitter) -->
+  <a id="x-share" class="icon-button" target="_blank" title="Share on X (formerly Twitter)">
+    <svg viewBox="0 0 24 24" fill="#000000">
+      <path d="M18.214 3H21.6l-7.42 8.5L22.799 21H16.74l-5.04-5.87L5.86 21H2.5l7.9-9.05L1.799 3H8.02l4.66 5.43L18.214 3Zm-1.18 16h1.57L7.06 5H5.39l11.643 14Z"/>
+    </svg>
   </a>
+  
   
   <!-- LinkedIn -->
   <a id="linkedin-share" class="icon-button" target="_blank" title="Share on LinkedIn">
