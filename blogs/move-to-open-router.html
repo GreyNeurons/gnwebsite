@@ -1,0 +1,240 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "How I Built a Reusable Social-Share Web Component with ChatGPT in 17 Minutes";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">How I Built a Reusable Social-Share Web Component with ChatGPT in 17 Minutes</span>
+      </blog-header>
+
+ 
+        <section  class="section">
+            <DIV id ="start" class="blog-container content">
+
+                <h1>Why I am switchng from ChatGPT Plus to OpenRouter: A Developer's Perspective</h1>
+                <i>How OpenRouter's flexibility, model variety, and cost-effectiveness outshine ChatGPT Plus for my AI-driven workflows</i>
+                
+                <hr class="separator"></hr>
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                  </div>
+                <hr class="separator"></hr>
+                
+                <h2>Introduction</h2>
+                <p>I've been a ChatGPT Plus subscriber for quite some time. At $20/month, it has served me well - helping me brainstorm ideas, prepare proposal drafts, simplify dense cybersecurity topics, and even generate the occasional blog image with DALL·E.</p> <p>But recently, I've started rethinking this fixed subscription. Not because GPT-4 isn't powerful - it's brilliant. The question is: am I getting the right mix of flexibility, access, and value for how I actually use AI?</p> 
+
+                <hr class="separator"></hr>
+
+                <h2>My Use Case: Strategic, Technical, and Content-Driven</h2> <p>I work as a fractional CTO/CISO, helping startups build secure, scalable systems. Alongside that, I write regularly - long-form posts on Medium, short-form insights in a newsletter, and technical walkthroughs on my site.</p> <p>AI is embedded in my day-to-day:</p> <ul> <li>Brainstorming software architecture and cybersecurity workflows.</li> <li>Troubleshoot technical issues from the field.</li> <li>Reviewing and summarizing research.</li> <li>Drafting content and rewriting for clarity.</li> <li>Occasionally generating images for blog posts and thumbnails</li> </ul> <p>Some days I hammer the tool for hours. Other days, I barely touch it. That inconsistency makes a flat subscription like ChatGPT Plus feel… suboptimal.</p> 
+                <hr class="separator"></hr> <h2>Why OpenRouter Makes More Sense for Me</h2> <p>OpenRouter gives me pay-as-you-go access to multiple large language models - Claude, GPT-4, GPT-4o, GPT-4o-mini-high, Mixtral, LLaMA, and others - each with their own strengths and price points.</p> <p>This flexibility matters because:</p> <ul> <li>I don't always need GPT-4; for quick tasks, Claude or Mixtral works great.</li> <li>I get full API access to embed LLMs into tools, automations, and apps.</li> <li>I pay only for what I use - and I often land well below $20/month.</li> <li>I can choose the best LLM for each task.</li> <li>Use Claude Sonnet for structured coding help - it's fast and precise.</li> <li>Use OpenAI's GPT-4 or GPT-4o for tone-sensitive writing and proposals.</li> <li>Switch to GPT-4o-mini-high for fast, cost-efficient dev tasks or batch operations.</li> </ul> <p>The best part? The models I already rely on - ChatGPT-4o and GPT-4o-mini-high - are available on OpenRouter, alongside many more.</p> 
+                
+                <hr class="separator"></hr> 
+                <h2>🚫 The One Thing ChatGPT Plus Won't Let You Do: Build</h2> <p>Here's a common surprise: ChatGPT Plus does not include API access.</p> <p>You can chat on the site - but if you want to:</p> <ul> <li>Integrate GPT-4 into your apps</li> <li>Automate parts of your workflow</li> <li>Use models programmatically</li> </ul> <p>…you'll need a separate OpenAI API plan, billed independently.</p> <p>With OpenRouter:</p> <ul> <li>You get API + chat access with a single account</li> <li>You can switch models dynamically</li> <li>It's one billing stream, no silos</li> </ul> <p>For someone building tools and automations, that's a major win.</p> 
+                
+                <hr class="separator"></hr> 
+                <h2>What I'll Miss - and My Workarounds</h2> <h3>🖼️ Image Generation (DALL·E)</h3> <p>I occasionally use DALL·E to generate blog thumbnails. OpenRouter doesn't support image generation yet.</p> <p>Alternatives I use:</p> <ul> <li>Bing Image Creator (also powered by DALL·E)</li> <li>Stable Diffusion via LM Studio or InvokeAI</li> </ul> <h3>💬 Polished Chat UI</h3> <p>ChatGPT's web UI is slick, polished, and persistent. OpenRouter's is functional but not as refined.</p> <p>Solutions:</p> <ul> <li>OpenRouter's own web chat is perfectly usable.</li> <li>For advanced use, I rely on LM Studio or OpenWebUI, both of which support OpenRouter and local models.</li> </ul> 
+                
+                <hr class="separator"></hr> 
+                <h2>Ollama: Local AI on Standby</h2> <p>For offline or private scenarios, I use Ollama on my local machine. It lets me run models like LLaMA 3 and Mistral without internet. While slower than cloud APIs, it's great for:</p> <ul> <li>Prototyping</li> <li>Internal tools</li> <li>Data-sensitive use cases</li> </ul> 
+                
+                <hr class="separator"></hr> 
+                <h2>Why I Chose OpenRouter (And Not Its Competitors)</h2> 
+                
+                
+                <p>There are many LLM gateways, hosting providers, and UIs. Here's why I went with OpenRouter:</p> 
+                
+                <div class="table-container">
+                    <table class="table is-fullwidth is-hoverable">
+                      <thead>
+                        <tr>
+                          <th>Criteria</th>
+                          <th>OpenRouter</th>
+                          <th>Competitors</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Access to Claude, GPT-4(o), Mixtral, etc.</td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                          </td>
+                          <td>
+                            <span class="icon has-text-danger">❌</span>
+                            <small>(e.g., Together.ai lacks GPT-4/Claude)</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Web-based chat UI</td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                          </td>
+                          <td>
+                            Partial
+                            <br>
+                            <small>(API-only on Helicone, PromptLayer)</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Pay-as-you-go API billing</td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                          </td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Local model fallback</td>
+                          <td>Integrates easily</td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                            <small>(OpenWebUI, LM Studio)</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Unified chat + API experience</td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                          </td>
+                          <td>
+                            <span class="icon has-text-danger">❌</span>
+                            <small>(many require separate dashboards)</small>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                
+                <p>In short:</p> <ul> <li>Together.ai: Great for open models, no GPT-4/Claude.</li> <li>Helicone/PromptLayer: Good observability, but not chat platforms.</li> <li>LM Studio/OpenWebUI: Amazing for local models, but I needed reliable cloud access too.</li> </ul> <p>OpenRouter gave me the models I already use, plus the flexibility to explore others - all under one account, with clear pricing and minimal setup.</p> 
+                
+                <hr class="separator"></hr> 
+                <h2>Cost Comparison: ChatGPT Plus vs OpenRouter Stack</h2> 
+
+                <div class="table-container">
+                    <table class="table is-fullwidth is-hoverable">
+                      <thead>
+                        <tr>
+                          <th>Feature</th>
+                          <th>ChatGPT Plus</th>
+                          <th>OpenRouter Stack</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Subscription</td>
+                          <td>$20/month</td>
+                          <td>~$10–15/month <small>(varies)</small></td>
+                        </tr>
+                        <tr>
+                          <td>API Access</td>
+                          <td>
+                            <span class="icon has-text-danger">❌</span>
+                            <small>Not included</small>
+                          </td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                            <small>Included</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Chat UI</td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                            <small>Polished</small>
+                          </td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                            <small>Usable</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Model Choice</td>
+                          <td>
+                            <span class="icon has-text-danger">❌</span>
+                            <small>Just GPT-4</small>
+                          </td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                            <small>Claude, GPT-4o, Mixtral, GPT-4o-mini-high, LLaMA…</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Local Model Fallback</td>
+                          <td>
+                            <span class="icon has-text-danger">❌</span>
+                          </td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                            <small>With Ollama</small>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Image Generation</td>
+                          <td>
+                            <span class="icon has-text-success">✅</span>
+                            <small>DALL·E</small>
+                          </td>
+                          <td>
+                            <span class="icon has-text-danger">❌</span>
+                            <small>(use Bing or SD)</small>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>                  
+                
+                <hr class="separator"></hr>
+                <h2>Final Thoughts: Flexibility Wins</h2> <p>ChatGPT Plus remains a great option if you're looking for a polished interface and consistent access to GPT-4. But as someone building tools, exploring automation, and optimizing for flexibility and cost, OpenRouter offers a compelling alternative - with more control, broader model choices, and full API access.</p> <p>Since OpenRouter also supports the same models I regularly use - like ChatGPT-4o and GPT-4o-mini-high - it feels less like a downgrade and more like a strategic shift. Next 30 days, I plan to actively experiment with OpenRouter across my workflows before making the final call - and I'll be documenting that journey right here.</p> 
+            </DIV>
+
+            <DIV class="blog-container content">
+                <hr class="separator"></hr>
+                <p class="has-text-centered is-size-7 has-text-grey">Sponsored</p>
+                <show-ad data-slot="6a6ef13f922d93a0ee2f83d402b9bf87"></show-ad>
+
+
+                <hr class="separator"></hr>
+
+
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                </div>
+
+                <hr class="separator"></hr>
+
+                <div>
+                <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+                </div>
+            </DIV>
+
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+        <script defer src="/js/show-ad.js"></script>
+
+    </body>
+</html>
+
