@@ -10,7 +10,7 @@
           // Set page-specific meta description
           window.pageMetaDescription = "Ollama makes running open-source LLMs locally dead simple — no cloud, no API keys, no GPU needed. Just one command (ollama run phi) and you're chatting with a model that lives entirely on your machine.";
         </script>
-    
+            
         <script defer src="/js/head-component.js"></script>  
     </head>
     <body>
@@ -26,12 +26,23 @@
                     <!-- INSERT CONTENT HERE -->
                     <div class="content">
                         <h1 class="title">Running LLMs Locally with Ollama: No GPU, No Cloud, No Excuses</h1>
+                        
+
+
                         <p>
                           <a href="https://medium.com/@rkanade/using-wsl-for-ai-app-development-2e2dcd3da033" target="_blank" rel="noopener noreferrer">
                             In a previous post
                           </a>, I discussed setting up WSL2 on a Windows machine, focusing on limiting CPU and memory utilization and configuring an additional swap disk. Building upon that, this article will guide you through setting up Ollama and VS Code to prepare for AI application development.
                         </p>
-                
+                        
+                        <hr class="separator"></hr>
+                        <div class="field is-grouped is-grouped-centered">
+                            <p class="control">
+                              <social-share></social-share>
+                            </p>
+                          </div>
+                        <hr class="separator"></hr>
+
                         <h3 class="title is-4">Introduction to Ollama</h3>
                         <p><strong>Ollama</strong> makes running open-source LLMs locally dead simple — <strong>no cloud, no API keys, no GPU</strong> needed. Just one command (<code>ollama run phi</code>) and you're chatting with a model that lives entirely on your machine.</p>
                         <p>Built by a small team of ex-devtool and ML engineers at <strong>Ollama Inc.</strong>, the project wraps the powerful but low-level <code>llama.cpp</code> engine in a smooth developer experience — handling model downloads, quantization, and inference behind the scenes.</p>
@@ -139,9 +150,17 @@
                           <li>Auto-generating FAQs</li>
                         </ul>
                 
-                        <p>Have other cool use cases? Drop them in the comments.</p>
                 
                         <hr>
+
+                        <hr class="separator"></hr>
+                        <div class="field is-grouped is-grouped-centered">
+                            <p class="control">
+                              <social-share></social-share>
+                            </p>
+                          </div>
+                        <hr class="separator"></hr>
+                        
                         <p>If you’re into real-world takes on <strong>software, security, AI, and engineering teams</strong>, check out my newsletter:</p>
                         <p><a href="https://greyneuronsconsulting.com/newsletter/nl-home.html" target="_blank">👉 Subscribe here</a> — low noise, high signal.</p>
                 
@@ -149,7 +168,7 @@
                         <p>We help startups move faster without cutting corners. <a href="https://www.linkedin.com/in/rkanade/" target="_blank">Connect on LinkedIn</a> to chat.</p>
                 
                         <hr>
-                        <p class="has-text-grey-light"><em>Written by a human. Polished by AI. Sanity-checked by both.</em></p>
+
                       </div>
                     </div>
 
@@ -162,6 +181,7 @@
         <!-- Include the JS file where BlogFooter is defined -->
         <script defer src="/js/blog-footer.js"></script>
         <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
 
     </body>
 </html>
