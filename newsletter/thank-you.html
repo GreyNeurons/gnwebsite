@@ -7,53 +7,44 @@
   <!-- Bulma CSS for quick styling -->
   <link rel="stylesheet" href="/css/bulma.css">
   <script>
-    // 0) If we’re running inside the Beehiiv iframe, break out first…
     if (window.self !== window.top) {
+      // Break out of the iframe if needed
       window.top.location.replace(window.location.href);
     } else {
-      // 1) Otherwise run your normal thank-you logic
       document.addEventListener('DOMContentLoaded', () => {
-        // Parse out the email from ?email=…
+        // 1) Store subscription flags
         const params = new URLSearchParams(window.location.search);
-        // console.log('[Thank-you page] location.search =', window.location.search);
-        const email = params.get('email');
-  
-        // Store flags in localStorage
+        const email  = params.get('email');
         localStorage.setItem('gn-nl-subscribed', 'true');
         if (email) {
           localStorage.setItem('gn-nl-subscriber-email', email);
-          // Show it on the page
           const emailEl = document.getElementById('subscriber-email');
           if (emailEl) emailEl.textContent = email;
         }
   
-        // Decide where to go back
-        let returnUrl = '/articles.html';  // default
-        console.log('[Thank-you page] referrer:', document.referrer);
-        if (
-          document.referrer &&
-          document.referrer.startsWith(window.location.origin) &&
-          !document.referrer.includes('/thank-you')
-        ) {
-          returnUrl = document.referrer;
-        }
-        // console.log('[Thank-you page] using returnUrl =', returnUrl);
+        // 2) Define a go-back function with a fallback
+        const fallbackUrl = '/articles.html';
+        const goBack = () => {
+          // If there’s a previous entry in history, go back
+          if (window.history.length > 1) {
+            //alert("going back");
+            window.history.back();
+          } else {
+            // Otherwise, send them to a default page
+            window.location.href = fallbackUrl;
+          }
+        };
   
-        // Redirect back after 2s
-        setTimeout(() => {
-          window.location.href = returnUrl;
-        }, 2000);
+        // 3) Automatically go back after 2s
+        setTimeout(goBack, 5000);
   
-        // Wire up the “Return now” button
+        // 4) Wire up the “Return Now” button
         const btn = document.getElementById('btn-return');
-        if (btn) {
-          btn.addEventListener('click', () => {
-            window.location.href = returnUrl;
-          });
-        }
+        if (btn) btn.addEventListener('click', goBack);
       });
     }
   </script>
+  
   
 </head>
 <body>
