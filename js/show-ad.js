@@ -1,6 +1,16 @@
 
   class ShowAd extends HTMLElement {
     connectedCallback() {
+
+      const hasGnFlag    = localStorage.getItem('gn-nl-subscribed') === 'true';
+    
+      // 2) If either is set, don’t show the CTA at all
+      if (hasGnFlag ) {
+
+        this.remove();
+        return;
+      }
+
       const slotId = this.dataset.slot;
       const publishedDate = this.dataset.published;
       const delayWeeks = parseInt(this.dataset.delayWeeks || "0", 10);
