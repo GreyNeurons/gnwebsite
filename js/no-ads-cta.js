@@ -5,8 +5,8 @@ class NoAdsCta extends HTMLElement {
     if (hasGnFlag) {
       // Show the ad-free message
       this.innerHTML = `
-        <div class="notification is-primary is-size-6 has-text-centered" style="margin-bottom: 1rem;">
-          🎉 You’re enjoying an <strong>ad-free</strong> experience! Thank you for subscribing.
+        <div class="notification is-light is-size-6 has-text-centered" style="margin-bottom: 1rem;">
+          You’re enjoying an ad-free experience! Thank you for subscribing.
         </div>
       `;
     } else {
