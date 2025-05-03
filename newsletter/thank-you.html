@@ -7,52 +7,54 @@
   <!-- Bulma CSS for quick styling -->
   <link rel="stylesheet" href="/css/bulma.css">
   <script>
-
-        // 0) If we’re running inside the Beehiiv iframe, 
-    //    load ourselves at top level so referrer is the real page.
+    // 0) If we’re running inside the Beehiiv iframe, break out first…
     if (window.self !== window.top) {
       window.top.location.replace(window.location.href);
-      // stop running the rest in this iframe
-      return;
+    } else {
+      // 1) Otherwise run your normal thank-you logic
+      document.addEventListener('DOMContentLoaded', () => {
+        // Parse out the email from ?email=…
+        const params = new URLSearchParams(window.location.search);
+        // console.log('[Thank-you page] location.search =', window.location.search);
+        const email = params.get('email');
+  
+        // Store flags in localStorage
+        localStorage.setItem('gn-nl-subscribed', 'true');
+        if (email) {
+          localStorage.setItem('gn-nl-subscriber-email', email);
+          // Show it on the page
+          const emailEl = document.getElementById('subscriber-email');
+          if (emailEl) emailEl.textContent = email;
+        }
+  
+        // Decide where to go back
+        let returnUrl = '/articles.html';  // default
+        // console.log('[Thank-you page] referrer:', document.referrer);
+        if (
+          document.referrer &&
+          document.referrer.startsWith(window.location.origin) &&
+          !document.referrer.includes('/thank-you')
+        ) {
+          returnUrl = document.referrer;
+        }
+        // console.log('[Thank-you page] using returnUrl =', returnUrl);
+  
+        // Redirect back after 2s
+        setTimeout(() => {
+          window.location.href = returnUrl;
+        }, 2000);
+  
+        // Wire up the “Return now” button
+        const btn = document.getElementById('btn-return');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            window.location.href = returnUrl;
+          });
+        }
+      });
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1) Parse out the email from ?email=…
-      const params = new URLSearchParams(window.location.search);
-      //console.log('[Thank-you page] location.search =', window.location.search);
-      const email  = params.get('email');
-
-      // 2) Store flags in localStorage
-      localStorage.setItem('gn-nl-subscribed', 'true');
-      if (email) {
-        localStorage.setItem('gn-nl-subscriber-email', email);
-        // 3) Show it on the page
-        const emailEl = document.getElementById('subscriber-email');
-        if (emailEl) emailEl.textContent = email;
-      }
-
-        // 3) Decide where to go back
-       let returnUrl = '/articles.html';  // default
-
-      console.log(document.referrer);
-      if (document.referrer 
-          && document.referrer.startsWith(window.location.origin) 
-          && !document.referrer.includes('/thank-you')) {
-        returnUrl = document.referrer;
-      }
-      console.log(document.referrer);
-      
-      // 4) (Optional) Redirect back to homepage after 5s
-      setTimeout(() => {
-        window.location.href = returnUrl;
-      }, 2000);
-            
-      // 5) Wire up the “Return now” button
-      document.getElementById('btn-return').addEventListener('click', () => {
-        window.location.href = returnUrl;
-        });
-    });
   </script>
+  
 </head>
 <body>
   <section class="section">
