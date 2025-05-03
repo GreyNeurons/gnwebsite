@@ -10,6 +10,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       // 1) Parse out the email from ?email=…
       const params = new URLSearchParams(window.location.search);
+      console.log('[Thank-you page] location.search =', window.location.search);
       const email  = params.get('email');
 
       // 2) Store flags in localStorage
