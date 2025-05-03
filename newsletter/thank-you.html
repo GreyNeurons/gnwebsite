@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎉 Thanks for Subscribing!</title>
+  <!-- Bulma CSS for quick styling -->
+  <link rel="stylesheet" href="/css/bulma.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1) Parse out the email from ?email=…
+      const params = new URLSearchParams(window.location.search);
+      const email  = params.get('email');
+
+      // 2) Store flags in localStorage
+      localStorage.setItem('beehiivSubscribed', 'true');
+      if (email) {
+        localStorage.setItem('beehiivSubscriberEmail', email);
+        // 3) Show it on the page
+        const emailEl = document.getElementById('subscriber-email');
+        if (emailEl) emailEl.textContent = email;
+      }
+
+      // 4) (Optional) Redirect back to homepage after 2s
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
+    });
+  </script>
+</head>
+<body>
+  <section class="section">
+    <div class="container has-text-centered">
+      <h1 class="title is-3">🎉 Thank You for Subscribing!</h1>
+      <p class="subtitle is-5">
+        You’ve been added to our list 
+        <strong id="subscriber-email"></strong>.
+      </p>
+      <p>You’ll be redirected back to the homepage shortly.</p>
+      <a href="/articles.html" class="button is-link mt-4">Return Now</a>
+    </div>
+  </section>
+</body>
+</html>
