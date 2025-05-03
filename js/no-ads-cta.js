@@ -1,6 +1,18 @@
 
   class NoAdsCta extends HTMLElement {
-    connectedCallback() {
+      connectedCallback() {
+          // 1) Check your subscription flags
+        const hasGnFlag    = localStorage.getItem('gn-nl-subscribed') === 'true';
+    
+        // 2) If either is set, don’t show the CTA at all
+        if (hasGnFlag ) {
+          // Option A: just leave it empty
+          //return;
+
+          // Option B: remove the element from the DOM entirely
+          this.remove();
+          return;
+        }
       this.innerHTML = `
         <div class="notification is-light is-size-6 has-text-centered" style="margin-bottom: 1rem;">
            This article may <b>display ads</b> if it's more than a few weeks old..<br>
