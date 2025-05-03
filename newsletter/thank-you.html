@@ -7,6 +7,15 @@
   <!-- Bulma CSS for quick styling -->
   <link rel="stylesheet" href="/css/bulma.css">
   <script>
+
+        // 0) If we’re running inside the Beehiiv iframe, 
+    //    load ourselves at top level so referrer is the real page.
+    if (window.self !== window.top) {
+      window.top.location.replace(window.location.href);
+      // stop running the rest in this iframe
+      return;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       // 1) Parse out the email from ?email=…
       const params = new URLSearchParams(window.location.search);
@@ -25,13 +34,14 @@
         // 3) Decide where to go back
        let returnUrl = '/articles.html';  // default
 
-        alert(document.referrer);
+      console.log(document.referrer);
       if (document.referrer 
           && document.referrer.startsWith(window.location.origin) 
           && !document.referrer.includes('/thank-you')) {
         returnUrl = document.referrer;
       }
-      alert(document.referrer);
+      console.log(document.referrer);
+      
       // 4) (Optional) Redirect back to homepage after 5s
       setTimeout(() => {
         window.location.href = returnUrl;
