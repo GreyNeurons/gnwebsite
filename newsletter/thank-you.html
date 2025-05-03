@@ -14,15 +14,15 @@
       const email  = params.get('email');
 
       // 2) Store flags in localStorage
-      localStorage.setItem('beehiivSubscribed', 'true');
+      localStorage.setItem('gn-nl-subscribed', 'true');
       if (email) {
-        localStorage.setItem('beehiivSubscriberEmail', email);
+        localStorage.setItem('gn-nl-subscriber-email', email);
         // 3) Show it on the page
         const emailEl = document.getElementById('subscriber-email');
         if (emailEl) emailEl.textContent = email;
       }
 
-      // 4) (Optional) Redirect back to homepage after 2s
+      // 4) (Optional) Redirect back to homepage after 5s
       setTimeout(() => {
         window.location.href = '/articles.html';
       }, 5000);
