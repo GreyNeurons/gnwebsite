@@ -10,7 +10,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       // 1) Parse out the email from ?email=…
       const params = new URLSearchParams(window.location.search);
-      console.log('[Thank-you page] location.search =', window.location.search);
+      //console.log('[Thank-you page] location.search =', window.location.search);
       const email  = params.get('email');
 
       // 2) Store flags in localStorage
@@ -22,10 +22,23 @@
         if (emailEl) emailEl.textContent = email;
       }
 
+        // 3) Decide where to go back
+       let returnUrl = '/articles.html';  // default
+      if (document.referrer 
+          && document.referrer.startsWith(window.location.origin) 
+          && !document.referrer.includes('/thank-you')) {
+        returnUrl = document.referrer;
+      }
+
       // 4) (Optional) Redirect back to homepage after 5s
       setTimeout(() => {
-        window.location.href = '/articles.html';
+        window.location.href = returnUrl;
       }, 5000);
+            
+      // 5) Wire up the “Return now” button
+      document.getElementById('btn-return').addEventListener('click', () => {
+        window.location.href = returnUrl;
+        });
     });
   </script>
 </head>
@@ -37,9 +50,12 @@
         You’ve been added to our list 
         <strong id="subscriber-email"></strong>.
       </p>
-      <p>You’ll be redirected back to the homepage shortly.</p>
-      <a href="/articles.html" class="button is-link mt-4">Return Now</a>
+      <p>You’ll be redirected back to where you came from shortly.</p>
+      <button id="btn-return" class="button is-link return-button">
+        Return Now
+      </button>
     </div>
   </section>
 </body>
+
 </html>
