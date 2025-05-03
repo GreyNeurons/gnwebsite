@@ -24,16 +24,18 @@
 
         // 3) Decide where to go back
        let returnUrl = '/articles.html';  // default
+
+        alert(document.referrer);
       if (document.referrer 
           && document.referrer.startsWith(window.location.origin) 
           && !document.referrer.includes('/thank-you')) {
         returnUrl = document.referrer;
       }
-
+      alert(document.referrer);
       // 4) (Optional) Redirect back to homepage after 5s
       setTimeout(() => {
         window.location.href = returnUrl;
-      }, 5000);
+      }, 2000);
             
       // 5) Wire up the “Return now” button
       document.getElementById('btn-return').addEventListener('click', () => {
