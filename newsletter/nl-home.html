@@ -4,7 +4,7 @@
 <head>
   <script>
     // Set page-specific meta description
-    window.pageMetaDescription = "NewsLetter";
+    window.pageMetaDescription = "NewsLetter Subscription Page";
   </script>
   <!-- ✅ Load styles as early as possible -->
   <link rel="stylesheet" href="/css/normalize.css">
@@ -27,42 +27,104 @@
         
         <div class = "container content">
 
-            <h1 class="title is-3">Welcome to <em>GreyNeurons newsletter</em></h1>
+          <h1 class="title is-3">Stay Ahead with GreyNeurons</h1>
+          <p class="subtitle is-5">
+            Insights from our fractional CTO/CISO work—on AI, security, software, databases and the open-source world—delivered straight to your inbox.
+          </p>
 
-
-
-            <p>
-            As a team offering <strong>fractional CTO and CISO services</strong>, we’re constantly exploring the evolving landscape of 
-            <strong>AI</strong>, <strong>cybersecurity</strong>, <strong>software development</strong>, <strong>databases</strong>, 
-            <strong>programming languages</strong>, and the vibrant <strong>open-source ecosystem</strong>.
-            </p>
             <div class="container">
               <iframe src="https://embeds.beehiiv.com/96b29efc-f33e-4d82-a0a8-d83d82e97f2f" data-test-id="beehiiv-embed" width="100%" height="320" frameborder="0" scrolling="no" style="border-radius: 4px; border: 2px solid #e5e7eb; margin: 0; background-color: transparent;"></iframe>
             </div>
 
-
-
-            <p>In every edition, you’ll find:</p>
-            <ul>
-            <li>📰 Deep dives on real-world dev & security workflows</li>
-            <li>⚙️ Sharp takes on tools and trends</li>
-            <li>📰 Curated reads worth your time</li>
-            <li>📥 Ad-free versions of our latest blog posts</li>
-            <li>💬 Quotable wisdom from tech leaders</li>
-            <li>📚 Book recommendations worth your time</li>
-            <li>🕰️ The occasional timeless gem from tech history</li>
-            </ul>
-
-            <p>
-            Whether you're building, securing, scaling, or just staying sharp — <strong>GreyNeurons newsletter</strong> is designed to keep you ahead of the curve, one issue at a time.
+            <p class="subtitle is-5">
+              Every issue brings you deep-dives on real-world workflows, sharp tool takes, and ad-free bonus reads — straight to your inbox.
             </p>
              
               
-            </p>
         </div>
 
     </div>
 
+      <div class="blog-container">
+        <hr class="separator"></hr>
+
+        <h2 class="title is-4">🔥 Featured Posts</h2>
+        <div class="columns is-multiline">
+        
+                    <!-- Post 2 -->
+          <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+            <a href="/blogs/using-wsl-for-ai-development.html">
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="/img/wsl.webp" alt="Using WSL for AI App Development">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-6">Using WSL for AI App Development</p>
+                  <p class="subtitle is-7">Feb 2025</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+    
+          <!-- Post 1 -->
+          <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+            <a href="/blogs/ollama-install-and-config.html">
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="/img/ollama.webp" alt="Running LLMs Locally with Ollama">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-6">Running LLMs Locally with Ollama: No GPU, No Cloud…</p>
+                  <p class="subtitle is-7">Mar 2025</p>
+                </div>
+              </div>
+            </a>
+          </div>
+    
+
+    
+          <!-- Post 3 -->
+          <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+            <a href="/blogs/open-source-security-stack.html">
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="/img/osss.webp" alt="A Ready-Made NIST-mapped Cybersecurity Stack">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-6">A Ready-Made NIST-mapped Cybersecurity Stack for SMBs</p>
+                  <p class="subtitle is-7">Apr 2025</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+            <!-- Post 3 -->
+            <div class="column is-full-mobile is-half-tablet is-one-quarter-desktop">
+              <a href="/newsletter/bd-5.html">
+                <div class="card">
+                  <div class="card-image">
+                    <figure class="image is-4by3">
+                      <img src="/img/crust.webp" alt="Why C Still Fights, Rust Isn’t a Sure Thing, and AI Isn’t Magic">
+                    </figure>
+                  </div>
+                  <div class="card-content">
+                    <p class="title is-6">Not Dead Yet: Why C Still Fights, Rust Isn’t a Sure Thing, and AI Isn’t Magic</p>
+                    <p class="subtitle is-7">Apr 2025</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+        </div>
+      </div>
+    
 
 
    <!-- Custom Footer Component -->
