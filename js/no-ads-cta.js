@@ -6,7 +6,7 @@ class NoAdsCta extends HTMLElement {
       // Show the ad-free message
       this.innerHTML = `
         <div class="notification is-light is-size-6 has-text-centered" style="margin-bottom: 1rem;">
-          You’re enjoying an ad-free experience! Thank you for subscribing.
+          Enjoy an ad‑free reading experience as our valued newsletter member.
         </div>
       `;
     } else {
