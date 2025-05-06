@@ -21,27 +21,37 @@
 
  
         <section class="section">
-            <div class="container content">
+            <div class="blog-container content">
                 <h1>
                     Programming, Production, and a Talking Cow
                 </h1>
                 <h3><i>Exploring language trends, Figma's database scaling, and side-by-side LLM testing - plus the terminal cow you didn't know you needed</i></h3>
-  
-                <hr  class="separator">
 
-                <p>In this edition, we have pulled together a mix of things <strong>that actually made us pause, dig deeper, or laugh out loud</strong>. You'll find thoughts on where <strong>languages like Rust and Go are heading</strong>, a behind-the-scenes look at <strong>how Figma scaled their databases</strong> without crashing and burning, and a seriously <strong>useful VS Code extension for comparing LLMs</strong>. Oh, and for no good reason at all - except that it's awesome - we've <strong>got a terminal cow that talks back</strong>. </p>
+                <hr  class="separator">
+                <no-ads-cta></no-ads-cta>
+
+                <hr class="separator"></hr>
+                  <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                  </div>
+                <hr class="separator"></hr>
+  
+
+                <p>In this edition, we have pulled together a mix of things that actually made us pause, dig deeper, or laugh out loud. You'll find thoughts on where <a href="#prog">languages like Rust and Go are heading</a>, a behind-the-scenes look at how <a href="#figma">Figma scaled their databases</a> without crashing and burning, and a seriously useful <a href="#llm">VS Code extension for comparing LLMs</a>. Oh, and for no good reason at all - except that it's awesome - we've got a <a href="#cowsay">terminal cow that talks back</a>. </p>
                 
                 <p><strong>Let's jump in</strong>.</p>
 
                 <hr  class="separator">
 
-                <p>The programming landscape has <strong>always been dynamic</strong>, with languages evolving to meet the ever-changing demands of technology and industry. From enterprise systems to cloud-native applications and gaming, <strong>each programming language plays a unique role in shaping the technological world</strong> we live in. This blog takes an in-depth look at some of the most influential languages today - <strong>Java, C#, Rust, Go, and C/C++</strong> - and explores their strengths, challenges, and the <strong>roles they are likely to play in the next 20 to 30 years</strong>.</p>
+                <p id="prog">The programming landscape has <strong>always been dynamic</strong>, with languages evolving to meet the ever-changing demands of technology and industry. From enterprise systems to cloud-native applications and gaming, <strong>each programming language plays a unique role in shaping the technological world</strong> we live in. This blog takes an in-depth look at some of the most influential languages today - <strong>Java, C#, Rust, Go, and C/C++</strong> - and explores their strengths, challenges, and the <strong>roles they are likely to play in the next 20 to 30 years</strong>.</p>
 
                 <p>👉 <a href="/blogs/future-of-programming.html" target="_blank" rel="noreferrer noopener">Read full post here</a> </p>
 
                 <hr  class="separator">
 
-                <p>When Figma's <strong>user base exploded 100x</strong> since 2020, their databases started sweating - hard. Tables were <strong>hitting billions of rows</strong>, and their old scaling trick (just split data by feature into different DBs) was no longer cutting it.</p>
+                <p id="figma">When Figma's <strong>user base exploded 100x</strong> since 2020, their databases started sweating - hard. Tables were <strong>hitting billions of rows</strong>, and their old scaling trick (just split data by feature into different DBs) was no longer cutting it.</p>
 
                 <p>So the team did what most devs dread: they redesigned the entire data layer <strong>to support horizontal sharding</strong>. And they pulled it off - with <strong>minimal downtime and zero fire drills</strong>.</p>
 
@@ -54,11 +64,20 @@
 
                 <p>👉 <a href="https://www.figma.com/blog/how-figmas-databases-team-lived-to-tell-the-scale/" target="_blank" rel="noreferrer noopener">Read the full post</a></p>
 
+
+                <hr class="separator"></hr>
+                  <p class="has-text-centered is-size-7 has-text-grey"><a href="/newsletter/nl-home.html" target="_blank" rel="noopener noreferrer">Click here to read without ads</a></p>
+                  <show-ad 
+                      data-slot="6a6ef13f922d93a0ee2f83d402b9bf87"
+                      data-published="2025-04-08" data-delay-weeks="1">
+                  </show-ad>
+
+
                 <hr  class="separator">
 
                 <p>If you've ever wondered "which model answers this prompt best?", <strong>Prompt Octopus</strong> is your answer.</p>
 
-                <p>It's a VS Code extension that lets you <strong>select any prompt</strong> from your code, <strong>choose from 40+ LLMs</strong> (OpenAI, Anthropic, Mistral, Grok, etc.), and view their responses <strong>side by side</strong> - all from your editor. You can keep your API keys <strong>local</strong> for privacy, or use their <strong>hosted plan</strong> if that's easier. Your first 10 comparisons are totally free - no API keys required. If you end up loving it, the full hosted access is just $10 a month.</p>
+                <p id="llm">It's a VS Code extension that lets you <strong>select any prompt</strong> from your code, <strong>choose from 40+ LLMs</strong> (OpenAI, Anthropic, Mistral, Grok, etc.), and view their responses <strong>side by side</strong> - all from your editor. You can keep your API keys <strong>local</strong> for privacy, or use their <strong>hosted plan</strong> if that's easier. Your first 10 comparisons are totally free - no API keys required. If you end up loving it, the full hosted access is just $10 a month.</p>
                 
                 <p>Whether you're doing <strong>prompt engineering, model eval, or just trying to get better completions</strong> - this saves time and guesswork.</p>
 
@@ -66,7 +85,7 @@
                 
                 <hr  class="separator">
 
-                <p>You <strong>deploy a web app</strong>. Traffic rolls in. But under the hood, <strong>how do Apache, Nginx, MySQL, and PostgreSQL actually handle that load</strong> ?</p>
+                <p id="sysdesign">You <strong>deploy a web app</strong>. Traffic rolls in. But under the hood, <strong>how do Apache, Nginx, MySQL, and PostgreSQL actually handle that load</strong> ?</p>
 
 
                 <p><strong>Apache</strong> is the old workhorse. Depending on its config, it can either use <strong>thread-per-request</strong> (with the worker or event MPMs) or go fully <strong>old-school with process-per-request</strong> (with the prefork MPM). In the latter, every <strong>single request spins up its own process</strong>. </p>
@@ -82,7 +101,7 @@
 
                 <hr  class="separator">
 
-                <p>And before we wrap, something on the lighter side: cowsay. Completely unnecessary-but weirdly satisfying. This little <strong>Linux terminal tool</strong> takes any <strong>prompt you give</strong> it and has a <strong>talking ASCII cow repeat it back</strong> to you. Want a productivity boost? Not really. Want to make your terminal demo unexpectedly fun? Absolutely 😄</p>
+                <p id="cowsay">And before we wrap, something on the lighter side: cowsay. Completely unnecessary-but weirdly satisfying. This little <strong>Linux terminal tool</strong> takes any <strong>prompt you give</strong> it and has a <strong>talking ASCII cow repeat it back</strong> to you. Want a productivity boost? Not really. Want to make your terminal demo unexpectedly fun? Absolutely 😄</p>
 
                 <p>It even <strong>supports alternate characters like dragons, tux, and ghostbusters</strong> - because why not have a fire-breathing ASCII creature deliver your git blame message?</p>
                 
@@ -110,7 +129,15 @@
 
                 <p><i>These were the original LLMs. Invented in the ’80s. Prompt it, and it talks back 😄</i></p>
 
-                <hr class="separator">
+
+                <hr class="separator"></hr>
+                <div class="field is-grouped is-grouped-centered">
+                  <p class="control">
+                    <social-share></social-share>
+                  </p>
+                </div>
+
+                <hr class="separator" />
 
                 <p><strong>That's it for now - from serious infra to silly cows, it's all part of the stack. See you in the terminal</strong>. </p>
 
@@ -126,6 +153,9 @@
         <!-- Include the JS file where BlogFooter is defined -->
         <script defer src="/js/blog-footer.js"></script>
         <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+        <script defer src="/js/show-ad.js"></script>
+        <script defer src="/js/no-ads-cta.js"></script>
 
     </body>
 </html>
