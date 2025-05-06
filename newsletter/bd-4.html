@@ -21,21 +21,33 @@
 
  
         <section class="section">
-            <div class = "container content">
+            <div class = "blog-container content">
                 <h1>Agile Wins, ARM Savings, Secure Open Source, and Smarter MySQL -All in One Dispatch</h1>
 
+                <hr class="separator"></hr>
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                  </div>
+                <hr class="separator"></hr>
+                
                 <p>
 
                     Every week, I come across a handful of things that make me pause and think, "More dev teams should know this." Sometimes it's a tiny process tweak. Sometimes it's an underused AWS option. Sometimes it's just a smarter default you didn't realize was already helping you out.
                 </p>
+
+                
                 <p>    
                     In this edition, I'm sharing four such picks: an agile habit that actually works, an easy AWS cost saver, a way to spot trustworthy open source tools, and a MySQL tip that might save you hours of tuning. No fluff - just things you can put to use right away.
                     
-                    <hr class="gn_main"></p></hr>
-                    
+                   
                 </p>
 
-                <h2>💡 Quick Thought</h2>
+                <hr class="separator"></hr>
+
+
+                <h2 id="agile">💡 Quick Thought</h2>
                 <p>
                     Developers <strong>hate meetings</strong> - fair. But if I had to pick just <strong>one ritual and one metric</strong> to boost delivery, it'd be: <br>
                         <div class="block is-centered">
@@ -50,7 +62,7 @@
                     Teams that <strong>keep WIP under control ship faster</strong> and break less.
                 </p>
 
-                <hr class="gn-main"></hr>
+                <hr class="separator"></hr>
 
                 <h2 id="graviton">💸 Start with AWS Graviton Instances</h2>
 
@@ -59,7 +71,10 @@
                     If you're just getting started with AWS—or looking to cut cloud costs—my first recommendation is simple: <strong>go Graviton</strong> 
                     </p>
 
-                    <p>They're up to <strong>40% cheaper than x86</strong> EC2, with better performance per dollar. One of the reason they are cheaper is because the <strong>graviton processor is designed by Amazon</strong> and of course they want to promote it.                     A handy tool for directly <strong>comparing Graviton instances with other EC2 types</strong> is available <a target="_blank" rel="noopener noreferrer" href="https://greyneuronsconsulting.com/tools/gravitonsavings/graviton.html">here.</a>
+                    <p>They're up to <strong>40% cheaper than x86</strong> EC2, with better performance per dollar. One of the reason they are cheaper is because the <strong>graviton processor is designed by Amazon</strong> and of course they want to promote it. </p>
+
+                    <p>
+                    A handy tool for directly <strong>comparing Graviton instances with other EC2 types</strong> is available <a target="_blank" rel="noopener noreferrer" href="https://greyneuronsconsulting.com/tools/gravitonsavings/graviton.html">here.</a>
                     </p>
                     
                     <p>For most workloads, it's a no-brainer, just make sure <strong>your stack is ARM-compatible</strong>, and you're set to save. You can read more about Graviton 
@@ -70,7 +85,14 @@
 
                 </p>
 
-                <hr class="gn-main"></hr>
+                <hr class="separator"></hr>
+                <p class="has-text-centered is-size-7 has-text-grey"><a href="/newsletter/nl-home.html" target="_blank" rel="noopener noreferrer">Read without ads</a></p>
+                <show-ad 
+                    data-slot="6a6ef13f922d93a0ee2f83d402b9bf87"
+                    data-published="2025-04-08" data-delay-weeks="1">
+                </show-ad>
+
+                <hr class="separator"></hr>
 
                 <h2>🦉Words of Wisdom</h3> 
 
@@ -80,12 +102,14 @@
                     </blockquote>
 
                 </p>
+                <hr class="separator"></hr>
 
                 <h2>🛡️ Open Source Security, Ranked</h2>
                 <p>
                     The Open Source Security Index is designed to make it easier to discover high-quality open source security projects. It ranks projects on GitHub using an "Index Score" - a weighted average of key metrics retrieved monthly from GitHub and normalized on a 0–100 scale. You can read more about it
                     <a target="_blank" rel="noopener noreferrer" href="https://www.opensourcesecurityindex.io/?utm_source=greyneuronsconsulting.com&utm_medium=referral&utm_campaign=greyneurons-bookmark-dispatch-4"> here.</a>
                 </p>
+                <hr class="separator"></hr>
 
                 <h2>🛠️ MySQL on Dedicated Servers: Smarter Defaults</h2>
                 <p>
@@ -95,6 +119,23 @@
                 </p>
 
             </div>
+
+            <DIV class="blog-container content">
+                <hr class="separator"></hr>
+
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                </div>
+
+                <hr class="separator"></hr>
+
+                <div>
+                <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+                </div>
+            </DIV>
+
         </section>  
 
         <!-- Custom Footer Component -->
@@ -103,6 +144,9 @@
         <!-- Include the JS file where BlogFooter is defined -->
         <script defer src="/js/blog-footer.js"></script>
         <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+        <script defer src="/js/show-ad.js"></script>
+        <script defer src="/js/no-ads-cta.js"></script>
 
     </body>
 </html>
