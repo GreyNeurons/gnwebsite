@@ -1,0 +1,210 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "RAG in the Real World: A Candid Q&A on Building Smarter AI Chatbots";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">RAG in the Real World: A Candid Q&A on Building Smarter AI Chatbots</span>
+      </blog-header>
+
+ 
+        <section  class="section">
+            
+            <DIV  class="blog-container content">
+
+                <div class="blog-container content">
+                    <h1>RAG in the Real World: A Candid Q&A on Building Smarter AI Chatbots</h1>
+                    <i>We just wanted a chatbot. Then came RAG, routing logic, and lots of late-night debugging</i>
+                </div>
+
+                <no-ads-cta></no-ads-cta>
+                
+                <hr class="separator"></hr>
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                  </div>
+                <hr class="separator"></hr>
+            </DIV>
+            
+            <DIV id ="content" class="blog-container content">
+                
+                <div>
+                  <p>This article began as a casual chat with a former colleague who currently works in a platform team - the folks who build shared tools and infrastructure used across all product teams in his company.</p>
+                  <p>His company recently had recently got an AI platform. The platform gave access to multiple LLMs, built in chat bot interface with other enterprise features for access control and common integration to enterprise tools for ingestion etc.</p>
+                  <p>The company was promoting all employees to use the AI platform and build tools to make themselves more productive. He had a simple goal:</p>
+                  <blockquote>
+                    <p>I want to build an internal chatbot that can help my team - and devs in another teams- quickly find answers from internal docs, wikis, and changelogs when they want to integrate with the platform.</p>
+                  </blockquote>
+                  <p>On a recent weekend, he reached out to me brainstorm how he could do this. He had heard about RAG, he had rough idea that he had to use his company's AI platform and upload documents specific to his platform. He had tried few things but results were not as expected. So we got talking and what i have captured here is all the conversation we had around RAG and how he needs to use it in his project.</p>
+                
+                  <h2>Why even use RAG? Can't the LLM just answer things?</h2>
+                  <p>Language models like GPT are amazing, but they're trained on static datasets and often don't know your internal product details or recent changes. They hallucinate when they're unsure, confidently making up answers.</p>
+                  <p>RAG fixes that by letting the model look things up in real-time. It retrieves relevant content (like docs, help articles, code), then feeds it to the LLM as context. So the model's answer is grounded in your actual data - not guesswork.</p>
+                
+                  <h2>What if the product is super niche and the model has never seen it?</h2>
+                  <p>That's where RAG really earns its keep.</p>
+                  <p>Even if the model has never "seen" the product during training, it can still generate accurate answers - as long as you give it the right context through retrieval.</p>
+                  <p>Think of it like this: you're asking the model a question and handing it a cheat sheet at the same time. It reads the cheat sheet and gives you an answer based on that, not just its pre-trained knowledge.</p>
+                
+                  <h2>Is it possible to give the model too much context?</h2>
+                  <p>Yes, just like people get overwhelmed with too many browser tabs open, LLMs can get confused if you dump in a wall of irrelevant or noisy text. You'll:</p>
+                  <ul>
+                    <li>Waste precious token space</li>
+                    <li>Dilute the important info</li>
+                    <li>Increase the chances of the model hallucinating or rambling</li>
+                  </ul>
+                  <p>The goal isn't to give it everything - it's to give it only what it needs. Think signal over noise. The best RAG setups retrieve and inject just a few high-quality chunks, not the entire knowledge base.</p>
+                
+                  <h2>We have 3 products. Should we build one RAG system or one per product?</h2>
+                  <p>We debated this one for a while. The answer is pretty clear:</p>
+                  <blockquote>
+                    <p>Go with one RAG system per product.</p>
+                  </blockquote>
+                  <p>Why?</p>
+                  <ul>
+                    <li>Cleaner separation of content</li>
+                    <li>More accurate retrieval</li>
+                    <li>Less chance of mixing up concepts from different products</li>
+                    <li>Easier to debug and improve over time</li>
+                  </ul>
+                  <p>The only time you might want to combine them is if your products are tightly integrated - or you've built a solid routing layer to figure out which product the question is about. Based on strategy you pick, quality of the answer from RAG/LLM can wildly swing.</p>
+                
+                  <h2>How do we decide which product's RAG system to use for a query?</h2>
+                  <p>This is where routing comes in. You've got a few options:</p>
+                  <ul>
+                    <li>Keyword matching - Quick and dirty. Works if people mention product names, but brittle if they don't.</li>
+                    <li>Embedding similarity - Use vector embeddings to compare the query to each product's description and see which one it's closest to.</li>
+                    <li>LLM-based routing - Ask the LLM to decide which product the question is about. Slower, but smarter.</li>
+                  </ul>
+                  <p>In practice, a hybrid approach works best:</p>
+                  <ul>
+                    <li>Try keyword match first (fast)</li>
+                    <li>Fallback to embeddings</li>
+                    <li>If still unsure, ask the user: "Are you asking about Product A or B?"</li>
+                  </ul>
+                
+                  <p class="has-text-centered is-size-7 has-text-grey"><a href="/newsletter/nl-home.html" target="_blank" rel="noopener noreferrer">Sign up for our newsletter to read without ads</a></p>
+
+                  <show-ad 
+                      data-slot="6a6ef13f922d93a0ee2f83d402b9bf87"
+                      data-published="2025-05-07" data-delay-weeks="1">
+                  </show-ad>
+
+                  <h2>Does one RAG system = one vector table?</h2>
+                  <p>Not necessarily, but it often helps to think that way. You can either:</p>
+                  <ul>
+                    <li>Create a separate vector index/collection per product (cleaner)</li>
+                    <li>Store all chunks in one table but tag them with metadata like "product": "ProductA" and filter at query time</li>
+                  </ul>
+                  <p>Both approaches work. The first keeps things simple. The second is more flexible if you want to support cross-product search later.</p>
+                
+                  <h2>How should I chunk my docs before embedding them?</h2>
+                  <p>Chunking is so underrated - get this wrong and everything else falls apart.</p>
+                  <p>Here's what works:</p>
+                  <ul>
+                    <li>Use semantic chunking - break docs by headers, sections, or bullet points instead of fixed lengths</li>
+                    <li>Keep chunks between 100–300 tokens for best balance</li>
+                    <li>Include headings or section titles in the chunk - it improves retrieval accuracy</li>
+                  </ul>
+                  <p>Most modern RAG frameworks support smart chunking out of the box (LangChain, LlamaIndex, Haystack, etc.).</p>
+                
+                  <h2>Should I fine-tune the LLM or just improve my retrieval?</h2>
+                  <p>Unless you have a very specific use case (like legal summaries or structured formats), you probably don't need fine-tuning.</p>
+                  <p>Fine-tuning:</p>
+                  <ul>
+                    <li>Is expensive and time-consuming</li>
+                    <li>Requires a lot of carefully labeled examples</li>
+                    <li>Breaks easily when things change</li>
+                  </ul>
+                  <p>Start by improving your retrieval pipeline:</p>
+                  <ul>
+                    <li>Better chunking</li>
+                    <li>Smarter ranking</li>
+                    <li>Clearer metadata</li>
+                  </ul>
+                  <p>You'll get most of the performance gains there - no GPU cluster required.</p>
+                
+                  <h2>How do we test whether our multi-RAG setup is working?</h2>
+                  <p>Treat each product's RAG system like a mini product in itself. For each one:</p>
+                  <ul>
+                    <li>Write 10–20 realistic user questions</li>
+                    <li>See what chunks are being retrieved - are they relevant?</li>
+                    <li>Compare model answers with and without context injected</li>
+                  </ul>
+                  <p>Track things like:</p>
+                  <ul>
+                    <li>How often retrieval hits the right content</li>
+                    <li>Whether the model gives helpful answers</li>
+                    <li>If it hallucinates less with RAG than without</li>
+                  </ul>
+                  <p>You can use LangChain's evals, LlamaIndex evals, or just a simple spreadsheet + eyeballs.</p>
+                
+                  <h2>How do we keep the RAG system updated over time?</h2>
+                  <p>Your docs and knowledge base aren't static - your RAG system shouldn't be either.</p>
+                  <p>To keep things fresh:</p>
+                  <ul>
+                    <li>Auto-ingest updates from product docs, release notes, changelogs, FAQs</li>
+                    <li>Detect changes via hashes or timestamps</li>
+                    <li>Re-chunk and re-embed changed content</li>
+                    <li>Rebuild or refresh the vector index as needed</li>
+                  </ul>
+                  <p>Think of RAG as a living knowledge layer, not a one-time dump.</p>
+                
+                  <h2>Final Takeaways</h2>
+                  <p>If you're building internal tooling with RAG:</p>
+                  <ul>
+                    <li>Keep each product's knowledge base clean and scoped</li>
+                    <li>Don't flood the model with irrelevant text - retrieval quality > quantity</li>
+                    <li>Build a smart routing layer if you're dealing with multiple products</li>
+                    <li>Focus on chunking, ranking, and context formatting before jumping to fine-tuning</li>
+                  </ul>
+                  <p>It's not about making the LLM "smarter" - it's about feeding it the right stuff at the right time.</p>
+                </div>
+                
+            </DIV>
+
+            <DIV class="blog-container content">
+                <hr class="separator"></hr>
+
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                </div>
+
+                <hr class="separator"></hr>
+
+                <div>
+                <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+                </div>
+            </DIV>
+
+        </section>  
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+        <script defer src="/js/show-ad.js"></script>
+        <script defer src="/js/no-ads-cta.js"></script>
+
+    </body>
+</html>
+
