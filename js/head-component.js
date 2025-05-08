@@ -1,5 +1,6 @@
 (function() {
     let pageDescription = window.pageMetaDescription || "Grey Neurons - Experience the wisdom";
+    let canonicalLink = window.canonicalLink || "";
 
     // Ensure page stays hidden until everything loads
     document.documentElement.style.visibility = "hidden";
@@ -35,6 +36,14 @@
         }
         document.head.appendChild(metaTag);
     });
+
+    // Add canonical link if defined
+    if (canonicalLink) {
+        const linkTag = document.createElement('link');
+        linkTag.setAttribute('rel', 'canonical');
+        linkTag.setAttribute('href', canonicalLink);
+        document.head.appendChild(linkTag);
+    }
 
     // Inject Cloudflare Analytics only once
     if (!document.getElementById('cf-analytics')) {
