@@ -19,20 +19,23 @@
         <span slot="bread-crumb-current-page">Snipe-IT</span>
       </blog-header>
 
- 
         <section class="section">
 
-
             <div class="blog-container content">
+              <h1>Track What You Own: Getting Started with Snipe-IT for SMB Asset Management</h1>
+              <p><i>Your first step toward security isn't firewalls or fancy detection systems - it's knowing what you own.</i></p>
               
+              <hr class="separator" />
+
               <div class="field is-grouped is-grouped-centered">
                 <p class="control">
                   <social-share></social-share>
                 </p>
               </div>
+              <hr class="separator" />
 
-              <h1>Track What You Own: Getting Started with Snipe-IT for SMB Asset Management</h1>
-              <p>Your first step toward security isn't firewalls or fancy detection systems - it's knowing what you own.</p>
+
+
 
               <p>In an <a href="/blogs/open-source-security-stack.html" target="_blank" rel="noreferrer noopener">earlier article</a>, we introduced the <strong>NIST Cybersecurity Framework</strong> - one of the most widely adopted standards for structuring an organization's security posture. We also explored how a curated set of open-source and free tools, chosen for their ease of installation and real-world usefulness, can be mapped to the five NIST functions: Identify, Protect, Detect, Respond, and Recover. </p>
 
@@ -59,6 +62,25 @@
                 <li><strong>API support</strong>: Yes</li>
               </ul>
             
+              <div class="has-text-centered">
+                <hr class = "separator" />
+                
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 300,
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+        
+                <hr class = "separator" />
+        
+              </div>
+
+
               <h2>Installing Snipe-IT</h2>
               <p>Snipe-IT runs best on Linux. If you're on Windows, don't worry - you can still use it by running it inside WSL (Windows Subsystem for Linux). There are two main ways to install it: the traditional Linux setup, or the Docker route. We're going with Docker, because it's usually the easiest option - no messing around with PHP versions, database drivers, or other system dependencies. Just spin it up and you're good to go. In our case, we'll be using WSL Ubuntu to install Snipe-IT.</p>
               <p>Docker installation is fairly straightforward, and the Snipe-IT documentation covers it well - with a few small gotchas that we'll point out as we go along.</p>
@@ -85,6 +107,25 @@
               <p><code>sudo mkdir -p</code> ensures the full path is created<br>
               <code>chown</code> gives your user permission to manage it without <code>sudo</code> every time</p>
             
+
+              <div class="has-text-centered">
+                <hr class = "separator" />
+                
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 300,
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+        
+                <hr class = "separator" />
+        
+              </div>
+
               <h3>Step #2: Download docker compose and <code>.env</code> file</h3>
               <p>Snipe-IT provides a <code>docker-compose.yml</code> file and a sample <code>.env</code> file to help you complete the Docker-based setup. The <code>docker-compose.yml</code> defines two key services: one for the application and one for the database. It also specifies named volumes for persisting data, so your database and uploaded files aren't lost when containers are restarted.</p>
               <p>From your WSL terminal, navigate to the <code>/opt/snipeit</code> directory and then run the following command to download the official <code>docker-compose.yml</code> file for Snipe-IT:</p>
@@ -126,6 +167,24 @@
               ⚠️ Do not change it after setup, or you may break access to encrypted data (e.g., login sessions)</p>
               <p>We'll generate the key in the next step using a built-in Laravel command.</p>
             
+              <div class="has-text-centered">
+                <hr class = "separator" />
+                
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 300,
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+        
+                <hr class = "separator" />
+        
+              </div>
+
               <h3>Step 4: Generating the <code>APP_KEY</code></h3>
               <p>From the Snipe-IT installation directory (<code>/opt/snipeit</code>), run the following command to generate a secure application key:</p>
               <pre><code>docker compose run --rm app php artisan key:generate --show</code></pre>
@@ -162,8 +221,25 @@
               <h3>Step 7: Login to the web Application</h3>
               <p>When you log in using the admin account created during the setup, you'll be greeted with the Snipe-IT dashboard. It provides a high-level overview of your assets, licenses, accessories, consumables, and more - all easily accessible from the sidebar.</p>
               <p>You can start adding new records using the "Create New" button at the top right, or explore sections like Assets, People, and Settings from the left-hand menu.</p>
-              <p><em>snipe-IT home page</em></p>
             
+              <div class="has-text-centered">
+                <hr class = "separator" />
+                
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 300,
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+        
+                <hr class = "separator" />
+        
+              </div>
+
               <h2>Conclusion</h2>
               <p>With that, you've successfully completed the full setup of Snipe-IT using Docker on a WSL-based Ubuntu environment. We covered:</p>
               <ul>
