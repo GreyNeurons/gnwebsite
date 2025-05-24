@@ -20,6 +20,7 @@ class BlogFooter extends HTMLElement {
               <p class = "subtitle is-size-7 has-text-grey-light ">
                   Experience the wisdom
               </p>
+              <p class="has-text-white  is-size-7 is-family-monospace"> &copy; 2025 by GreyNeurons Consulting LLP. All rights reserved. </p>
             </div>
           </div>
           <div class="column has-background-dark has-text-center">
@@ -33,8 +34,15 @@ class BlogFooter extends HTMLElement {
           </div>
 
           <div class="column has-background-dark">
-            <div class="content has-text-white has-text-right is-size-7 is-family-monospace"> &copy; 2025 by GreyNeurons Consulting LLP. All rights reserved. </div>
+            <div class="content has-text-white has-text-right is-size-7 is-family-monospace">
+              <a  href ="/legal/privacy-policy.html">Privacy Policy</a><br>
+              <a  href ="/legal/terms-of-use.html">Terms of use</a><br>
+              <a  href ="https://greyneurons.beehiiv.com/">Unsubscribe from Newsletter</a>
+
+            </div>
+
           </div>
+
         </div>
       </div>
 
