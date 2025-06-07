@@ -6,6 +6,12 @@
   <title>Communication Channels - Brooks' Law</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .chart-container {
+      position: relative;
+      height: 400px;
+    }
+  </style>
 </head>
 <body>
   <section class="section">
@@ -20,20 +26,30 @@
         <p>The formula for calculating communication channels in a team is <code>n(n-1)/2</code>, where <code>n</code> is the number of people. This simple tool helps visualize that growth.</p>
       </div>
 
-      <div class="field">
-        <label class="label">Team Size</label>
-        <div class="control">
-          <input class="input" type="number" id="teamSize" min="1" max="100" value="5">
+      <div class="columns is-variable is-6 is-multiline">
+        <div class="column is-full-tablet is-half-desktop">
+          <div class="box">
+            <h2 class="subtitle">Communication Channels Growth</h2>
+            <div class="chart-container">
+              <canvas id="channelsChart"></canvas>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="notification is-info">
-        Total communication channels: <strong id="channelCount">10</strong>
-      </div>
+        <div class="column is-full-tablet is-half-desktop">
+          <div class="box">
+            <div class="field">
+              <label class="label">Team Size</label>
+              <div class="control">
+                <input class="input" type="number" id="teamSize" min="1" max="100" value="5">
+              </div>
+            </div>
 
-      <div class="box">
-        <h2 class="subtitle">Communication Channels Growth</h2>
-        <canvas id="channelsChart"></canvas>
+            <div class="notification is-info">
+              Total communication channels: <strong id="channelCount">10</strong>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -61,6 +77,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             title: { display: true, text: 'Team Size' }
