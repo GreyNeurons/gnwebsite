@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Communication Channels - Brooks' Law</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <section class="section">
@@ -29,12 +30,48 @@
       <div class="notification is-info">
         Total communication channels: <strong id="channelCount">10</strong>
       </div>
+
+      <div class="box">
+        <h2 class="subtitle">Communication Channels Growth</h2>
+        <canvas id="channelsChart"></canvas>
+      </div>
     </div>
   </section>
 
   <script>
     const teamSizeInput = document.getElementById('teamSize');
     const channelCountOutput = document.getElementById('channelCount');
+    const chartCtx = document.getElementById('channelsChart').getContext('2d');
+
+    const sizes = Array.from({ length: 100 }, (_, i) => i + 1);
+    const channelData = sizes.map(n => n * (n - 1) / 2);
+
+    const channelsChart = new Chart(chartCtx, {
+      type: 'line',
+      data: {
+        labels: sizes,
+        datasets: [{
+          label: 'Communication Channels (n(n-1)/2)',
+          data: channelData,
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            title: { display: true, text: 'Team Size' }
+          },
+          y: {
+            title: { display: true, text: 'Communication Channels' },
+            beginAtZero: true
+          }
+        }
+      }
+    });
 
     function updateChannelCount() {
       const n = parseInt(teamSizeInput.value);
