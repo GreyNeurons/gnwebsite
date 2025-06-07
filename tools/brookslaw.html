@@ -29,7 +29,7 @@
       <div class="columns is-variable is-6 is-multiline">
         <div class="column is-full-tablet is-half-desktop">
           <div class="box">
-            <h2 class="subtitle">Communication Channels Growth</h2>
+            <h2 class="subtitle">Communication Channels & Productivity</h2>
             <div class="chart-container">
               <canvas id="channelsChart"></canvas>
             </div>
@@ -65,19 +65,35 @@
 
     const sizes = Array.from({ length: 100 }, (_, i) => i + 1);
     const channelData = sizes.map(n => n * (n - 1) / 2);
+    const productivityData = sizes.map(n => {
+      const channels = n * (n - 1) / 2;
+      let prod = 100 - (channels / n);
+      return prod < 0 ? 0 : parseFloat(prod.toFixed(2));
+    });
 
     const channelsChart = new Chart(chartCtx, {
       type: 'line',
       data: {
         labels: sizes,
-        datasets: [{
-          label: 'Communication Channels (n(n-1)/2)',
-          data: channelData,
-          borderColor: 'rgba(54, 162, 235, 1)',
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          fill: true,
-          tension: 0.3
-        }]
+        datasets: [
+          {
+            label: 'Communication Channels (n(n-1)/2)',
+            data: channelData,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: 'Estimated Productivity per Person (%)',
+            data: productivityData,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            fill: true,
+            tension: 0.3,
+            yAxisID: 'y1'
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -88,7 +104,17 @@
           },
           y: {
             title: { display: true, text: 'Communication Channels' },
-            beginAtZero: true
+            beginAtZero: true,
+            position: 'left'
+          },
+          y1: {
+            title: { display: true, text: 'Productivity (%)' },
+            beginAtZero: true,
+            max: 100,
+            position: 'right',
+            grid: {
+              drawOnChartArea: false
+            }
           }
         }
       }
@@ -99,7 +125,6 @@
       const channels = n * (n - 1) / 2;
       channelCountOutput.textContent = isNaN(channels) ? '-' : channels;
 
-      // Assume base productivity is 100%, reduce by 1% per channel per team member beyond 1
       let productivity = 100 - (channels / n);
       if (productivity < 0) productivity = 0;
       productivityOutput.textContent = isNaN(productivity) ? '-' : productivity.toFixed(0) + '%';
