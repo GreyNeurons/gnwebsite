@@ -23,7 +23,7 @@
 
         <p>Brooks, drawing on his experience managing IBM's System/360 project, observed that increasing the team size on a delayed project often increases complexity and communication overhead. New team members require onboarding and guidance, which diverts time and resources from existing developers. Moreover, the number of communication channels grows rapidly with team size, making coordination more difficult.</p>
 
-        <p>The formula for calculating communication channels in a team is <code>n(n-1)/2</code>, where <code>n</code> is the number of people. This simple tool helps visualize that growth.</p>
+        <p>The formula for calculating communication channels in a team is <code>n(n-1)/2</code>, where <code>n</code> is the number of people. This simple tool helps visualize that growth. We've also added a simple productivity estimation based on overhead from communication complexity.</p>
       </div>
 
       <div class="columns is-variable is-6 is-multiline">
@@ -48,6 +48,9 @@
             <div class="notification is-info">
               Total communication channels: <strong id="channelCount">10</strong>
             </div>
+            <div class="notification is-warning">
+              Estimated productivity per person: <strong id="productivity">80%</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -57,6 +60,7 @@
   <script>
     const teamSizeInput = document.getElementById('teamSize');
     const channelCountOutput = document.getElementById('channelCount');
+    const productivityOutput = document.getElementById('productivity');
     const chartCtx = document.getElementById('channelsChart').getContext('2d');
 
     const sizes = Array.from({ length: 100 }, (_, i) => i + 1);
@@ -94,6 +98,11 @@
       const n = parseInt(teamSizeInput.value);
       const channels = n * (n - 1) / 2;
       channelCountOutput.textContent = isNaN(channels) ? '-' : channels;
+
+      // Assume base productivity is 100%, reduce by 1% per channel per team member beyond 1
+      let productivity = 100 - (channels / n);
+      if (productivity < 0) productivity = 0;
+      productivityOutput.textContent = isNaN(productivity) ? '-' : productivity.toFixed(0) + '%';
     }
 
     teamSizeInput.addEventListener('input', updateChannelCount);
