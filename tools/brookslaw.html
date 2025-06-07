@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Communication Channels - Brooks' Law</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">Brooks' Law: Communication Channels</h1>
+
+      <div class="field">
+        <label class="label">Team Size</label>
+        <div class="control">
+          <input class="input" type="number" id="teamSize" min="1" max="100" value="5">
+        </div>
+      </div>
+
+      <div class="notification is-info">
+        Total communication channels: <strong id="channelCount">10</strong>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const teamSizeInput = document.getElementById('teamSize');
+    const channelCountOutput = document.getElementById('channelCount');
+
+    function updateChannelCount() {
+      const n = parseInt(teamSizeInput.value);
+      const channels = n * (n - 1) / 2;
+      channelCountOutput.textContent = isNaN(channels) ? '-' : channels;
+    }
+
+    teamSizeInput.addEventListener('input', updateChannelCount);
+    window.addEventListener('DOMContentLoaded', updateChannelCount);
+  </script>
+</body>
+</html>
