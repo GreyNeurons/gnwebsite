@@ -1,0 +1,211 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Minimum Viable Security, Part 1: What to Fix Before Your Product Goes Live";
+          
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page"></span>
+      </blog-header>
+
+ 
+            
+      <DIV  class="blog-container content">
+
+          <div id ="content" class="blog-container content">
+              <h1>Minimum Viable Security, Part 1: What to Fix Before Your Product Goes Live</h1>
+              <i>A developer-first guide to reducing risk with simple interventions that actually work.</i>
+          </div>
+          
+          <hr class="separator"></hr>
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+            </div>
+          <hr class="separator"></hr>
+
+      </DIV>
+
+      <!-- *** Actual article content  starts here *** -->
+
+      <article class="blog-container content">
+      
+          Let’s be honest — everyone says cybersecurity matters. You’ve got frameworks like NIST and CIS, developer checklists like OWASP, and a million tools out there promising to keep you safe. But in the real world? Teams are scrambling to meet deadlines, and no one has the luxury to stop and roll out a full security program before the next release goes live.
+
+          <p>That’s the reality this article is written for.</p>
+
+          <p>These ideas aren’t meant to be perfect or exhaustive. They’re not “the full NIST implementation” or a grand strategy deck. They’re just small, practical things you can start doing right now — while the bigger security pieces are still falling into place. Think of them as quick wins that still map back to core NIST functions, especially in the Detect and Protect categories, even if we’re not quoting the framework every step of the way.</p>
+
+          <p>Most importantly, this is about changing the way teams feel about security. Developers don’t want more policy docs or yet another awareness session. What they do want is stuff they can actually use — simple, fast, hands-on steps that make their code and their product safer without killing their momentum.</p>
+
+          <p>For this discussion, let’s assume we’re dealing with a typical web application, with both the web server and database server deployed on a public cloud.</p>
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+
+      <h3>Step 1: Quick Scan of Your Application Server</h3> 
+
+        <p>Run a quick scan of your application server using an online VAPT tool like <a href="https://pentest-tools.com?utm_source=greyneuronsconsulting" target="_blank" rel="noreferrer noopener">pentest-tools.com</a>
+
+        . Their free plan is more than enough to catch the obvious stuff. You’re not aiming for full coverage — just a clean, actionable baseline. Run the scan, look at what it flags, and fix the critical and high-severity issues first. These are usually the low-hanging fruit that give you the biggest return for the least effort.</p>
+
+        <p>When you share the report with your team, don’t bury it in NIST acronyms or compliance jargon. Make it real — tie each issue to a known breach or incident. If the scan shows passwords in URLs, bring up how that led to data leaks in the past. If there’s an outdated server component, reference Equifax or Capital One. And share these scans regularly. Daily, if possible. That keeps the signal loud and clear: this stuff matters.</p>
+
+        <p>And if something breaks because of a fix? Let it break. Just like the famous Toyota production line, where everything stops if even one bolt is out of place — that’s the point. Break early. Break visibly. Breaking early means you find dependencies and risks before your users do. It’s a vital part of moving fast but safely.</p>
+
+                  <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+
+        <h3>Step #2: Scan for Open Ports on the App Server</h3> <p>Next, let’s check what doors are open on your application server — literally. Use a simple port scanner (PenTestTools has one built in) to see which ports are exposed to the outside world.</p>
+
+        <p>For most web applications, port 443 (HTTPS) is the only one that should be open. Everything else — SSH, FTP, old test ports — should be blocked or filtered. If you see anything beyond 443, that’s a red flag. Lock it down.</p>
+
+        <p>And here too, follow the Toyota mindset: shut it down even if something breaks. It’s better to discover a dependency now than to find out later that an open port became your attacker’s entry point. Let it break. Then fix it properly.</p>
+
+        <h3>Step #3: Lock Down the Database Server</h3> <p>Now that your app server is in a reasonable shape, it’s time to look at your database. Here’s the golden rule: your DB server should never be exposed to the public internet. It should only accept connections from your application server — ideally via a private subnet, security group, or internal firewall rule.</p>
+
+        <p>To check this, again use a port scanner from an external network and make sure the usual suspects (3306 for MySQL, 5432 for PostgreSQL, etc.) are not reachable. If they are, close them immediately — even if it breaks something.</p>
+
+        <p> <span>🛑</span> If your DB is exposed to the public net, it’s not “if” it’ll be attacked — it’s “when.” </p>
+
+        <p>Treat it like the back-end vault it is. Lock it behind layers of protection, and make sure only the app server has a key.</p>
+
+                  <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+
+        <h3>Conclusion</h3> <p>The activities covered here align closely with the NIST Cybersecurity Framework’s Detect function, focusing on identifying potential security issues through network exposure and service visibility. This ensures that even at this foundational stage, we are operating within a well-established security model rather than ad hoc checks.</p>
+
+        <p>So far, we’ve covered the foundational 60–70% of the attack surface — focusing on network exposure and visible services. Key areas such as authentication, authorization, and database security remain to be explored.</p>
+
+        <p>In upcoming articles, we will continue this structured approach by introducing simple, quick-to-implement tools that fit seamlessly into development workflows. The goal is to build a strong security culture while making meaningful progress.</p>
+
+        <p>Security is a journey, and by breaking it down into manageable, actionable steps, we set ourselves up to get things done right and move steadily in the right direction.</p>
+
+        <h3>Side Note on Tools</h3> 
+        <p>For this assessment, we used <a href="https://pentest-tools.com?utm_source=https://greyneuronsconsulting.com" target="_blank" rel="noreferrer noopener">PenTestTools</a>, a free online platform that offers straightforward scanning and decent reporting capabilities, making it accessible and efficient for quick security checks. Alternatively, similar results could have been achieved using open-source tools like <a href="https://wapiti.sourceforge.io?utm_source=https://greyneuronsconsulting.com" target="_blank" rel="noreferrer noopener">Wapiti</a> for web vulnerability scanning or <a href="https://nmap.org?utm_source=https://greyneuronsconsulting.com" target="_blank" rel="noreferrer noopener">Nmap</a> for network port scanning, depending on preference and environment.</p>
+
+        <p>These tools are not just about finding issues; they’re about building a culture of security awareness and proactive risk management within development teams. By integrating these checks into the daily workflow, we can shift the mindset from reactive to proactive, ensuring that security becomes an integral part of the development process.</p>
+
+        <p>Stay tuned for more practical steps in our Minimum Viable Security series, where we’ll continue to explore how to build a robust security posture without slowing down development.</p>
+
+                  <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+
+        <h3>Related References</h3> 
+        <ul> 
+          <li> 
+            <a href="/blogs/open-source-security-stack.html" target="_blank" rel="noreferrer noopener">A Ready-Made NIST mapped Cybersecurity Stack for SMBs Using Free, Open-Source Tools</a> — This is a plug-and-play security stack for the real world — NIST-mapped, open-source powered, and ready to deploy… </li> 
+            <li> <a href="/blogs/snipe-IT-install-guide.html" target="_blank" rel="noreferrer noopener">Getting Started with Snipe-IT: Open Source Asset Management for SMBs</a> — Before firewalls or fancy tools, start with the basics: know what assets you own. </li> </ul> 
+    
+      </article>
+      <!-- *** Actual article content  ends here *** -->
+
+      <DIV class="blog-container content">
+          <hr class="separator"></hr>
+
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+          </div>
+
+          <hr class="separator"></hr>
+
+          <div>
+          <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+          </div>
+      </DIV>
+
+
+      <!-- Custom Footer Component -->
+      <blog-footer></blog-footer>
+
+      <!-- Include the JS file where BlogFooter is defined -->
+      <script defer src="/js/blog-footer.js"></script>
+      <script defer src="/js/blog-header.js"></script>
+      <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
+
