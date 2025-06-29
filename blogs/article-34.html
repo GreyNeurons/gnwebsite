@@ -65,7 +65,25 @@
             <li><strong>Ollama / OpenRouter:</strong> We need an LLM for the scoring part. We'll set it up to work with either Ollama (to run models like Mistral or Llama 3 locally on your machine) or OpenRouter (a fantastic service that gives you access to dozens of cloud-based models via a single API).</li>
             <li><strong>Pdfplumber:</strong> A handy library to extract clean text from PDF resumes.</li>
         </ul>
-        
+         <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
         <h2>Step 1: Setting Up the Project</h2>
         <p>First, let's get our project structure and dependencies in order.</p>
         <p><strong>Create a project folder</strong>. Inside, create a directory called <code>resumes</code>. This is where you'll drop all the PDF resumes you want to process.</p>
@@ -78,6 +96,25 @@
 
           <pre><code>pip install langchain langchain-chroma langchain-huggingface pdfplumber openai ollama tqdm python-dotenv</code></pre>
 
+         <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->  
         <h2>Step 2: The Memory Core - Processing and Storing Resumes</h2>
         <p>Our AI needs to read and remember every resume. We'll do this by extracting the text, turning it into a "vector embedding," and storing it in ChromaDB.</p>
         <p>An embedding is just a list of numbers (a vector) that represents the meaning of a piece of text. Documents with similar meanings will have similar vectors.</p>
@@ -179,6 +216,26 @@ else:
     vectorstore = Chroma.from_documents(resumes_to_process, embedder, persist_directory="chroma_db")
         </code></pre>
         
+         <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+
         <h2>Step 3: The First Cut - Semantic Search</h2>
         <p>With our resume database ready, we can now perform the first stage of our process. We simply load our job description and ask ChromaDB for the most similar documents.</p>
 
@@ -191,6 +248,26 @@ else:
         </code></pre>
         <p><code>similarity_search</code> embeds our JD and searches the entire database for the <code>k</code> resumes whose vectors are mathematically closest to it. We now have our shortlist!</p>
         
+         <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+
         <h2>Step 4: The Expert's Verdict - LLM Re-ranking</h2>
         <p>This is where the real magic happens. We take the top candidates from the semantic search and pass them, one by one, to an LLM for a detailed review.</p>
         <p>The key is the prompt. We need to give the LLM clear instructions, a specific role, and a desired output format.</p>
@@ -239,6 +316,26 @@ else:
         </code></pre>
         <p>Finally, we loop through our results from the semantic search, call the appropriate scoring function, and print the final, ranked list. We also add a cache here to avoid re-scoring a candidate for the same JD, saving time and API credits.</p>
         
+         <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+           
         <h2>The Final Result</h2>
         <p>When you run the script (<code>python main.py --jd jd.txt</code>), the output is a beautifully formatted, ranked list of the top candidates.</p>
         <pre>
