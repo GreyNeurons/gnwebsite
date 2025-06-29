@@ -1,0 +1,334 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "I Built an AI to Read Resumes For Me. Here’s How You Can, Too.";
+          
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">AI Resume Ranker</span>
+      </blog-header>
+
+ 
+            
+      <DIV  class="blog-container content">
+          <h1>I Built an AI to Read Resumes For Me. Here’s How You Can, Too.</h1>
+
+            <p><em>A step-by-step guide to building your own AI-powered JD-Resume Matcher using Python and open-source tools.</em></p>
+          <hr class="separator"></hr>
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+            </div>
+          <hr class="separator"></hr>
+
+      </DIV>
+
+      <!-- *** Actual article content  starts here *** -->
+
+    <article class="blog-container content">
+        <figure>
+            <img src="/img/article-34.webp" alt="A robot sitting at a desk, looking at a stack of resumes.">
+            <figcaption class="has-text-centered">A robot sitting at a desk, looking at a stack of resumes.</figcaption>
+        </figure>
+        
+        <p>We’ve all been there. You post a job opening, and within days, your inbox is flooded with hundreds of resumes. The perfect candidate is likely in that digital pile, but the thought of manually sifting through every single one is daunting, time-consuming, and frankly, a bit soul-crushing.</p>
+        
+        <p>What if you could have an assistant—an intelligent, tireless assistant—that could read every resume, understand its content, and present you with a ranked shortlist of the most promising candidates, complete with a score and a justification?</p>
+        
+        <p>That’s exactly what I built. In this article, I’ll walk you through how to create your own AI-powered JD-Resume Matcher using Python, some incredible open-source libraries, and the power of Large Language Models (LLMs).</p>
+        
+        <h2>The Game Plan: A Two-Stage Approach</h2>
+        <p>We can't just throw a hundred resumes at an LLM and ask, "Who's the best?" That would be slow and expensive. Instead, we'll use a smarter, two-stage process that mimics how a human recruiter works:</p>
+        <ol>
+            <li><strong>The Quick Scan (Semantic Search):</strong> First, we’ll do a broad, efficient sweep to find the resumes that are semantically similar to the job description. Think of this as quickly sorting resumes into a "relevant" pile and a "not relevant" pile without reading every single word. We'll use a Vector Database for this.</li>
+            <li><strong>The Deep Dive (LLM Re-ranking):</strong> Once we have a small list of top candidates (say, the top 3-5), we’ll hand them over to a powerful LLM for a detailed, qualitative review. The LLM will act as our expert recruiter, scoring each candidate and providing a written reason for its assessment.</li>
+        </ol>
+        <p>This approach gives us the best of both worlds: the speed and scale of vector search, combined with the nuanced understanding of an LLM.</p>
+        
+        <h2>The Toolkit: Our Libraries and Frameworks</h2>
+        <p>Here are the key tools we'll be using to build our assistant:</p>
+        <ul>
+            <li><strong>Python:</strong> The backbone of our project.</li>
+            <li><strong>LangChain:</strong> The "glue" for our AI application. It makes it incredibly easy to chain together different components like LLMs, document loaders, and vector stores.</li>
+            <li><strong>Hugging Face Transformers:</strong> For accessing a powerful, open-source sentence embedding model that will turn our text into numerical vectors.</li>
+            <li><strong>ChromaDB:</strong> A super simple, open-source vector database that we can run right on our machine. This will be our "long-term memory" for resumes.</li>
+            <li><strong>Ollama / OpenRouter:</strong> We need an LLM for the scoring part. We'll set it up to work with either Ollama (to run models like Mistral or Llama 3 locally on your machine) or OpenRouter (a fantastic service that gives you access to dozens of cloud-based models via a single API).</li>
+            <li><strong>Pdfplumber:</strong> A handy library to extract clean text from PDF resumes.</li>
+        </ul>
+        
+        <h2>Step 1: Setting Up the Project</h2>
+        <p>First, let's get our project structure and dependencies in order.</p>
+        <p>Create a project folder. Inside, create a directory called <code>resumes</code>. This is where you'll drop all the PDF resumes you want to process.</p>
+        <p>Create your Job Description file. Create a file named <code>jd.txt</code> and paste the job description you're hiring for into it.</p>
+        <p>Set up your environment. You’ll need an API key if you’re using OpenRouter. Create a .env file in your project root and add your key:</p>
+
+        <pre><code>OPENROUTER_API_KEY="your-openrouter-api-key-here"</code></pre>
+
+        <p>Install the libraries.</p>
+
+          <pre><code>pip install langchain langchain-chroma langchain-huggingface pdfplumber openai ollama tqdm python-dotenv</code></pre>
+
+        <h2>Step 2: The Memory Core - Processing and Storing Resumes</h2>
+        <p>Our AI needs to read and remember every resume. We'll do this by extracting the text, turning it into a "vector embedding," and storing it in ChromaDB.</p>
+        <p>An embedding is just a list of numbers (a vector) that represents the meaning of a piece of text. Documents with similar meanings will have similar vectors.</p>
+        <p>Here's how we load the resumes. This function does three key things:</p>
+        <ol>
+            <li>Uses <code>pdfplumber</code> to extract text from each PDF.</li>
+            <li>Uses an LLM to pull out structured details like name, email, and experience. We cache these results so we don't have to re-process resumes we've already seen.</li>
+            <li>Wraps the text and the extracted details into a LangChain <code>Document</code> object.</li>
+        </ol>
+        <pre><code>
+import os
+import glob
+import json
+import pdfplumber
+from langchain.schema import Document
+from tqdm import tqdm
+
+# (This code is part of the larger script)
+
+def extract_text_from_pdf(file_path):
+    """Extracts text content from a PDF file."""
+    with pdfplumber.open(file_path) as pdf:
+        return "\n".join(page.extract_text() for page in pdf.pages if page.extract_text())
+def get_extraction_prompt(resume_text):
+    """Generates the prompt for the LLM to extract structured data from a resume."""
+    return f"""
+You are an expert AI assistant specializing in parsing and extracting structured information from resumes.
+Your task is to extract the following details from the provided resume text and return them as a valid JSON object.
+The fields to extract are:
+- "name": The full name of the candidate.
+- "email": The primary email address.
+- "phone": The primary phone number.
+- "years_of_experience": The total years of professional experience.
+- "education": A brief summary of the highest or most relevant educational qualification.
+- "city": The candidate's city or location.
+If a specific field is not found, the value for that key should be "Not found".
+Resume Text (first 2000 characters):
+---
+{resume_text[:2000]}
+---
+"""
+def extract_resume_details(resume_text, scorer):
+    """Uses an LLM to extract structured details from resume text."""
+    # ... (Implementation for calling Ollama or OpenRouter) ...
+    # This function calls the LLM with the prompt above and returns a JSON object.
+    pass # See full script for implementation
+def load_resumes(scorer):
+    """
+    Loads resumes, extracts their text and structured details (with caching),
+    and returns them as a list of LangChain Document objects.
+    """
+    resumes = []
+    extraction_cache = load_cache("extraction_cache.json") # Helper to load a cache file
+    cache_updated = False
+    resume_files = glob.glob(f"resumes/*.pdf")
+    if not resume_files:
+        return []
+    print(f"\nProcessing new resumes from 'resumes' directory...")
+    for file_path in tqdm(resume_files, desc="Extracting resume details"):
+        filename = os.path.basename(file_path)
+        text = extract_text_from_pdf(file_path)
+        if not text:
+            continue
+        if filename in extraction_cache:
+            details = extraction_cache[filename]
+        else:
+            # This is where we call the LLM to get structured data
+            details = extract_resume_details(text, scorer)
+            extraction_cache[filename] = details
+            cache_updated = True
+        metadata = {"source": filename, **details}
+        resumes.append(Document(page_content=text, metadata=metadata))
+    if cache_updated:
+        save_cache(extraction_cache, "extraction_cache.json") # Helper to save the cache
+    return resumes
+
+
+        </code></pre>
+        <p>Now, in our main script logic, we initialize the embedding model and the vector store. The script is smart: if a database already exists, it loads it. If not, it creates one. It also only adds new resumes found in the <code>resumes</code> folder, making it efficient for ongoing use.</p>
+
+        <pre><code>
+          # (In the main() function)
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+# Initialize the embedding model.
+print("\nInitializing embedding model: all-MiniLM-L6-v2")
+embedder = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+# Check for new resumes to process
+resumes_to_process = load_resumes(args.scorer)
+# Load or create the vector store
+if os.path.exists("chroma_db"):
+    print("Loading existing vector store...")
+    vectorstore = Chroma(persist_directory="chroma_db", embedding_function=embedder)
+    if resumes_to_process:
+        print(f"Adding {len(resumes_to_process)} new resume(s) to the database...")
+        vectorstore.add_documents(resumes_to_process)
+else:
+    print(f"Creating a new vector store with {len(resumes_to_process)} resume(s)...")
+    vectorstore = Chroma.from_documents(resumes_to_process, embedder, persist_directory="chroma_db")
+        </code></pre>
+        
+        <h2>Step 3: The First Cut - Semantic Search</h2>
+        <p>With our resume database ready, we can now perform the first stage of our process. We simply load our job description and ask ChromaDB for the most similar documents.</p>
+
+        <pre><code>
+          print("\nPerforming initial semantic search...")
+          with open(args.jd, "r") as f:
+              jd_text = f.read()
+          # This one line is all it takes!
+          results = vectorstore.similarity_search(jd_text, k=args.top_k)
+        </code></pre>
+        <p><code>similarity_search</code> embeds our JD and searches the entire database for the <code>k</code> resumes whose vectors are mathematically closest to it. We now have our shortlist!</p>
+        
+        <h2>Step 4: The Expert's Verdict - LLM Re-ranking</h2>
+        <p>This is where the real magic happens. We take the top candidates from the semantic search and pass them, one by one, to an LLM for a detailed review.</p>
+        <p>The key is the prompt. We need to give the LLM clear instructions, a specific role, and a desired output format.</p>
+
+        <pre><code>
+          def get_scoring_prompt(jd, resume):
+              """Generates the prompt for the LLM to score the resume against the JD."""
+              return f"""
+          You are an expert AI assistant specializing in recruitment and talent acquisition.
+          Your task is to score a resume against a job description on a scale of 1 to 10.Analyze the resume based on the requirements in the job description, considering skills, experience, and overall fit.
+          Return your response as a JSON object with two keys: "score" (an integer from 1 to 10) and "reason" (a concise explanation).
+          Job Description:
+          {jd}
+          Resume (first 1500 characters):
+          {resume[:1500]}
+          """
+        </code></pre>
+        <p>Notice how we ask it to act as an expert and to return a clean JSON object. This makes the output predictable and easy to parse. We also only send the first 1500 characters to save on tokens and cost, as that's usually enough for a good assessment.</p>
+        <p>We then create simple functions to call either our local Ollama model or the OpenRouter API.</p>
+
+        <pre><root>
+
+          def score_with_ollama(jd, resume):
+            """Scores a resume against a JD using a local model via Ollama."""
+            prompt = get_scoring_prompt(jd, resume)
+            response = ollama.chat(
+                model="mistral:latest",
+                messages=[{"role": "user", "content": prompt}],
+                format="json" # Ollama's built-in JSON mode is fantastic!
+            )
+            return json.loads(response["message"]["content"])
+        </root></pre>
+
+        <pre><code>
+            def score_with_openrouter(jd, resume):
+              """Scores a resume against a JD using a model from OpenRouter."""
+              prompt = get_scoring_prompt(jd, resume)
+              response = openai.ChatCompletion.create(
+                  model="mistralai/mistral-7b-instruct",
+                  messages=[
+                      {"role": "system", "content": "You are a helpful AI recruiter that provides responses in JSON format."},
+                      {"role": "user", "content": prompt}
+                  ]
+              )
+              return json.loads(response["choices"][0]["message"]["content"])
+        </code></pre>
+        <p>Finally, we loop through our results from the semantic search, call the appropriate scoring function, and print the final, ranked list. We also add a cache here to avoid re-scoring a candidate for the same JD, saving time and API credits.</p>
+        
+        <h2>The Final Result</h2>
+        <p>When you run the script (<code>python main.py --jd jd.txt</code>), the output is a beautifully formatted, ranked list of the top candidates.</p>
+        <pre>
+          <code>
+            --- Final Rankings ---
+Candidate: resume_of_jane_doe.pdf
+  --- Extracted Details ---
+    Name:       Jane Doe
+    Email:      jane.doe@email.com
+    Phone:      123-456-7890
+    Experience: 8 years
+    Education:  MS in Computer Science
+    City:       San Francisco
+  --- Scoring ---
+    Score: 9/10
+    Reason: The candidate has 8 years of experience with Python and cloud platforms, directly matching the core requirements of the JD. Strong project history in machine learning aligns perfectly with the role.
+    Time taken: 5.43 seconds
+----------------------------------------
+Candidate: resume_of_john_smith.pdf
+  --- Extracted Details ---
+    Name:       John Smith
+    Email:      j.smith@work.net
+    Phone:      Not found
+    Experience: 5 years
+    Education:  BE/BTech in Information Technology
+    City:       New York
+  --- Scoring ---
+    Score: 7/10
+    Reason: Good alignment with the required Python skills and 5 years of relevant experience. Lacks direct experience with the specific cloud provider mentioned in the JD, but shows a strong aptitude for learning.
+    Time taken: 4.98 seconds
+----------------------------------------
+          </code>
+        </pre>
+        
+        <h2>Conclusion</h2>
+        <p>We've successfully built a powerful, two-stage AI assistant that can automate the most tedious part of recruitment. By combining the raw power of semantic search with the nuanced, qualitative judgment of an LLM, we've created a tool that is both efficient and intelligent.</p>
+        <p>The beauty of this approach is its modularity. You can easily swap out the embedding model, try different LLMs via Ollama or OpenRouter, or even build a simple web front-end using Streamlit.</p>
+        <p>So go ahead, give it a try! Your days of drowning in a sea of resumes might just be over.</p>
+
+    </article>
+
+
+
+      <!-- *** Actual article content  ends here *** -->
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+      <DIV class="blog-container content">
+          <hr class="separator"></hr>
+
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+          </div>
+
+          <hr class="separator"></hr>
+
+          <div>
+          <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+          </div>
+      </DIV>
+
+
+      <!-- Custom Footer Component -->
+      <blog-footer></blog-footer>
+
+      <!-- Include the JS file where BlogFooter is defined -->
+      <script defer src="/js/blog-footer.js"></script>
+      <script defer src="/js/blog-header.js"></script>
+      <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
