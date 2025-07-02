@@ -1,0 +1,245 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "I Built an AI to Read Resumes For Me. Here’s How You Can, Too.";
+          
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">AI Resume Ranker</span>
+      </blog-header>
+
+ 
+            
+      <DIV id="content"  class="blog-container content">
+          <h1>I Built an AI to Read Resumes For Me. Here’s How You Can, Too.</h1>
+
+            <p><em>A step-by-step guide to building your own AI-powered JD-Resume Matcher using Python and open-source tools.</em></p>
+          <hr class="separator"></hr>
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+            </div>
+          <hr class="separator"></hr>
+
+      </DIV>
+
+      <!-- *** Actual article content  starts here *** -->
+
+<article class="blog-container content">
+    <h1>Beyond Keywords: Building a Smart Resume Search Engine with Python and LLMs</h1>
+    <p>In our last article, we built a system that could take a single job description and intelligently match it against a database of resumes. It was a great first step, moving from manual review to AI-powered scoring. But what if your search is more exploratory? What if you don't have a finalized JD, but you know you need a "Senior Python developer in New York with at least 5 years of experience"?</p>
+    <p>This is where a simple one-to-many matching system falls short. Recruiters need the power to slice and dice their talent pool, to combine broad, meaning-based searches with hard, factual filters.</p>
+    <p>Today, we're building that power. We'll extend our project with a robust command-line interface (CLI) that allows for multi-faceted searching, combining the magic of semantic search with the precision of metadata filtering. Let's transform our resume database from a simple list into a dynamic, queryable talent pool.</p>
+    <h2>The Recruiter's Wishlist: What Makes a Great Search?</h2>
+    <p>A powerful search tool needs to answer complex questions. It should be able to handle queries like:</p>
+    <ul>
+        <li><strong>Semantic Search:</strong> "Find me candidates who are good at Python, Docker, and cloud technologies." (Searching by meaning).</li>
+        <li><strong>Filtered Search:</strong> "Show me all candidates in Chicago with more than 10 years of experience." (Searching by facts).</li>
+        <li><strong>Hybrid Search:</strong> "Find me the best matches for this specific job description, but only consider candidates from San Francisco with between 5 and 8 years of experience." (The ultimate combination).</li>
+    </ul>
+    <p>Our <code>resume.py</code> script is designed to deliver exactly this, providing a flexible and powerful interface for any hiring manager or recruiter.</p>
+    <h2>Under the Hood: How We Make Search Smart</h2>
+    <p>Our search capability, implemented in the <code>search_resumes</code> function within <code>resume.py</code>, is a multi-stage process designed for both power and efficiency.</p>
+    <h3>Step 1: The Foundation - Semantic Search and Filtering</h3>
+    <p>The core of our system is ChromaDB's ability to perform a similarity search while applying pre-search filters. This is incredibly efficient. Instead of fetching thousands of resumes and then filtering them in Python, we ask the database to only search among the documents that already meet our criteria.</p>
+    <p>Let's look at how we build the filters. When a user runs a command like <code>... --location "New York" --min_exp 5</code>, we translate that into a filter that ChromaDB understands.</p>
+    <pre><code># From resume.py
+
+def search_resumes(vectorstore, args, llm_cache):
+    # ...
+    filter_conditions = []
+    if args.location:
+        filter_conditions.append({'city': {'$eq': args.location.lower()}})
+
+    exp_filter = {}
+    if args.min_exp is not None:
+        exp_filter['$gte'] = args.min_exp # $gte -> Greater than or equal to
+    if args.max_exp is not None:
+        exp_filter['$lte'] = args.max_exp # $lte -> Less than or equal to
+    if exp_filter:
+        filter_conditions.append({'years_of_experience': exp_filter})
+
+    filters = None
+    if len(filter_conditions) > 1:
+        filters = {'$and': filter_conditions} # Combine all filters
+    elif len(filter_conditions) == 1:
+        filters = filter_conditions[0]
+    # ...
+</code></pre>
+    <p>This code dynamically constructs a query. The real magic happens when we pass both a search query (from <code>--skills</code> or <code>--jd</code>) and these filters to the database.</p>
+    <pre><code># From resume.py
+
+    if args.skills or args.jd:
+        search_query = args.skills if args.skills else data_processing.load_jd(args.jd)
+        print("\nPerforming filtered semantic search...")
+        if filters:
+            print(f"Applying filters: {filters}")
+        # The magic call: search and filter happen together in the database
+        search_results = vectorstore.similarity_search(search_query, k=args.top_k, filter=filters)
+</code></pre>
+    <p>This single <code>similarity_search</code> call is the heart of our hybrid search. It finds the most semantically relevant candidates who also match our specific location and experience requirements.</p>
+    <h3>Step 2: The Final Polish - LLM Re-ranking</h3>
+    <p>Just like in our previous project, if a full job description (<code>--jd</code>) is provided, we don't stop at semantic similarity. We take the top candidates from our filtered search and send them to a Large Language Model (LLM) for a final, qualitative review.</p>
+    <p>This ensures we get the best of both worlds: the broad, efficient filtering of the vector database and the nuanced, deep understanding of an LLM. We also lean heavily on our cache to avoid re-scoring the same resume for the same JD, saving time and API costs.</p>
+    <pre><code># From resume.py
+
+if args.jd:
+    # ...
+    for doc in tqdm(search_results, desc="Scoring candidates"):
+        # ...
+        if jd_hash in llm_cache and candidate_file in llm_cache[jd_hash]:
+            # Cache hit! No need to call the LLM
+            score_data = llm_cache[jd_hash][candidate_file]
+        else:
+            # Cache miss, call the LLM to score
+            score_func = score_with_ollama if args.scorer == "ollama" else score_with_openrouter
+            score_data = score_func(jd_text, doc.page_content)
+            # ... update the cache
+</code></pre>
+    <h2>A Recruiter's Day: Putting the Tool to Work</h2>
+    <p>Let's see how this works in practice. Imagine you're a recruiter at a tech company.</p>
+    <h3>Scenario 1: Exploratory Search</h3>
+    <p>You've just been told you need to start sourcing for a "backend engineer who knows their way around cloud infrastructure."</p>
+    <p>You can start with a broad, skills-based search:</p>
+    <pre><code>bash
+python resume.py search --skills "backend engineer, golang, kubernetes, aws" --top-k 5
+</code></pre>
+    <p>The system will find the 5 candidates whose resumes are most semantically similar to that query, giving you an initial list of potential talent.</p>
+    <h3>Scenario 2: Adding Constraints</h3>
+    <p>Your hiring manager clarifies: "They need to be in the Boston area and have at least 3 years of experience."</p>
+    <p>Easy. You just add the filters:</p>
+    <pre><code>bash
+python resume.py search --skills "backend engineer, golang, kubernetes, aws" --location "Boston" --min_exp 3 --top-k 5
+</code></pre>
+    <p>Now, the system first narrows the pool to candidates in Boston with 3+ years of experience and then runs the semantic search. The results are instantly more relevant.</p>
+    <h3>Scenario 3: The Final Showdown with a JD</h3>
+    <p>The official job description is approved. It's time to get serious. You can now use the full power of the system: hybrid search plus LLM re-ranking.</p>
+    <pre><code>bash
+python resume.py search --jd ./jds/senior_backend_engineer.txt --location "Boston" --min_exp 3 --top-k 5
+</code></pre>
+    <p>The script will now:</p>
+    <ul>
+        <li>Filter for all candidates in Boston with 3+ years of experience.</li>
+        <li>Perform a semantic search on that filtered group using the full JD text.</li>
+        <li>Take the top 5 results and send each one to an LLM for a detailed score (1-10) and a justification.</li>
+        <li>Present you with a final, ranked list.</li>
+    </ul>
+    <p>The output would look something like this:</p>
+    <pre><code>--- Final Rankings ---
+
+--- Result 1 ---
+Candidate: jane_doe_resume.pdf
+  Details:
+    Name:       Jane Doe
+    Experience: 6 years
+    City:       boston
+  Scoring:
+    Score:      9/10
+    Reason:     Excellent match. Strong experience in Go and Kubernetes, with multiple projects deployed on AWS EKS. Aligns perfectly with all core requirements of the JD.
+    Time taken: 1.87 seconds
+
+--- Result 2 ---
+Candidate: john_smith_cv.docx
+  Details:
+    Name:       John Smith
+    Experience: 4 years
+    City:       boston
+  Scoring:
+    Score:      7/10
+    Reason:     Good candidate. Solid backend experience and familiar with AWS, but primary cloud experience is in Azure. Lacks direct Kubernetes experience but has used Docker Swarm.
+    Time taken: 2.01 seconds
+...
+</code></pre>
+    <h3>Bonus: Know Your Talent Pool with stats</h3>
+    <p>To make the tool even more useful, we added a <code>stats</code> command. It gives you a bird's-eye view of your entire resume database, helping you understand the makeup of your talent pool at a glance.</p>
+    <p>Running <code>python resume.py stats</code> provides a quick summary:</p>
+    <pre><code>--- Database Statistics ---
+Total resumes in the database: 257
+
+Experience Level Distribution:
+  - 0-2 years   : 45 resume(s)
+  - 3-5 years   : 98 resume(s)
+  - 6-10 years  : 76 resume(s)
+  - 11+ years   : 38 resume(s)
+
+Top City Distribution:
+  - New york    : 41 resume(s)
+  - San francisco: 35 resume(s)
+  - Boston      : 28 resume(s)
+  - Chicago     : 22 resume(s)
+
+Top Skills Distribution:
+  - Python              : 189 resume(s)
+  - Aws                 : 152 resume(s)
+  - Java                : 121 resume(s)
+  - Sql                 : 115 resume(s)
+  - Docker              : 98 resume(s)
+</code></pre>
+    <h2>Conclusion</h2>
+    <p>We've successfully evolved our simple resume matcher into a sophisticated search engine. By combining semantic search, metadata filtering, and LLM re-ranking, we've created a tool that mirrors the complex thought process of a human recruiter. It allows for both broad exploration and highly specific, targeted searches, making the process of finding the right candidate faster, smarter, and more effective. This flexible CLI is the foundation upon which even more powerful tools, like a full web interface, can be built.</p>
+</article>
+
+
+
+
+
+      <!-- *** Actual article content  ends here *** -->
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+      <DIV class="blog-container content">
+          <hr class="separator"></hr>
+
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+          </div>
+
+          <hr class="separator"></hr>
+
+          <div>
+          <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+          </div>
+      </DIV>
+
+
+      <!-- Custom Footer Component -->
+      <blog-footer></blog-footer>
+
+      <!-- Include the JS file where BlogFooter is defined -->
+      <script defer src="/js/blog-footer.js"></script>
+      <script defer src="/js/blog-header.js"></script>
+      <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
