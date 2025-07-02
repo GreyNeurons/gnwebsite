@@ -8,7 +8,7 @@
     
         <script>
           // Set page-specific meta description
-          window.pageMetaDescription = "I Built an AI to Read Resumes For Me. Here’s How You Can, Too.";
+          window.pageMetaDescription = "Beyond Keywords: Building a Smart Resume Search Engine with Python and LLMs";
           
         </script>
     
@@ -23,9 +23,9 @@
  
             
       <DIV id="content"  class="blog-container content">
-          <h1>I Built an AI to Read Resumes For Me. Here’s How You Can, Too.</h1>
+      <h1>Beyond Keywords: Building a Smart Resume Search Engine with Python and LLMs</h1>
 
-            <p><em>A step-by-step guide to building your own AI-powered JD-Resume Matcher using Python and open-source tools.</em></p>
+            <p><em>How to combine vector search, metadata filtering, and LLM re-ranking to build a recruiter’s dream tool in Python.</em></p>
           <hr class="separator"></hr>
           <div class="field is-grouped is-grouped-centered">
               <p class="control">
@@ -39,11 +39,29 @@
       <!-- *** Actual article content  starts here *** -->
 
 <article class="blog-container content">
-    <h1>Beyond Keywords: Building a Smart Resume Search Engine with Python and LLMs</h1>
     <p>In our last article, we built a system that could take a single job description and intelligently match it against a database of resumes. It was a great first step, moving from manual review to AI-powered scoring. But what if your search is more exploratory? What if you don't have a finalized JD, but you know you need a "Senior Python developer in New York with at least 5 years of experience"?</p>
     <p>This is where a simple one-to-many matching system falls short. Recruiters need the power to slice and dice their talent pool, to combine broad, meaning-based searches with hard, factual filters.</p>
     <p>Today, we're building that power. We'll extend our project with a robust command-line interface (CLI) that allows for multi-faceted searching, combining the magic of semantic search with the precision of metadata filtering. Let's transform our resume database from a simple list into a dynamic, queryable talent pool.</p>
-    <h2>The Recruiter's Wishlist: What Makes a Great Search?</h2>
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+<h2>The Recruiter's Wishlist: What Makes a Great Search?</h2>
     <p>A powerful search tool needs to answer complex questions. It should be able to handle queries like:</p>
     <ul>
         <li><strong>Semantic Search:</strong> "Find me candidates who are good at Python, Docker, and cloud technologies." (Searching by meaning).</li>
@@ -51,7 +69,26 @@
         <li><strong>Hybrid Search:</strong> "Find me the best matches for this specific job description, but only consider candidates from San Francisco with between 5 and 8 years of experience." (The ultimate combination).</li>
     </ul>
     <p>Our <code>resume.py</code> script is designed to deliver exactly this, providing a flexible and powerful interface for any hiring manager or recruiter.</p>
-    <h2>Under the Hood: How We Make Search Smart</h2>
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+<h2>Under the Hood: How We Make Search Smart</h2>
     <p>Our search capability, implemented in the <code>search_resumes</code> function within <code>resume.py</code>, is a multi-stage process designed for both power and efficiency.</p>
     <h3>Step 1: The Foundation - Semantic Search and Filtering</h3>
     <p>The core of our system is ChromaDB's ability to perform a similarity search while applying pre-search filters. This is incredibly efficient. Instead of fetching thousands of resumes and then filtering them in Python, we ask the database to only search among the documents that already meet our criteria.</p>
@@ -109,7 +146,26 @@ if args.jd:
             score_data = score_func(jd_text, doc.page_content)
             # ... update the cache
 </code></pre>
-    <h2>A Recruiter's Day: Putting the Tool to Work</h2>
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+<h2>A Recruiter's Day: Putting the Tool to Work</h2>
     <p>Let's see how this works in practice. Imagine you're a recruiter at a tech company.</p>
     <h3>Scenario 1: Exploratory Search</h3>
     <p>You've just been told you need to start sourcing for a "backend engineer who knows their way around cloud infrastructure."</p>
@@ -188,7 +244,26 @@ Top Skills Distribution:
   - Sql                 : 115 resume(s)
   - Docker              : 98 resume(s)
 </code></pre>
-    <h2>Conclusion</h2>
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+<h2>Conclusion</h2>
     <p>We've successfully evolved our simple resume matcher into a sophisticated search engine. By combining semantic search, metadata filtering, and LLM re-ranking, we've created a tool that mirrors the complex thought process of a human recruiter. It allows for both broad exploration and highly specific, targeted searches, making the process of finding the right candidate faster, smarter, and more effective. This flexible CLI is the foundation upon which even more powerful tools, like a full web interface, can be built.</p>
 </article>
 
