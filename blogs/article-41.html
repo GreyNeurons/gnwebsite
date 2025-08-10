@@ -1,0 +1,234 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Here is a concise and compelling meta description suitable for an HTML `<meta>` tag:Automate your blog\'s formatting process with a local Large Language Model (LLM), eliminating tedious manual work and streamlining your workflow.";
+          
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+
+    
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">From Tedious Text to Polished HTML: Automating Your Blog with a Local LLM</span>
+      </blog-header>
+
+<article class="blog-container content">
+
+<h1>From Tedious Text to Polished HTML: Automating Your Blog with a Local LLM</h1>
+<p>
+    I publish my blogs on Medium first, then mirror them on my website so non-Medium members can read them. My site is a static, plain-HTML setup.
+The problem? Medium doesn’t give you a quick way to export a single article as HTML. My old workflow was clumsy — copy the article, lose all the formatting, then manually rebuild the HTML and fix it up.</p>
+<p>
+
+This post is about how I killed that manual work by automating the process with local Ollama and small, efficient models like gemma3n and phi-3. If you’ve ever poured hours into writing a great article, only to waste more time wrangling formatting, you’ll know exactly why I built this.
+</p>
+
+<h2>The Problem: The Manual Formatting Grind</h2>
+
+<p>Let’s break down the manual work involved in taking a draft to a final HTML page:</p>
+
+<ul>
+  <li>Basic Tagging: Adding &lt;h1&gt;, &lt;h2&gt;, &lt;p&gt;, etc.</li>
+  <li>Code Blocks: Carefully wrapping code in &lt;pre&gt;&lt;code&gt; tags, ensuring indentation is preserved, and maybe adding language classes for syntax highlighting.</li>
+  <li>Hyperlinking: Finding all URLs and turning them into &lt;a&gt; tags.</li>
+  <li>Value-Add Linking: Spotting a mention of “Microsoft,” “Apache Parquet,” or “React,” then opening a new tab, searching for the official website, and adding the hyperlink. This is valuable for SEO and reader experience but is incredibly time-consuming.</li>
+  <li>Ad Placement: Inserting ad blocks consistently under certain headings.</li>
+</ul>
+
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>The Old Solution (And Its Failings)</h2>
+
+<p>A programmer’s first instinct is often to reach for regular expressions (regex). We could try to write a script that:</p>
+
+<ul>
+  <li>Finds lines that look like headings and wraps them.</li>
+  <li>Finds blocks of indented text and assumes they are code.</li>
+  <li>Uses a regex to find URLs.</li>
+</ul>
+
+<p>But this approach is brittle and quickly becomes a nightmare:</p>
+
+<ul>
+  <li>Complexity: The regex for handling all edge cases becomes monstrous and unmaintainable.</li>
+  <li>Lack of Context: How does a regex know the difference between “Apple” the company and “apple” the fruit? How can it find the “legitimate official website” for a tool it has never heard of? It can’t.</li>
+  <li>Inflexibility: What if you want to change the rules slightly? You’re back to wrestling with complex code instead of just stating your new requirement.</li>
+</ul>
+
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>But What About WYSIWYG Editors?</h2>
+
+<p>You might be thinking, “Why not just use a WYSIWYG (What You See Is What You Get) editor like the one in WordPress or other CMS platforms?” While these editors are great for simple posts, they fall short when it comes to specialized, high-volume, or complex content for a few key reasons:</p>
+
+<ul>
+  <li>The “Value-Add” Bottleneck: A WYSIWYG editor can’t perform intelligent tasks like identifying a tool name (“Pandas”) and automatically linking to its official documentation. This crucial, time-consuming step remains entirely manual. You’re still stuck with the copy-paste-link workflow for every single entity.</li>
+  <li>Lack of Batch Automation: While you can format text, you’re still doing it block-by-block. Our script processes the entire document and applies dozens of rules (headings, code blocks, entity links, ad placements) in a single, automated pass.</li>
+  <li>Inconsistency: Manual formatting, even in a nice editor, is prone to human error. Did you remember to set target="_blank" on every external link? Is every ad block placed correctly? Automation guarantees perfect consistency every time.</li>
+</ul>
+
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>The New Solution: A Local LLM as Your Formatting Engine</h2>
+
+<p>Instead of writing complex logic to parse the text, what if we could just describe the final output we want? This is where LLMs shine. By giving the model a set of plain English instructions, we can delegate all the complex, context-aware formatting tasks.</p>
+
+<pre><code class="language-python">payload = {
+    "model": "gemma3n:e4b",
+    "prompt": prompt,
+    "stream": True,
+    "options": {
+        "temperature": 0.2,
+        "num_ctx": 16384
+    }
+}</code></pre>
+
+<p>Here’s a peek at the Python payload that puts it all together:</p>
+
+<pre><code class="language-python">prompt = """
+You are an expert HTML formatter. Convert the following article text into clean, semantic HTML. Follow these rules precisely.
+
+**Formatting Rules:**
+- The first line of the text is the main title, wrap it in an &lt;h1&gt; tag.
+- Identify all subsequent headings and use appropriate heading tags (&lt;h2&gt;, &lt;h3&gt;, etc.).
+- Wrap all paragraphs in &lt;p&gt; tags.
+- Identify blocks of code. Wrap them in &lt;pre&gt;&lt;code&gt; tags. It is crucial that you preserve all original indentation and line breaks within these code blocks. If you can identify the language, add a class like `class="language-python"` to the &lt;code&gt; tag.
+- Find all URLs (like http://example.com) and convert them into anchor tags (&lt;a href="URL" target="_blank"&gt;URL&lt;/a&gt;).
+
+**Entity Linking Rule:**
+
+- Identify names of companies, tools, frameworks, and organizations.
+- For each *unique* entity, hyperlink its *first occurrence* to its legitimate official website.
+- Do NOT add links inside &lt;h1&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;pre&gt;, or &lt;code&gt; tags.
+- **Here are some examples of how to apply this rule:**
+  - If you see “Apache Parquet”, the first time it appears it should become &lt;a href="https://parquet.apache.org/" target="_blank"&gt;Apache Parquet&lt;/a&gt;.
+  - If you see “Apache Spark”, the first time it appears it should become &lt;a href="https://spark.apache.org/" target="_blank"&gt;Apache Spark&lt;/a&gt;.
+  - If you see “Pandas”, the first time it appears it should become &lt;a href="https://pandas.pydata.org/" target="_blank"&gt;Pandas&lt;/a&gt;.
+  - If you see “AWS Athena”, the first time it appears it should become &lt;a href="https://aws.amazon.com/athena/" target="_blank"&gt;AWS Athena&lt;/a&gt;.
+
+- Use your knowledge to find the official websites for other tools and frameworks mentioned, even if they are not in these examples.
+</code></pre>
+
+<p>The End Result: Time Saved, Quality Gained</p>
+
+<p>What was once a 30-minute manual task of copying, pasting, and formatting is now a 1-minute automated script. We execute python process_draft.py, and out comes a beautiful, fully-formed draft.html file with:</p>
+
+<ul>
+  <li>Semantic &lt;h1&gt;, &lt;h2&gt;, and &lt;p&gt; tags.</li>
+  <li>Perfectly preserved &lt;pre&gt;&lt;code&gt; blocks with language detection.</li>
+  <li>Context-aware hyperlinks to official company and tool websites.</li>
+  <li>Strategically placed ad blocks.</li>
+</ul>
+
+<p>By offloading the complex, nuanced work to a locally-run LLM, we’ve created a tool that is not only more powerful and reliable than a regex-based script but also infinitely easier to update. If we want to change a rule, we just edit a line of English in our prompt. This is a game-changer for content creation workflows.</p>
+
+---
+
+Note: I've removed the metadata (author name, read time, etc.) as per your instructions and only included the article body HTML.
+</article>
+
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+      <DIV class="blog-container content">
+          <hr class="separator"></hr>
+
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+          </div>
+
+          <hr class="separator"></hr>
+
+          <div>
+          <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+          </div>
+      </DIV>
+
+
+      <!-- Custom Footer Component -->
+      <blog-footer></blog-footer>
+
+      <!-- Include the JS file where BlogFooter is defined -->
+      <script defer src="/js/blog-footer.js"></script>
+      <script defer src="/js/blog-header.js"></script>
+      <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
