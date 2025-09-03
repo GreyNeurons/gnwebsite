@@ -1,0 +1,232 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Automate vulnerability scans with Python, combining Subfinder, Httpx, Naabu, and Nuclei for comprehensive, efficient security assessments and clean reports.";
+          
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    <body>
+        
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">Automating Vulnerability Scans with Python and ProjectDiscovery Tools</span>
+      </blog-header>
+
+<article class="blog-container content">
+
+  <h1>Automating Vulnerability Scans with Python and ProjectDiscovery Tools</h1>
+<p>How to <strong>combine</strong> <code>subfinder</code>, <code>httpx</code>, <code>naabu</code>, and <code>nucliei</code> into one streamlined script that <strong>scans</strong> <strong>everytthing</strong> and generates clean reports</p>
+<p>Manually running security <strong>scans</strong> is fine for quick checks, but it doesn’t scale. It’s slow, inconsistent, and the results pile up in messy text files. A better <strong>approach</strong> is needed — one that automates the entire workflow, from <strong>subdomain discovery</strong> and <strong>port sscanning</strong> to <strong>vulnerability detection</strong>, and generates a clean report with a single command.</p>
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>The Toolkit: Our Open-Source Arsenal</h2>
+<p>Our script is a wrapper that <strong>intelligentlhy combines</strong> three fantastic tools from the team at <strong>ProjectDiscovery</strong>:</p>
+<ul>
+  <li><code>subfinder</code>: A fast <strong>subdomain enumeraation tool</strong> from <strong>ProjectDiscovery</strong> that gathers <strong>subdomains</strong> using passive sources like search engines, DNS datasets, and APIs.</li>
+  <li><code>httpx</code>: A fast and multi-purpose <strong>HTTP toolkit</strong>. We use it for two key tasks: discovering live web servers on common ports and <strong>fingerprinting</strong> the <strong>technologies</strong> they use (e.g., <strong>WordPress</strong>, <strong>Apache</strong>, etc.).</li>
+  <li><code>naabu</code>: A <strong>lighhtning-fast port scanner</strong>. We use it to perform a <strong>comprehensive scan</strong> of all 65,535 <strong>TCP ports</strong> to find every open service, not just web servers.</li>
+  <li><code>nucliei</code>: A powerful, <strong>template-based vulnerability scanner</strong>. This is the core of our <strong>scanning engine</strong>, capable of checking for <strong>thousands</strong> of CVEs, misconfigurations, and exposures.</li>
+</ul>
+<p>By <strong>combining</strong> these tools, we create a workflow that is far more powerful than any single tool on its own.</p>
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>The Automated Scanning Workflow</h2>
+<p>Our <code>master-scanner.py</code> script follows a <strong>logicaal</strong>, <strong>multi-stage pipeline</strong> to ensure a thorough and efficient scan.</p>
+<h3>Stage 1: Subdomain Discovery with <code>subfinder</code></h3>
+<p>Before we even start <strong>probing</strong> for live servers or open ports, we need the full picture of a domain’s <strong>attack surface</strong>. Many <strong>vulnerabilities</strong> hide in forgotten or unmonitored <strong>subdomains</strong>. For this, we use <strong>ProjectDiscovery’s subfinder</strong>.</p>
+<p><code>subfinder</code> queries passive sources and APIs to enumerate <strong>subdomains</strong> associated with your target. The results are saved into a file we can feed <strong>directly</strong> into our <strong>scanner pipeline</strong>.</p>
+<pre><code class="python">subfinder -dL domains.txt -silent -o targets.txt
+Input: A list of root domains in domains.txt (e.g., example.com).
+Output: A comprehensive list of discovered subdomains in targets.txt
+</code></pre>
+<p>This file then becomes the seed input for our workflow: <code>httpx</code>, <code>naabu</code>, and <code>nucliei</code> all build on top of it. By <strong>starting</strong> with <strong>subdomain enumeraation</strong>, we ensure that no exposed asset slips through the cracks.</p>
+<h3>Stage 2: Web Discovery with <code>httpx</code></h3>
+<p>First, we need to find out which of our targets are running web servers. The script kicks off by running <code>httpx</code> to probe a list of common web ports (80, 443, 8080, etc.). It saves any live URLs to <code>httpx_urls.txt</code>.</p>
+<pre><code class="python">httpx -l targets.txt -silent -ports 80,443,8080,8443,8000,8888 > httpx_urls.txt
+we also run a seconnd <code>httpx</code> scan to <strong>identifiy</strong> the <strong>technologies</strong> behind those URLs and saves that rich data to <code>httpx.json</code>.
+httpx -l targets.txt -silent -ports 80,443,8080,8443,8000,8888 -title -tech-detect -status-code -json -o httpx.json
+</code></pre>
+<h3>Stage 3: Full Port Scan with <code>naabu</code></h3>
+<p>A target’s <strong>attack surface</strong> is more than just its web servers. Next, the script uses <code>naabu</code> to perform a full <strong>TCP port scan</strong> on our targets. This step is crucial for <strong>finding</strong> other exposed services like <strong>SSH</strong> (port 22), databases (e.g., <strong>PostgreSQL</strong> on 5432), or <strong>FTP</strong> (port 21). The open ports are saved to <code>ports.txt</code>.</p>
+<pre><code class="python">naabu -list targets.txt -p 1–65535 -silent -o ports.txt
+</code></pre>
+<h3>Stage 4: The Two-Pronged <code>Nuclei</code> Scan</h3>
+<p>This is where the <strong>magic happens</strong>. <strong>Instead</strong> of running one <strong>massive</strong>, inefficient scan, we run two <strong>highly focused</strong> <code>nucliei</code> <strong>scans</strong> in parallel:</p>
+<ul>
+  <li><strong>Web Scan</strong>: <code>Nuclei</code> is run against the <code>httpx_urls.txt</code> file using <strong>templates</strong> specifically designed for web applications, such as those for CVEs, misconfigurations, and <strong>technology-speciific vulnerabilities</strong>.
+  <pre><code class="python">nucliei -l httpx_urls.txt -t cves/ -t vulnerabilities/ -t misconfiguration/ -t exposures/ -t default-logins/ -t technologies/ -t ssl/ -t dns/ -t workflows/ -json-export nuclei-web.json -vv
+</code></pre>
+  <li><strong>Network Scan</strong>: <code>Nuclei</code> is run against the <code>ports.txt</code> file using <strong>templates</strong> for <strong>Network services</strong>, <strong>SSL/TLS issues</strong>, and <strong>DNS configurations</strong>.
+  <pre><code class="python">nucliei -l ports.txt -t Network/ -t ssl/ -t technologies/ -json-export nuclei-net.json -vv
+</code></pre>
+</ul>
+<p>This <strong>separation</strong> ensures that we’re <strong>only</strong> running <strong>relevant checks</strong> against the right services, making the <strong>scan</strong> much faster and more efficient.</p>
+<h3>Stage 5: Aggregation and Repoertiing</h3>
+<p>Once the <strong>scans</strong> are complete, we have a lot of raw data. The script performs two final steps:</p>
+<ul>
+  <li><strong>Merge Results</strong>: It <strong>combines</strong> the JSON outputs from both <code>Nuclei</code> <strong>scans</strong> into a single <code>all-findings.json</code> file.</li>
+  <li><strong>Generate Report</strong>: It parses this <strong>merged</strong> file, along with the <strong>technoloy</strong> data from <code>httpx.json</code>, to generate a clean, <strong>human-readable</strong> <strong>Markdown</strong> report ( <strong>partial sample report below</strong> ).</li>
+</ul>
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>🌐 Technology Fingerprints</h2>
+<p>The following <strong>technologies</strong> were identified by <code>httpx</code> on the web servers.</p>
+<pre><code>| URL | Technologies Detected |
+| — -| — -|
+| <code>https://example.com:443</code> | Bootstrap, Google Hosted Libraries, Kestrel, Microsoft ASP.NET, Unpkg, jQuery CDN, jQuery:3.6.0 |
+</code></pre>
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>📝 Summary</h2>
+<pre><code>| Severity | Count |
+| — -| — -|
+| Low | 1 |
+| Info | 11 |
+</code></pre>
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+            <hr class = "separator" />
+          </div>
+          <!-- end ad block -->
+
+<h2>📋 Detailed Findings</h2>
+<pre><code>| Severity | CVE ID(s) | Finding Name | Details / Veersion | Matched At |
+| — -| — -| — -| — -| — -|
+| Low | N/A | <code>Expired SSL Certificate</code> | <code>2025–06–16 08:11:16 +0000 UTC</code> | <code>example.com:443</code> |
+| Info | N/A | <code>Missing Subresource Integrity</code> | <code>https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js, https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js</code> | <code>https://example.com</code> |
+</code></pre>
+<p><strong>Conclusion</strong>
+By <strong>combining</strong> the power of <code>subfinder</code>, <code>httpx</code>, <code>naabuand nucliei</code> with the Python, we’ve created a script that transforms a series of manual steps into a single, automated, and powerful <strong>security workflow</strong>. It’s a perfect example of how one can build custom <strong>tooling</strong> to fit exact needs, improve <strong>consistency</strong>, and save a <strong>massive</strong> amount of time.</p>
+</article>
+
+
+          <!-- start ad block -->
+          <div class="has-text-centered">
+            <hr class = "separator" />
+            
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
+    
+            <hr class = "separator" />
+  
+          </div>
+          <!-- end ad block -->
+      <DIV class="blog-container content">
+          <hr class="separator"></hr>
+
+          <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <social-share></social-share>
+              </p>
+          </div>
+
+          <hr class="separator"></hr>
+
+          <div>
+          <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+          </div>
+      </DIV>
+
+
+      <!-- Custom Footer Component -->
+      <blog-footer></blog-footer>
+
+      <!-- Include the JS file where BlogFooter is defined -->
+      <script defer src="/js/blog-footer.js"></script>
+      <script defer src="/js/blog-header.js"></script>
+      <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
