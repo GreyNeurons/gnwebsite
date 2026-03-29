@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Semantic Neighbors — GenAI Application Engineering</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f3;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #1a1a18;
+  }
+
+  #game { width: 100%; max-width: 680px; }
+
+  .progress-bg { background: #e8e7e2; border-radius: 99px; height: 5px; margin-bottom: 1.5rem; }
+  .progress-fill { background: #1D9E75; height: 5px; border-radius: 99px; transition: width 0.4s ease; }
+
+  .round-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .round-label { font-size: 13px; color: #888; }
+  .score-pill { font-size: 13px; font-weight: 600; color: #1a1a18; }
+
+  .target-card {
+    background: #fff; border: 1px solid #ddd9d0;
+    border-radius: 14px; padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .target-label { font-size: 12px; color: #534AB7; font-weight: 600; margin-bottom: 4px; }
+  .target-text { font-size: 18px; font-weight: 600; color: #1a1a18; }
+
+  .instruction { font-size: 13px; color: #666; margin-bottom: 1rem; line-height: 1.5; }
+
+  .spectrum-ends { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .spectrum-ends span { font-size: 12px; font-weight: 600; }
+  .end-close { color: #0F6E56; }
+  .end-far { color: #A32D2D; }
+
+  .slots-row { display: grid; gap: 8px; margin-bottom: 1.25rem; }
+  .slot-wrap { display: flex; flex-direction: column; align-items: center; }
+  .slot-num { font-size: 10px; color: #aaa; margin-bottom: 4px; }
+  .slot-box {
+    width: 100%; min-height: 56px;
+    border: 1.5px dashed #ccc; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 6px; transition: all 0.15s;
+  }
+  .slot-box.drag-over-zone { border-color: #1D9E75; background: #E1F5EE; }
+
+  .bank-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+  .bank {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 1rem; background: #f0ede6;
+    border-radius: 12px; margin-bottom: 1.25rem;
+    min-height: 64px;
+  }
+  .bank.drag-over-zone { background: #E1F5EE; }
+
+  .phrase-card {
+    background: #fff; border: 1px solid #ddd9d0;
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 14px; color: #1a1a18;
+    cursor: grab; user-select: none;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  .phrase-card:active { cursor: grabbing; transform: scale(1.02); }
+  .phrase-card.dragging { opacity: 0.35; }
+  .phrase-card.correct-card { background: #E1F5EE; border-color: #1D9E75; color: #085041; }
+  .phrase-card.near-card { background: #FAEEDA; border-color: #BA7517; color: #633806; }
+  .phrase-card.wrong-card { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
+
+  .check-btn {
+    width: 100%; padding: 14px;
+    background: #1D9E75; color: #fff;
+    border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .check-btn:hover { background: #0F6E56; }
+  .check-btn:disabled { background: #e8e7e2; color: #aaa; cursor: default; }
+
+  .next-btn {
+    width: 100%; padding: 14px; margin-top: 10px;
+    background: #fff; border: 1px solid #ddd9d0;
+    border-radius: 12px; font-size: 15px; font-weight: 600;
+    color: #1a1a18; cursor: pointer; transition: background 0.15s;
+  }
+  .next-btn:hover { background: #f5f5f3; }
+
+  .feedback-row {
+    margin-top: 1rem; padding: 14px 16px;
+    border-radius: 12px; font-size: 14px; line-height: 1.6;
+  }
+  .fb-correct { background: #E1F5EE; border: 1px solid #5DCAA5; color: #085041; }
+  .fb-partial { background: #FAEEDA; border: 1px solid #FAC775; color: #633806; }
+  .fb-wrong { background: #FCEBEB; border: 1px solid #F09595; color: #501313; }
+  .fb-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+
+  .exp-item {
+    margin-top: 10px; padding: 8px 10px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+  }
+  .exp-pos { font-size: 11px; color: #666; margin-bottom: 2px; }
+  .exp-text { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .exp-reason { font-size: 12px; color: #555; }
+
+  .result-card {
+    background: #fff; border: 1px solid #e2e0d8;
+    border-radius: 16px; padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .big-score { font-size: 52px; font-weight: 700; color: #1a1a18; margin-bottom: 4px; }
+  .result-title { font-size: 22px; font-weight: 600; margin-bottom: 0.5rem; }
+  .result-sub { font-size: 14px; color: #666; margin-bottom: 1.75rem; line-height: 1.65; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .stat-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 1.75rem; }
+  .stat-box { background: #f5f5f3; border-radius: 10px; padding: 12px 20px; min-width: 90px; }
+  .stat-n { font-size: 22px; font-weight: 700; }
+  .stat-l { font-size: 12px; color: #888; margin-top: 2px; }
+
+  .replay-btn {
+    background: #1D9E75; color: #fff; border: none;
+    border-radius: 12px; padding: 14px 32px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    width: 100%; margin-bottom: 10px;
+    transition: background 0.15s;
+  }
+  .replay-btn:hover { background: #0F6E56; }
+
+  .branding {
+    text-align: center; margin-top: 1.5rem;
+    font-size: 12px; color: #aaa;
+  }
+
+  /* Touch support indicator */
+  .touch-hint {
+    font-size: 12px; color: #aaa; text-align: center;
+    margin-bottom: 0.75rem; display: none;
+  }
+
+  @media (max-width: 520px) {
+    body { padding: 1rem 0.75rem; }
+    .phrase-card { font-size: 13px; padding: 7px 10px; }
+    .target-text { font-size: 16px; }
+    .touch-hint { display: block; }
+  }
+
+  @media (pointer: coarse) {
+    .touch-hint { display: block; }
+  }
+</style>
+</head>
+<body>
+<div id="game"></div>
+<div class="branding">GenAI Application Engineering · Semantic Neighbors</div>
+
+<script>
+const ROUNDS = [
+  {
+    target: "Python backend developer",
+    hint: "Think about roles and skills in software engineering",
+    phrases: [
+      { text: "Django REST API engineer", score: 0.94, reason: "Almost identical role — same language, same server-side stack" },
+      { text: "Flask web developer", score: 0.88, reason: "Same language and backend domain, slightly different framework" },
+      { text: "Java Spring Boot developer", score: 0.71, reason: "Same backend role but different language — moderately similar" },
+      { text: "Frontend React developer", score: 0.45, reason: "Software engineer but completely different stack and side of the app" },
+      { text: "Pastry chef specialising in croissants", score: 0.04, reason: "Completely unrelated domain — embeddings place this very far away" }
+    ]
+  },
+  {
+    target: "Retrieval Augmented Generation",
+    hint: "Think about what RAG is, what it does, and what it is NOT",
+    phrases: [
+      { text: "Semantic search with LLM-generated answers", score: 0.92, reason: "Essentially describes RAG — retrieve relevant docs then generate a grounded answer" },
+      { text: "Vector database similarity search", score: 0.78, reason: "Core component of RAG but only the retrieval half, not the full pipeline" },
+      { text: "LLM fine-tuning on custom data", score: 0.51, reason: "Also gives models private knowledge but via a fundamentally different approach" },
+      { text: "Keyword-based BM25 search", score: 0.38, reason: "Also retrieval, but no semantic understanding or generation involved" },
+      { text: "Image classification with CNNs", score: 0.06, reason: "Completely different task — visual not textual, no generation component" }
+    ]
+  },
+  {
+    target: "Cosine similarity score of 0.95",
+    hint: "Think about what this number means in vector space",
+    phrases: [
+      { text: "Nearly identical meaning in embedding space", score: 0.97, reason: "Exactly right — 0.95 is very close to 1.0, indicating near-identical direction" },
+      { text: "Vectors pointing in almost the same direction", score: 0.95, reason: "The geometric definition of high cosine similarity" },
+      { text: "Strong candidate match in a JD–resume system", score: 0.82, reason: "Correct application — 0.95 would be an excellent resume match score" },
+      { text: "Moderate relevance, worth reviewing", score: 0.40, reason: "0.95 is far above moderate — this description undersells the score significantly" },
+      { text: "The resume is 95% as long as the JD", score: 0.02, reason: "Completely wrong — cosine similarity measures angle between vectors, not length" }
+    ]
+  },
+  {
+    target: "Model context window of 128k tokens",
+    hint: "What does this number mean practically for developers?",
+    phrases: [
+      { text: "Can process roughly 96,000 words in one request", score: 0.93, reason: "Correct — 128k tokens × 0.75 words/token ≈ 96k words" },
+      { text: "Maximum input + output the model handles at once", score: 0.90, reason: "Accurate definition of what a context window is" },
+      { text: "Can fit about 300 pages of text in one prompt", score: 0.80, reason: "Good approximation — 128k tokens is roughly a small novel" },
+      { text: "The model was trained on 128k documents", score: 0.22, reason: "Confuses context window with training data size — very different concepts" },
+      { text: "Model has 128,000 parameters", score: 0.08, reason: "Confuses context window size with parameter count — completely unrelated" }
+    ]
+  },
+  {
+    target: "Embedding model",
+    hint: "Think about what this component does in an AI system",
+    phrases: [
+      { text: "Converts text into a dense vector representation", score: 0.96, reason: "The exact definition — this is precisely what an embedding model does" },
+      { text: "Encodes meaning into a list of numbers", score: 0.92, reason: "Correct paraphrase — captures the semantic encoding function" },
+      { text: "Generative LLM like GPT-4", score: 0.48, reason: "Both are neural models but serve different purposes — one encodes, one generates" },
+      { text: "SQL database index", score: 0.15, reason: "Also enables fast data retrieval but in a completely different non-semantic way" },
+      { text: "Random number generator", score: 0.02, reason: "Also produces numbers but with zero semantic meaning — the opposite of an embedding" }
+    ]
+  }
+];
+
+let currentRound = 0;
+let totalScore = 0;
+let roundScores = [];
+let dragSrc = null;
+let dragSrcParent = null;
+
+/* ── touch drag state ── */
+let touchCard = null;
+let touchClone = null;
+let touchOffX = 0;
+let touchOffY = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderRound() {
+  const round = ROUNDS[currentRound];
+  const shuffled = shuffle(round.phrases);
+  const n = shuffled.length;
+  const game = document.getElementById('game');
+
+  game.innerHTML = `
+    <div class="progress-bg"><div class="progress-fill" style="width:${Math.round((currentRound/ROUNDS.length)*100)}%"></div></div>
+    <div class="round-header">
+      <span class="round-label">Round ${currentRound+1} of ${ROUNDS.length}</span>
+      <span class="score-pill">Score: ${totalScore}</span>
+    </div>
+    <div class="target-card">
+      <div class="target-label">Target phrase</div>
+      <div class="target-text">${round.target}</div>
+    </div>
+    <p class="instruction">Drag phrases onto the numbered slots — most similar on the left (1), least similar on the right (${n}). Hint: ${round.hint}</p>
+    <p class="touch-hint">On mobile: press and hold a phrase card, then drag it to a slot.</p>
+    <div class="spectrum-ends">
+      <span class="end-close">1 = Most similar</span>
+      <span class="end-far">${n} = Least similar</span>
+    </div>
+    <div class="slots-row" id="slots-row" style="grid-template-columns:repeat(${n},1fr);">
+      ${Array.from({length:n},(_,i) => `
+        <div class="slot-wrap">
+          <div class="slot-num">${i+1}</div>
+          <div class="slot-box" data-slot="${i}"></div>
+        </div>`).join('')}
+    </div>
+    <div class="bank-label">Phrases to sort</div>
+    <div class="bank" id="bank">
+      ${shuffled.map((p,i) => `<div class="phrase-card" draggable="true"
+        data-idx="${i}" data-score="${p.score}"
+        data-text="${p.text.replace(/"/g,'&quot;')}"
+        data-reason="${p.reason.replace(/"/g,'&quot;')}"
+        >${p.text}</div>`).join('')}
+    </div>
+    <button class="check-btn" id="check-btn" disabled>Check my order</button>
+    <div id="feedback-area"></div>
+  `;
+
+  attachDragListeners();
+  attachTouchListeners();
+}
+
+function attachDragListeners() {
+  document.querySelectorAll('.phrase-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      dragSrc = card;
+      dragSrcParent = card.parentNode;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      document.querySelectorAll('.phrase-card').forEach(c => c.classList.remove('dragging'));
+      document.querySelectorAll('.slot-box,.bank').forEach(z => z.classList.remove('drag-over-zone'));
+    });
+  });
+
+  document.querySelectorAll('.slot-box').forEach(slot => {
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over-zone'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over-zone'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault();
+      slot.classList.remove('drag-over-zone');
+      if (!dragSrc) return;
+      const existing = slot.querySelector('.phrase-card');
+      if (existing) dragSrcParent.appendChild(existing);
+      slot.appendChild(dragSrc);
+      dragSrc = null;
+      updateCheckBtn();
+    });
+  });
+
+  const bank = document.getElementById('bank');
+  bank.addEventListener('dragover', e => { e.preventDefault(); bank.classList.add('drag-over-zone'); });
+  bank.addEventListener('dragleave', () => bank.classList.remove('drag-over-zone'));
+  bank.addEventListener('drop', e => {
+    e.preventDefault();
+    bank.classList.remove('drag-over-zone');
+    if (!dragSrc) return;
+    bank.appendChild(dragSrc);
+    dragSrc = null;
+    updateCheckBtn();
+  });
+}
+
+function attachTouchListeners() {
+  document.querySelectorAll('.phrase-card').forEach(card => {
+    card.addEventListener('touchstart', e => {
+      touchCard = card;
+      const t = e.touches[0];
+      const rect = card.getBoundingClientRect();
+      touchOffX = t.clientX - rect.left;
+      touchOffY = t.clientY - rect.top;
+      touchClone = card.cloneNode(true);
+      touchClone.style.cssText = `position:fixed;pointer-events:none;opacity:0.85;z-index:9999;width:${rect.width}px;left:${t.clientX - touchOffX}px;top:${t.clientY - touchOffY}px;`;
+      document.body.appendChild(touchClone);
+      card.classList.add('dragging');
+    }, { passive: true });
+
+    card.addEventListener('touchmove', e => {
+      if (!touchClone) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX - touchOffX) + 'px';
+      touchClone.style.top = (t.clientY - touchOffY) + 'px';
+      document.querySelectorAll('.slot-box,.bank').forEach(z => z.classList.remove('drag-over-zone'));
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      if (el) {
+        const target = el.closest('.slot-box') || el.closest('.bank');
+        if (target) target.classList.add('drag-over-zone');
+      }
+    }, { passive: false });
+
+    card.addEventListener('touchend', e => {
+      if (touchClone) { touchClone.remove(); touchClone = null; }
+      document.querySelectorAll('.slot-box,.bank').forEach(z => z.classList.remove('drag-over-zone'));
+      if (!touchCard) return;
+      const t = e.changedTouches[0];
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      if (el) {
+        const slot = el.closest('.slot-box');
+        const bank = el.closest('.bank');
+        if (slot) {
+          const existing = slot.querySelector('.phrase-card');
+          if (existing) touchCard.parentNode.appendChild(existing);
+          slot.appendChild(touchCard);
+        } else if (bank) {
+          bank.appendChild(touchCard);
+        }
+      }
+      touchCard.classList.remove('dragging');
+      touchCard = null;
+      updateCheckBtn();
+    });
+  });
+}
+
+function updateCheckBtn() {
+  const slots = document.querySelectorAll('.slot-box');
+  const allFilled = Array.from(slots).every(s => s.querySelector('.phrase-card'));
+  document.getElementById('check-btn').disabled = !allFilled;
+  if (allFilled) {
+    document.getElementById('check-btn').onclick = checkAnswer;
+  }
+}
+
+function checkAnswer() {
+  const round = ROUNDS[currentRound];
+  const slots = document.querySelectorAll('.slot-box');
+  const correct = [...round.phrases].sort((a,b) => b.score - a.score);
+
+  let pts = 0;
+  let explanations = [];
+
+  slots.forEach((slot, i) => {
+    const card = slot.querySelector('.phrase-card');
+    if (!card) return;
+    const score = parseFloat(card.dataset.score);
+    const diff = Math.abs(score - correct[i].score);
+    if (diff === 0) { card.classList.add('correct-card'); pts += 2; }
+    else if (diff <= 0.15) { card.classList.add('near-card'); pts += 1; }
+    else { card.classList.add('wrong-card'); }
+    explanations.push({ pos: i+1, text: card.dataset.text, score, reason: card.dataset.reason });
+  });
+
+  const maxPts = round.phrases.length * 2;
+  const pct = Math.round((pts / maxPts) * 100);
+  totalScore += pts;
+  roundScores.push(pts);
+
+  const fbClass = pct >= 80 ? 'fb-correct' : pct >= 50 ? 'fb-partial' : 'fb-wrong';
+  const fbTitle = pct >= 80 ? 'Great intuition!' : pct >= 50 ? 'Nearly there!' : 'Good try — here is how embeddings see it';
+
+  const expHtml = explanations.map(ex => `
+    <div class="exp-item">
+      <div class="exp-pos">Position ${ex.pos} · similarity ${ex.score.toFixed(2)}</div>
+      <div class="exp-text">${ex.text}</div>
+      <div class="exp-reason">${ex.reason}</div>
+    </div>`).join('');
+
+  document.getElementById('feedback-area').innerHTML = `
+    <div class="feedback-row ${fbClass}">
+      <div class="fb-title">${fbTitle} — ${pts}/${maxPts} points</div>
+      <div style="margin-bottom:4px;">Correct order, most → least similar:</div>
+      ${expHtml}
+    </div>
+    <button class="next-btn" onclick="nextRound()">${currentRound < ROUNDS.length - 1 ? 'Next round →' : 'See final score →'}</button>
+  `;
+
+  document.getElementById('check-btn').disabled = true;
+  document.querySelectorAll('.phrase-card').forEach(c => c.setAttribute('draggable','false'));
+}
+
+function nextRound() {
+  currentRound++;
+  if (currentRound >= ROUNDS.length) showResults();
+  else renderRound();
+}
+
+function showResults() {
+  const maxTotal = ROUNDS.reduce((s,r) => s + r.phrases.length * 2, 0);
+  const pct = Math.round((totalScore / maxTotal) * 100);
+  const perfect = roundScores.filter((s,i) => s === ROUNDS[i].phrases.length * 2).length;
+
+  const titles = ['Keep exploring!','Good intuition!','Strong spatial sense!','Excellent!','Embedding expert!'];
+  const subs = [
+    'Semantic similarity is tricky at first. Try re-reading the embeddings section in your class notes, then replay.',
+    'You are building real intuition for how embeddings cluster meaning. A few more rounds and it will fully click.',
+    'You understand how embedding space works. The near-misses show you are reasoning about semantics correctly.',
+    'You have strong intuition for how LLMs encode meaning. You could explain this to the rest of the cohort.',
+    'Perfect semantic intuition! You deeply understand how embedding space organises meaning — ready for advanced RAG.'
+  ];
+  const tier = pct===100?4:pct>=80?3:pct>=60?2:pct>=40?1:0;
+
+  document.getElementById('game').innerHTML = `
+    <div class="progress-bg"><div class="progress-fill" style="width:100%"></div></div>
+    <div class="result-card">
+      <div class="big-score">${pct}%</div>
+      <div class="result-title">${titles[tier]}</div>
+      <p class="result-sub">${subs[tier]}</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-n" style="color:#1D9E75">${totalScore}</div><div class="stat-l">Points</div></div>
+        <div class="stat-box"><div class="stat-n">${perfect}</div><div class="stat-l">Perfect rounds</div></div>
+        <div class="stat-box"><div class="stat-n">${ROUNDS.length}</div><div class="stat-l">Rounds played</div></div>
+      </div>
+      <button class="replay-btn" onclick="restartGame()">Play again</button>
+    </div>
+  `;
+}
+
+function restartGame() {
+  currentRound = 0;
+  totalScore = 0;
+  roundScores = [];
+  renderRound();
+}
+
+renderRound();
+</script>
+</body>
+</html>
