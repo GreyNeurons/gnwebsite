@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tokens & Embeddings Quiz — GenAI Application Engineering</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f3;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #1a1a18;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 660px;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Start ── */
+  .start-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e0d8;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .start-icon { font-size: 40px; margin-bottom: 1rem; }
+  .start-title { font-size: 22px; font-weight: 600; margin-bottom: 0.5rem; }
+  .start-sub { font-size: 15px; color: #666; margin-bottom: 1.5rem; line-height: 1.6; }
+  .tag-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 1.75rem; }
+  .tag { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 99px; }
+  .tag-concept { background: #EEEDFE; color: #3C3489; }
+  .tag-apply { background: #E1F5EE; color: #0F6E56; }
+  .tag-industry { background: #FAEEDA; color: #633806; }
+  .info-row { display: flex; justify-content: center; gap: 24px; margin-bottom: 1.75rem; }
+  .info-item { font-size: 13px; color: #888; }
+  .info-item strong { color: #1a1a18; font-weight: 600; }
+  .start-btn {
+    background: #1D9E75; color: #fff; border: none;
+    border-radius: 12px; padding: 14px 32px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    width: 100%; transition: background 0.15s;
+  }
+  .start-btn:hover { background: #0F6E56; }
+
+  /* ── Progress ── */
+  .progress-wrap { margin-bottom: 1.5rem; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; color: #888; }
+  .progress-bar-bg { background: #e8e7e2; border-radius: 99px; height: 6px; }
+  .progress-bar-fill { background: #1D9E75; height: 6px; border-radius: 99px; transition: width 0.4s ease; }
+
+  /* ── Question ── */
+  .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+  .q-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .badge-concept { background: #EEEDFE; color: #3C3489; }
+  .badge-apply { background: #E1F5EE; color: #0F6E56; }
+  .badge-industry { background: #FAEEDA; color: #633806; }
+
+  .q-text { font-size: 17px; font-weight: 500; line-height: 1.55; margin-bottom: 1.25rem; color: #1a1a18; }
+
+  .q-code {
+    background: #f0ede6; border: 1px solid #ddd9d0;
+    border-radius: 10px; padding: 12px 16px;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 13px; line-height: 1.6;
+    margin-bottom: 1.25rem; white-space: pre-wrap;
+    color: #2a2a28; display: none;
+  }
+
+  .streak-banner {
+    background: #FAEEDA; border: 1px solid #FAC775;
+    border-radius: 8px; padding: 8px 14px;
+    font-size: 13px; color: #633806;
+    margin-bottom: 1rem; display: none;
+  }
+
+  /* ── Options ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn {
+    background: #fff; border: 1px solid #ddd9d0;
+    border-radius: 12px; padding: 14px 16px;
+    font-size: 15px; color: #1a1a18;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: flex-start; gap: 12px;
+    line-height: 1.45; transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: #1D9E75; background: #f5fdf9; }
+  .opt-letter {
+    font-size: 12px; font-weight: 600; color: #aaa;
+    min-width: 18px; padding-top: 2px;
+    flex-shrink: 0;
+  }
+  .opt-btn.correct { background: #E1F5EE; border-color: #1D9E75; }
+  .opt-btn.correct .opt-letter { color: #0F6E56; }
+  .opt-btn.wrong { background: #FCEBEB; border-color: #E24B4A; }
+  .opt-btn.wrong .opt-letter { color: #A32D2D; }
+  .opt-btn:disabled { cursor: default; }
+
+  /* ── Feedback ── */
+  .feedback-box {
+    margin-top: 1.25rem; padding: 14px 16px;
+    border-radius: 12px; font-size: 14px; line-height: 1.65;
+  }
+  .feedback-box.correct-fb { background: #E1F5EE; border: 1px solid #5DCAA5; color: #085041; }
+  .feedback-box.wrong-fb { background: #FCEBEB; border: 1px solid #F09595; color: #501313; }
+  .feedback-label { font-weight: 600; font-size: 15px; margin-bottom: 5px; }
+
+  /* ── Next button ── */
+  .next-btn {
+    margin-top: 1.25rem; width: 100%; padding: 14px;
+    background: #fff; border: 1px solid #ddd9d0;
+    border-radius: 12px; font-size: 15px; font-weight: 600;
+    color: #1a1a18; cursor: pointer; transition: background 0.15s;
+  }
+  .next-btn:hover { background: #f5f5f3; }
+
+  /* ── Results ── */
+  .result-card {
+    background: #fff; border-radius: 16px;
+    border: 1px solid #e2e0d8; padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .score-ring { width: 100px; height: 100px; margin: 0 auto 1.25rem; position: relative; }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-num {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px; font-weight: 700; color: #1a1a18;
+  }
+  .result-title { font-size: 20px; font-weight: 600; margin-bottom: 0.5rem; }
+  .result-sub { font-size: 14px; color: #666; margin-bottom: 1.75rem; line-height: 1.65; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .stat-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 1.75rem; }
+  .stat-box { background: #f5f5f3; border-radius: 10px; padding: 12px 20px; min-width: 90px; }
+  .stat-num { font-size: 22px; font-weight: 700; }
+  .stat-lbl { font-size: 12px; color: #888; margin-top: 2px; }
+  .retry-btn {
+    background: #1D9E75; color: #fff; border: none;
+    border-radius: 12px; padding: 14px 32px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    width: 100%; margin-bottom: 10px; transition: background 0.15s;
+  }
+  .retry-btn:hover { background: #0F6E56; }
+
+  /* ── Branding ── */
+  .branding {
+    text-align: center; margin-top: 1.5rem;
+    font-size: 12px; color: #aaa;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 1rem 0.75rem; }
+    .start-card, .result-card { padding: 1.75rem 1.25rem; }
+    .stat-row { gap: 8px; }
+    .stat-box { padding: 10px 12px; min-width: 75px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- START -->
+  <div id="start-screen" class="screen active">
+    <div class="start-card">
+      <div class="start-icon">🧠</div>
+      <h1 class="start-title">Tokens &amp; Embeddings Quiz</h1>
+      <p class="start-sub">10 questions covering tokenization, vectors, embeddings, and semantic search — the building blocks of every LLM application.</p>
+      <div class="tag-row">
+        <span class="tag tag-concept">Concepts</span>
+        <span class="tag tag-apply">Apply it</span>
+        <span class="tag tag-industry">Industry facts</span>
+      </div>
+      <div class="info-row">
+        <span class="info-item"><strong>10</strong> questions</span>
+        <span class="info-item"><strong>~5 min</strong></span>
+        <span class="info-item">Instant feedback</span>
+      </div>
+      <button class="start-btn" onclick="startQuiz()">Start quiz →</button>
+    </div>
+    <div class="branding">GenAI Application Engineering · Cohort Quiz</div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-screen" class="screen">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="q-counter">Question 1 of 10</span>
+        <span class="progress-label" id="score-live">Score: 0</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+    </div>
+    <div class="q-meta"><span class="q-badge" id="q-badge">Concept</span></div>
+    <div class="q-text" id="q-text"></div>
+    <pre class="q-code" id="q-code"></pre>
+    <div class="streak-banner" id="streak-banner"></div>
+    <div class="options" id="options"></div>
+    <div id="feedback" style="display:none"></div>
+    <button class="next-btn" id="next-btn" style="display:none" onclick="nextQuestion()">Next question →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="score-ring">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#e8e7e2" stroke-width="8"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#1D9E75" stroke-width="8"
+            stroke-linecap="round" id="score-arc"
+            stroke-dasharray="263.9" stroke-dashoffset="263.9"
+            style="transition: stroke-dashoffset 0.9s ease, stroke 0.3s"/>
+        </svg>
+        <div class="score-num" id="score-pct">0%</div>
+      </div>
+      <div class="result-title" id="result-title">Good effort!</div>
+      <p class="result-sub" id="result-sub"></p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num" id="s-correct" style="color:#1D9E75">0</div><div class="stat-lbl">Correct</div></div>
+        <div class="stat-box"><div class="stat-num" id="s-wrong" style="color:#E24B4A">0</div><div class="stat-lbl">Wrong</div></div>
+        <div class="stat-box"><div class="stat-num" id="s-streak">0</div><div class="stat-lbl">Best streak</div></div>
+      </div>
+      <button class="retry-btn" onclick="startQuiz()">Retry quiz</button>
+    </div>
+    <div class="branding">GenAI Application Engineering · Cohort Quiz</div>
+  </div>
+
+</div>
+<script>
+const ALL_QUESTIONS = [
+  {
+    text: "GPT-4 uses a vocabulary of 100,256 tokens. About how many words does 100 tokens represent?",
+    code: null, badge: "concept",
+    options: ["About 25 words","About 75 words","About 200 words","About 500 words"],
+    correct: 1,
+    explanation: "An average token is about 3/4 of a word, so 100 tokens ≈ 75 words. This is why a 4,000-token context window holds roughly 3,000 words — not 4,000."
+  },
+  {
+    text: "Which sentence is tokenized MOST efficiently (fewest tokens per word)?",
+    code: null, badge: "apply",
+    options: ["I love Python","supercalifragilisticexpialidocious","Pneumonoultramicroscopicsilicovolcanoconiosis","Ünterfahrung"],
+    correct: 0,
+    explanation: "Short common English words like 'I', 'love', 'Python' are often single tokens each. Rare, long, or foreign words get split into many sub-word pieces, increasing token count."
+  },
+  {
+    text: "What is the key difference between a vector and an embedding?",
+    code: null, badge: "concept",
+    options: [
+      "They are exactly the same thing",
+      "A vector is just a list of numbers; an embedding is a vector that encodes semantic meaning from a trained AI model",
+      "Embeddings are always 3-dimensional; vectors can have any size",
+      "Vectors are used in math; embeddings are only for text"
+    ],
+    correct: 1,
+    explanation: "Every embedding is a vector, but not every vector is an embedding. A random list of numbers is just a vector. When a trained model produces it to capture meaning, it becomes an embedding — vector + meaning."
+  },
+  {
+    text: "What token ID does 'AI' map to in the sentence below?",
+    code: "import tiktoken\nenc = tiktoken.get_encoding('cl100k_base')\ntokens = enc.encode(\"I can't wait to build AI applications\")\n# Result: [40, 649, 1431, 3868, 311, 1977, 15592, 8522]",
+    badge: "apply",
+    options: ["Token ID: 1","Token ID: 15592","Token ID: 100256","Token ID: 40"],
+    correct: 1,
+    explanation: "'AI' is the 7th token in the sentence, mapping to ID 15592. Each token in the vocabulary has one unique integer ID — this is how models process text numerically."
+  },
+  {
+    text: "Two resumes have cosine similarity 0.92 with a JD. A third has 0.31. What does this mean?",
+    code: null, badge: "apply",
+    options: [
+      "Resumes 1 & 2 are longer than resume 3",
+      "Resumes 1 & 2 have much stronger semantic alignment with the JD — strong candidate matches",
+      "Resume 3 was uploaded in a different file format",
+      "The scores are invalid — cosine similarity only works for images"
+    ],
+    correct: 1,
+    explanation: "Cosine similarity near 1.0 means the vectors point in nearly the same direction — high semantic similarity. 0.31 means the resume topics are largely unrelated to the JD requirements."
+  },
+  {
+    text: "BERT-base produces 768-dimensional embeddings. OpenAI's text-embedding-3-large produces 3072. What is the practical implication?",
+    code: null, badge: "concept",
+    options: [
+      "BERT is always better for text tasks",
+      "Higher dimensions encode more semantic nuance but require more storage and compute",
+      "The models are interchangeable — dimension count doesn't matter",
+      "3072 dimensions means the model was trained on 3072 documents"
+    ],
+    correct: 1,
+    explanation: "Think of dimensions like describing a film in 768 words vs 3072 words — more detail captures more nuance. But each extra dimension costs storage and compute. Choosing the right size is an engineering trade-off."
+  },
+  {
+    text: "Why do LLMs use sub-word tokens instead of whole words or single characters?",
+    code: null, badge: "concept",
+    options: [
+      "Characters are too small to carry meaning; whole words create too large a vocabulary and can't handle unknown words",
+      "Tokens are faster to display on screen",
+      "LLMs can only process numbers below 1000",
+      "Sub-words are only used for code, not natural language"
+    ],
+    correct: 0,
+    explanation: "Sub-word tokenization (BPE) balances vocabulary size, handles unknown words by splitting them into known parts, and preserves meaningful components like 'cook' + 'ing'."
+  },
+  {
+    text: "You query 'Backend Python engineer'. Which result would a semantic search return even without keyword overlap?",
+    code: null, badge: "apply",
+    options: [
+      "Documents with the exact phrase 'Backend Python engineer'",
+      "'Django developer with 5 years of server-side experience'",
+      "'Pastry chef specializing in French cuisine'",
+      "No results — embeddings only match exact keywords"
+    ],
+    correct: 1,
+    explanation: "Embeddings place 'Django developer with server-side experience' near 'Backend Python engineer' in vector space because they mean similar things — even with zero word overlap. This is impossible with keyword search."
+  },
+  {
+    text: "Pinecone is used by Spotify and Shopify at scale. ChromaDB is used in this course. What is the right reason to choose ChromaDB for learning?",
+    code: null, badge: "industry",
+    options: [
+      "ChromaDB has better semantic accuracy than Pinecone",
+      "ChromaDB runs locally, is free, developer-friendly, and perfect for prototyping — Pinecone is managed cloud infrastructure built for scale",
+      "Pinecone doesn't support Python",
+      "ChromaDB supports more embedding models than Pinecone"
+    ],
+    correct: 1,
+    explanation: "ChromaDB installs locally with pip, requires no cloud account, and has a simple Python API. Pinecone is production-grade managed infrastructure — powerful, but overkill for learning the fundamentals."
+  },
+  {
+    text: "What does the Chinchilla scaling law suggest about Llama-3 (trained on 15T tokens) vs Llama-1 (1.4T tokens)?",
+    code: null, badge: "industry",
+    options: [
+      "More training tokens always makes a model larger in parameter count",
+      "Training data volume is as important as model size — an optimally trained smaller model can outperform a larger undertrained one",
+      "The models are the same because they use the same architecture",
+      "After 1 trillion tokens, additional training data has no effect"
+    ],
+    correct: 1,
+    explanation: "Chinchilla showed model size alone doesn't determine quality — training data matters equally. Chinchilla 70B beat models 7x larger simply by being properly trained. Llama-3's 15T token dataset is a key reason it outperforms earlier models."
+  }
+];
+
+let questions=[], current=0, score=0, streak=0, bestStreak=0, answered=false;
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+
+function startQuiz(){
+  questions=shuffle(ALL_QUESTIONS).slice(0,10);
+  current=0;score=0;streak=0;bestStreak=0;
+  show('quiz-screen');loadQuestion();
+}
+
+function loadQuestion(){
+  answered=false;
+  const q=questions[current];
+  const pct=(current/questions.length)*100;
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('q-counter').textContent='Question '+(current+1)+' of '+questions.length;
+  document.getElementById('score-live').textContent='Score: '+score;
+  const badgeEl=document.getElementById('q-badge');
+  const bmap={concept:['Concept','badge-concept'],apply:['Apply it','badge-apply'],industry:['Industry','badge-industry']};
+  const[label,cls]=bmap[q.badge];
+  badgeEl.textContent=label;badgeEl.className='q-badge '+cls;
+  document.getElementById('q-text').textContent=q.text;
+  const codeEl=document.getElementById('q-code');
+  if(q.code){codeEl.style.display='block';codeEl.textContent=q.code;}else{codeEl.style.display='none';}
+  const sb=document.getElementById('streak-banner');
+  if(streak>=2){sb.style.display='block';sb.textContent='🔥 '+streak+' in a row! Keep it going.';}else{sb.style.display='none';}
+  const letters=['A','B','C','D'];
+  const optEl=document.getElementById('options');optEl.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML='<span class="opt-letter">'+letters[i]+'</span><span>'+opt+'</span>';
+    btn.onclick=()=>selectAnswer(i);
+    optEl.appendChild(btn);
+  });
+  document.getElementById('feedback').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+  document.getElementById('next-btn').textContent=current<questions.length-1?'Next question →':'See my results →';
+}
+
+function selectAnswer(idx){
+  if(answered)return;answered=true;
+  const q=questions[current];
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  const isCorrect=idx===q.correct;
+  btns[idx].classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect)btns[q.correct].classList.add('correct');
+  if(isCorrect){score++;streak++;if(streak>bestStreak)bestStreak=streak;}else{streak=0;}
+  const fb=document.getElementById('feedback');
+  fb.style.display='block';
+  fb.className='feedback-box '+(isCorrect?'correct-fb':'wrong-fb');
+  fb.innerHTML='<div class="feedback-label">'+(isCorrect?'Correct!':'Not quite.')+'</div>'+q.explanation;
+  document.getElementById('next-btn').style.display='block';
+}
+
+function nextQuestion(){
+  current++;
+  if(current>=questions.length)showResults();else loadQuestion();
+}
+
+function showResults(){
+  show('result-screen');
+  const pct=Math.round((score/questions.length)*100);
+  document.getElementById('score-pct').textContent=pct+'%';
+  const arc=document.getElementById('score-arc');
+  const offset=263.9-(pct/100)*263.9;
+  setTimeout(()=>{arc.style.strokeDashoffset=offset;},100);
+  arc.style.stroke=pct>=70?'#1D9E75':pct>=50?'#BA7517':'#E24B4A';
+  document.getElementById('s-correct').textContent=score;
+  document.getElementById('s-wrong').textContent=questions.length-score;
+  document.getElementById('s-streak').textContent=bestStreak;
+  document.getElementById('pbar').style.width='100%';
+  const titles=['Keep practicing!','Good effort!','Well done!','Excellent!','Perfect score!'];
+  const subs=[
+    'Review the class notes on tokens and embeddings — pay special attention to vocabulary, dimensions, and cosine similarity.',
+    'Solid base! Re-read the ChromaDB section and the embedding vs vector distinction to push your score higher.',
+    'Strong understanding of the core concepts. Focus on the industry and apply questions to reach the next level.',
+    'Near-perfect! You clearly understand both theory and real-world application in the JD-Resume Matcher.',
+    'Outstanding! You are ready to explain these concepts to others — and build with confidence.'
+  ];
+  const tier=pct===100?4:pct>=80?3:pct>=60?2:pct>=40?1:0;
+  document.getElementById('result-title').textContent=titles[tier];
+  document.getElementById('result-sub').textContent=subs[tier];
+}
+</script>
+</body>
+</html>
