@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RAG Pipeline Game — GenAI Application Engineering</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f3;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #1a1a18;
+  }
+
+  #app { width: 100%; max-width: 680px; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .prog-bg { background: #e8e7e2; border-radius: 99px; height: 5px; margin-bottom: 1.5rem; }
+  .prog-fill { background: #1D9E75; height: 5px; border-radius: 99px; transition: width 0.4s ease; }
+
+  .level-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .level-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; }
+  .l1-badge { background: #E1F5EE; color: #0F6E56; }
+  .l2-badge { background: #FAEEDA; color: #633806; }
+  .l3-badge { background: #EEEDFE; color: #3C3489; }
+  .level-score { font-size: 13px; color: #888; }
+
+  .instruction { font-size: 13px; color: #666; margin-bottom: 1.25rem; line-height: 1.5; }
+
+  .check-btn {
+    width: 100%; padding: 14px; background: #1D9E75; color: #fff;
+    border: none; border-radius: 12px; font-size: 15px; font-weight: 600;
+    cursor: pointer; margin-top: 1rem; transition: background 0.15s;
+  }
+  .check-btn:hover { background: #0F6E56; }
+  .check-btn:disabled { background: #e8e7e2; color: #aaa; cursor: default; }
+
+  .next-btn {
+    width: 100%; padding: 14px; background: #fff; border: 1px solid #ddd9d0;
+    border-radius: 12px; font-size: 15px; font-weight: 600; color: #1a1a18;
+    cursor: pointer; margin-top: 0.75rem; transition: background 0.15s;
+  }
+  .next-btn:hover { background: #f5f5f3; }
+
+  .fb { margin-top: 1rem; padding: 14px 16px; border-radius: 12px; font-size: 14px; line-height: 1.65; }
+  .fb.ok { background: #E1F5EE; border: 1px solid #5DCAA5; color: #085041; }
+  .fb.err { background: #FCEBEB; border: 1px solid #F09595; color: #501313; }
+  .fb-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+
+  /* Level 1 — drag to build */
+  .step-card {
+    background: #fff; border: 1px solid #ddd9d0; border-radius: 8px;
+    padding: 10px 14px; font-size: 14px; color: #1a1a18;
+    cursor: grab; user-select: none; transition: border-color 0.15s;
+  }
+  .step-card:active { cursor: grabbing; }
+  .step-card.dragging { opacity: 0.35; }
+  .step-card.correct-card { background: #E1F5EE; border-color: #1D9E75; color: #085041; }
+  .step-card.wrong-card { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
+  .step-card .sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .step-card.correct-card .sub { color: #0F6E56; }
+  .step-card.wrong-card .sub { color: #A32D2D; }
+
+  .slot {
+    min-height: 52px; border: 1.5px dashed #ccc; border-radius: 10px;
+    display: flex; align-items: center; padding: 4px; transition: all 0.15s; flex: 1;
+  }
+  .slot.drag-over { border-color: #1D9E75; background: #E1F5EE; }
+
+  .bank {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 1rem; background: #f0ede6; border-radius: 12px; margin-bottom: 1rem;
+  }
+  .bank.drag-over { background: #E1F5EE; }
+
+  .pipeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 1rem; }
+  .slot-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .slot-num { font-size: 12px; color: #aaa; min-width: 20px; text-align: right; }
+  .arrow-down { width: 100%; text-align: center; font-size: 14px; color: #ccc; line-height: 1; margin-bottom: 6px; }
+
+  /* Level 2 — spot the bug */
+  .bug-card {
+    background: #fff; border: 1px solid #ddd9d0; border-radius: 10px;
+    padding: 12px 16px; font-size: 14px; color: #1a1a18;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .bug-card:hover { border-color: #888; }
+  .bug-card.selected { border-color: #378ADD; background: #E6F1FB; }
+  .bug-card.correct-pick { background: #E1F5EE; border-color: #1D9E75; }
+  .bug-card.wrong-pick { background: #FCEBEB; border-color: #E24B4A; }
+  .step-num-pill {
+    font-size: 11px; font-weight: 600; background: #f0ede6;
+    border-radius: 99px; padding: 2px 8px; color: #888; flex-shrink: 0;
+  }
+  .scenario-box {
+    background: #f5f5f3; border-radius: 12px; padding: 1rem; margin-bottom: 1rem;
+  }
+  .scenario-title { font-size: 13px; font-weight: 600; color: #1a1a18; margin-bottom: 4px; }
+  .scenario-context { font-size: 13px; color: #666; line-height: 1.5; }
+
+  /* Level 3 — match components */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+  .match-col-label { font-size: 12px; color: #888; margin-bottom: 6px; font-weight: 600; }
+  .match-item {
+    background: #fff; border: 1px solid #ddd9d0; border-radius: 8px;
+    padding: 10px 12px; font-size: 13px; color: #1a1a18;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    min-height: 52px; display: flex; align-items: center; margin-bottom: 8px;
+  }
+  .match-item:hover { border-color: #888; }
+  .match-item.selected-left { border-color: #534AB7; background: #EEEDFE; color: #3C3489; }
+  .match-item.matched-ok { background: #E1F5EE; border-color: #1D9E75; color: #085041; cursor: default; }
+  .match-item.matched-err { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
+
+  /* Results */
+  .result-card {
+    background: #fff; border: 1px solid #e2e0d8; border-radius: 16px;
+    padding: 2.5rem 2rem; text-align: center;
+  }
+  .big-score { font-size: 52px; font-weight: 700; color: #1a1a18; margin-bottom: 4px; }
+  .result-title { font-size: 20px; font-weight: 600; margin-bottom: 0.5rem; }
+  .result-sub { font-size: 14px; color: #666; margin-bottom: 1.75rem; line-height: 1.65; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .stat-row { display: flex; justify-content: center; gap: 12px; margin-bottom: 1.75rem; }
+  .stat-box { background: #f5f5f3; border-radius: 10px; padding: 12px 20px; min-width: 80px; }
+  .stat-n { font-size: 22px; font-weight: 700; }
+  .stat-l { font-size: 12px; color: #888; margin-top: 2px; }
+  .replay-btn {
+    background: #1D9E75; color: #fff; border: none; border-radius: 12px;
+    padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer;
+    width: 100%; margin-bottom: 10px; transition: background 0.15s;
+  }
+  .replay-btn:hover { background: #0F6E56; }
+
+  .branding { text-align: center; margin-top: 1.5rem; font-size: 12px; color: #aaa; }
+
+  /* Touch hint */
+  .touch-hint { font-size: 12px; color: #aaa; text-align: center; margin-bottom: 0.75rem; display: none; }
+  @media (pointer: coarse) { .touch-hint { display: block; } }
+  @media (max-width: 480px) {
+    body { padding: 1rem 0.75rem; }
+    .match-item { font-size: 12px; padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="l1" class="screen active"></div>
+  <div id="l2" class="screen"></div>
+  <div id="l3" class="screen"></div>
+  <div id="result" class="screen"></div>
+</div>
+<div class="branding">GenAI Application Engineering · RAG Pipeline Game</div>
+
+<script>
+let totalScore = 0;
+let dragSrc = null, dragSrcParent = null;
+let touchCard = null, touchClone = null, touchOffX = 0, touchOffY = 0;
+
+const L1_STEPS = [
+  { id: 'ingest',    label: 'Ingest documents',       sub: 'Load PDFs, DOCXs, text files' },
+  { id: 'chunk',     label: 'Chunk the text',          sub: 'Split into smaller passages' },
+  { id: 'embed',     label: 'Generate embeddings',     sub: 'Convert chunks to vectors' },
+  { id: 'store',     label: 'Store in vector DB',      sub: 'Save to ChromaDB' },
+  { id: 'qembed',    label: 'Embed the query',         sub: 'Convert user question to vector' },
+  { id: 'search',    label: 'Similarity search',       sub: 'Find top-K matching chunks' },
+  { id: 'augment',   label: 'Augment the prompt',      sub: 'Add retrieved context to prompt' },
+  { id: 'generate',  label: 'LLM generates answer',    sub: 'Grounded final response' },
+];
+
+const L2_SCENARIOS = [
+  {
+    title: 'The hallucinating chatbot',
+    context: 'A team built a RAG system to answer questions about internal HR policies. Users report the answers are confident but completely wrong — not matching any policy documents.',
+    steps: [
+      { label: 'Load HR policy PDFs into the system' },
+      { label: 'Split documents into 500-token chunks' },
+      { label: 'Generate embeddings for each chunk' },
+      { label: 'Store embeddings in ChromaDB' },
+      { label: 'User asks: "What is the parental leave policy?"' },
+      { label: 'Send question directly to LLM without retrieval', isBug: true },
+      { label: 'LLM generates answer from training data only' },
+      { label: 'Return answer to user' },
+    ],
+    bugIdx: 5,
+    fix: 'The retrieval step is missing entirely. The question must first be embedded, ChromaDB must be searched for relevant policy chunks, and those chunks must be injected into the prompt before calling the LLM.',
+  },
+  {
+    title: 'The stale resume matcher',
+    context: 'The JD-Resume Matcher returns the same three candidates for every job description, no matter how different the roles are.',
+    steps: [
+      { label: 'Upload job description' },
+      { label: 'Convert JD text to embedding vector' },
+      { label: 'Query ChromaDB for similar resumes' },
+      { label: 'Retrieve top-3 results by cosine similarity' },
+      { label: 'Use the same fixed embedding for every JD query', isBug: true },
+      { label: 'Inject retrieved resumes into prompt' },
+      { label: 'LLM ranks and explains match quality' },
+      { label: 'Display results to recruiter' },
+    ],
+    bugIdx: 4,
+    fix: 'The JD is not being re-embedded each time. A cached or hardcoded vector is used instead of computing a fresh embedding from the actual JD text — so every query searches from the same point in vector space.',
+  },
+  {
+    title: 'The context-blind assistant',
+    context: 'A document Q&A tool retrieves the right chunks from the vector DB, but the LLM answers still ignore the document content and make things up.',
+    steps: [
+      { label: 'User submits a question' },
+      { label: 'Embed the question using sentence-transformers' },
+      { label: 'Search ChromaDB — retrieve top-5 chunks' },
+      { label: 'Receive relevant document passages' },
+      { label: 'Call LLM with only the question, no context injected', isBug: true },
+      { label: 'LLM generates answer' },
+      { label: 'Return answer to user' },
+    ],
+    bugIdx: 4,
+    fix: 'The retrieved chunks are never added to the prompt. Retrieval worked correctly, but augmentation failed — the LLM only received the raw question, so it fell back on training memory instead of the documents.',
+  },
+];
+
+const L3_PAIRS = [
+  { left: 'Raw PDF document',                   right: 'Extracted plain text',              leftId: 'pdf',      rightId: 'text' },
+  { left: 'Plain text passage (500 tokens)',     right: 'Float array [0.23, -0.11, ...]',   leftId: 'passage',  rightId: 'vector' },
+  { left: 'User question',                       right: 'Query embedding vector',            leftId: 'question', rightId: 'qvec' },
+  { left: 'Query embedding + ChromaDB',          right: 'Top-K ranked text chunks',          leftId: 'chromadb', rightId: 'chunks' },
+  { left: 'Retrieved chunks + question',         right: 'Grounded LLM answer',               leftId: 'prompt',   rightId: 'answer' },
+  { left: 'Cosine similarity score of 0.04',     right: 'Very weak match — unrelated content', leftId: 'low',   rightId: 'unrelated' },
+];
+
+let l2Idx = 0, l2Selected = null;
+let l3Left = null, l3Matched = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function progBar(pct) {
+  return `<div class="prog-bg"><div class="prog-fill" style="width:${pct}%"></div></div>`;
+}
+
+/* ══════════════════════════════
+   LEVEL 1 — Build the pipeline
+══════════════════════════════ */
+function renderL1() {
+  const shuffled = shuffle([...L1_STEPS]);
+  document.getElementById('l1').innerHTML = `
+    ${progBar(0)}
+    <div class="level-header">
+      <span class="level-badge l1-badge">Level 1 — Build the pipeline</span>
+      <span class="level-score">2 pts per correct step</span>
+    </div>
+    <p class="instruction">Drag the 8 steps into the correct RAG pipeline order — from raw documents all the way to a grounded LLM answer.</p>
+    <p class="touch-hint">On mobile: press and hold a card, then drag it to a numbered slot.</p>
+    <div class="pipeline" id="l1-pipeline">
+      ${Array.from({ length: 8 }, (_, i) => `
+        <div class="slot-row">
+          <span class="slot-num">${i + 1}</span>
+          <div class="slot" data-slot="${i}"></div>
+        </div>
+        ${i < 7 ? '<div class="arrow-down">↓</div>' : ''}`).join('')}
+    </div>
+    <div class="bank" id="l1-bank">
+      ${shuffled.map(s => `
+        <div class="step-card" draggable="true" data-id="${s.id}">
+          <strong>${s.label}</strong>
+          <div class="sub">${s.sub}</div>
+        </div>`).join('')}
+    </div>
+    <button class="check-btn" id="l1-check" disabled onclick="checkL1()">Check my pipeline</button>
+    <div id="l1-fb"></div>
+  `;
+  attachL1Drag();
+  attachL1Touch();
+}
+
+function attachL1Drag() {
+  document.querySelectorAll('#l1 .step-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      dragSrc = card; dragSrcParent = card.parentNode;
+      card.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      document.querySelectorAll('.step-card').forEach(c => c.classList.remove('dragging'));
+      document.querySelectorAll('.slot, .bank').forEach(z => z.classList.remove('drag-over'));
+    });
+  });
+  document.querySelectorAll('#l1 .slot').forEach(slot => {
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault(); slot.classList.remove('drag-over');
+      if (!dragSrc) return;
+      const ex = slot.querySelector('.step-card');
+      if (ex) dragSrcParent.appendChild(ex);
+      slot.appendChild(dragSrc); dragSrc = null; updateL1Check();
+    });
+  });
+  const bank = document.getElementById('l1-bank');
+  bank.addEventListener('dragover', e => { e.preventDefault(); bank.classList.add('drag-over'); });
+  bank.addEventListener('dragleave', () => bank.classList.remove('drag-over'));
+  bank.addEventListener('drop', e => {
+    e.preventDefault(); bank.classList.remove('drag-over');
+    if (!dragSrc) return;
+    bank.appendChild(dragSrc); dragSrc = null; updateL1Check();
+  });
+}
+
+function attachL1Touch() {
+  document.querySelectorAll('#l1 .step-card').forEach(card => {
+    card.addEventListener('touchstart', e => {
+      touchCard = card;
+      const t = e.touches[0], rect = card.getBoundingClientRect();
+      touchOffX = t.clientX - rect.left; touchOffY = t.clientY - rect.top;
+      touchClone = card.cloneNode(true);
+      touchClone.style.cssText = `position:fixed;pointer-events:none;opacity:0.85;z-index:9999;width:${rect.width}px;left:${t.clientX - touchOffX}px;top:${t.clientY - touchOffY}px;`;
+      document.body.appendChild(touchClone);
+      card.classList.add('dragging');
+    }, { passive: true });
+    card.addEventListener('touchmove', e => {
+      if (!touchClone) return; e.preventDefault();
+      const t = e.touches[0];
+      touchClone.style.left = (t.clientX - touchOffX) + 'px';
+      touchClone.style.top = (t.clientY - touchOffY) + 'px';
+      document.querySelectorAll('.slot, .bank').forEach(z => z.classList.remove('drag-over'));
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      if (el) { const tgt = el.closest('.slot') || el.closest('.bank'); if (tgt) tgt.classList.add('drag-over'); }
+    }, { passive: false });
+    card.addEventListener('touchend', e => {
+      if (touchClone) { touchClone.remove(); touchClone = null; }
+      document.querySelectorAll('.slot, .bank').forEach(z => z.classList.remove('drag-over'));
+      if (!touchCard) return;
+      const t = e.changedTouches[0], el = document.elementFromPoint(t.clientX, t.clientY);
+      if (el) {
+        const slot = el.closest('.slot'), bank = document.getElementById('l1-bank');
+        if (slot) { const ex = slot.querySelector('.step-card'); if (ex) touchCard.parentNode.appendChild(ex); slot.appendChild(touchCard); }
+        else if (el.closest('#l1-bank')) bank.appendChild(touchCard);
+      }
+      touchCard.classList.remove('dragging'); touchCard = null; updateL1Check();
+    });
+  });
+}
+
+function updateL1Check() {
+  const filled = Array.from(document.querySelectorAll('#l1 .slot')).every(s => s.querySelector('.step-card'));
+  document.getElementById('l1-check').disabled = !filled;
+}
+
+function checkL1() {
+  let correct = 0;
+  document.querySelectorAll('#l1 .slot').forEach((slot, i) => {
+    const card = slot.querySelector('.step-card');
+    if (!card) return;
+    const ok = card.dataset.id === L1_STEPS[i].id;
+    card.classList.add(ok ? 'correct-card' : 'wrong-card');
+    if (ok) correct++;
+  });
+  const pts = correct * 2; totalScore += pts;
+  const ok = correct >= 6;
+  document.getElementById('l1-fb').innerHTML = `
+    <div class="fb ${ok ? 'ok' : 'err'}">
+      <div class="fb-title">${ok ? 'Well done!' : 'Not quite.'} ${correct}/8 correct — ${pts} points</div>
+      ${ok
+        ? 'The RAG pipeline flows correctly: documents in, grounded answers out.'
+        : 'Check the highlighted steps. The key order is: Ingest → Chunk → Embed → Store, then for each query: Embed query → Search → Augment prompt → Generate.'}
+    </div>
+    <button class="next-btn" onclick="goL2()">Next: Spot the bug →</button>
+  `;
+  document.getElementById('l1-check').disabled = true;
+  document.querySelectorAll('#l1 .step-card').forEach(c => c.setAttribute('draggable', 'false'));
+}
+
+/* ══════════════════════════════
+   LEVEL 2 — Spot the bug
+══════════════════════════════ */
+function goL2() { show('l2'); l2Idx = 0; renderL2(); }
+
+function renderL2() {
+  const s = L2_SCENARIOS[l2Idx];
+  document.getElementById('l2').innerHTML = `
+    ${progBar(33 + l2Idx * 11)}
+    <div class="level-header">
+      <span class="level-badge l2-badge">Level 2 — Spot the bug (${l2Idx + 1}/${L2_SCENARIOS.length})</span>
+      <span class="level-score">Score: ${totalScore}</span>
+    </div>
+    <div class="scenario-box">
+      <div class="scenario-title">${s.title}</div>
+      <div class="scenario-context">${s.context}</div>
+    </div>
+    <p class="instruction">One step in this pipeline is broken. Tap the step that is causing the problem.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;" id="l2-steps">
+      ${s.steps.map((st, i) => `
+        <div class="bug-card" data-idx="${i}" onclick="selectBug(${i})">
+          <span class="step-num-pill">${i + 1}</span>
+          <span>${st.label}</span>
+        </div>`).join('')}
+    </div>
+    <button class="check-btn" id="l2-check" disabled onclick="checkL2()">Confirm my answer</button>
+    <div id="l2-fb"></div>
+  `;
+  l2Selected = null;
+}
+
+function selectBug(idx) {
+  if (document.getElementById('l2-fb').innerHTML !== '') return;
+  document.querySelectorAll('.bug-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector(`.bug-card[data-idx="${idx}"]`).classList.add('selected');
+  l2Selected = idx;
+  document.getElementById('l2-check').disabled = false;
+}
+
+function checkL2() {
+  const s = L2_SCENARIOS[l2Idx];
+  const correct = l2Selected === s.bugIdx;
+  const pts = correct ? 10 : 0; totalScore += pts;
+  document.querySelectorAll('.bug-card').forEach((c, i) => {
+    c.classList.remove('selected');
+    if (i === s.bugIdx) c.classList.add('correct-pick');
+    else if (i === l2Selected && !correct) c.classList.add('wrong-pick');
+  });
+  document.getElementById('l2-fb').innerHTML = `
+    <div class="fb ${correct ? 'ok' : 'err'}">
+      <div class="fb-title">${correct ? 'Bug found! +10 points' : 'Not the bug — 0 points'}</div>
+      <strong>Step ${s.bugIdx + 1}</strong> is broken. ${s.fix}
+    </div>
+    <button class="next-btn" onclick="nextL2()">${l2Idx < L2_SCENARIOS.length - 1 ? 'Next scenario →' : 'Next level: Match components →'}</button>
+  `;
+  document.getElementById('l2-check').disabled = true;
+}
+
+function nextL2() { l2Idx++; if (l2Idx >= L2_SCENARIOS.length) goL3(); else renderL2(); }
+
+/* ══════════════════════════════
+   LEVEL 3 — Match components
+══════════════════════════════ */
+function goL3() { show('l3'); l3Left = null; l3Matched = []; renderL3(); }
+
+function renderL3() {
+  const shuffledL = shuffle(L3_PAIRS.map(p => ({ id: p.leftId,  text: p.left,  matchId: p.rightId })));
+  const shuffledR = shuffle(L3_PAIRS.map(p => ({ id: p.rightId, text: p.right, matchId: p.leftId  })));
+  document.getElementById('l3').innerHTML = `
+    ${progBar(75)}
+    <div class="level-header">
+      <span class="level-badge l3-badge">Level 3 — Match the components</span>
+      <span class="level-score">Score: ${totalScore}</span>
+    </div>
+    <p class="instruction">Click an item on the left, then click its matching output on the right. Match all 6 pairs to complete the game.</p>
+    <div class="match-grid">
+      <div>
+        <div class="match-col-label">Input / process</div>
+        ${shuffledL.map(item => `<div class="match-item" id="left-${item.id}" data-id="${item.id}" data-match="${item.matchId}" data-side="left" onclick="selectMatch(this)">${item.text}</div>`).join('')}
+      </div>
+      <div>
+        <div class="match-col-label">Output / result</div>
+        ${shuffledR.map(item => `<div class="match-item" id="right-${item.id}" data-id="${item.id}" data-match="${item.matchId}" data-side="right" onclick="selectMatch(this)">${item.text}</div>`).join('')}
+      </div>
+    </div>
+    <div id="l3-fb"></div>
+    <button class="next-btn" id="l3-done" style="display:none" onclick="showResults()">See final score →</button>
+  `;
+}
+
+function selectMatch(el) {
+  if (el.classList.contains('matched-ok') || el.classList.contains('matched-err')) return;
+  const side = el.dataset.side;
+  if (side === 'left') {
+    document.querySelectorAll('.match-item[data-side="left"]').forEach(e => e.classList.remove('selected-left'));
+    el.classList.add('selected-left');
+    l3Left = el;
+  } else {
+    if (!l3Left) return;
+    const isCorrect = el.dataset.id === l3Left.dataset.match;
+    const pts = isCorrect ? 5 : 0; totalScore += pts;
+    l3Left.classList.remove('selected-left');
+    l3Left.classList.add(isCorrect ? 'matched-ok' : 'matched-err');
+    el.classList.add(isCorrect ? 'matched-ok' : 'matched-err');
+    if (!isCorrect) {
+      setTimeout(() => { l3Left && l3Left.classList.remove('matched-err'); el.classList.remove('matched-err'); }, 800);
+    } else {
+      l3Matched.push(l3Left.dataset.id);
+    }
+    l3Left = null;
+    if (l3Matched.length === L3_PAIRS.length) {
+      document.getElementById('l3-fb').innerHTML = `
+        <div class="fb ok">
+          <div class="fb-title">All pairs matched!</div>
+          You understand exactly what each RAG component receives and produces — that is the key to debugging real pipelines.
+        </div>`;
+      document.getElementById('l3-done').style.display = 'block';
+    }
+  }
+}
+
+/* ══════════════════════════════
+   RESULTS
+══════════════════════════════ */
+function showResults() {
+  show('result');
+  const maxScore = L1_STEPS.length * 2 + L2_SCENARIOS.length * 10 + L3_PAIRS.length * 5;
+  const pct = Math.round((totalScore / maxScore) * 100);
+  const titles = ['Keep building!', 'Good grasp!', 'Strong engineer!', 'RAG architect!', 'Pipeline master!'];
+  const subs = [
+    'Review the RAG pipeline section in your class notes. Focus on the 8 steps and what each one produces.',
+    'You understand the core flow. The bug-spotting scenarios will sharpen with more practice — try re-reading the retrieval augmentation section.',
+    'Solid end-to-end understanding. You can build a working RAG pipeline and know how to debug common failures.',
+    'Excellent! You understand the pipeline, can diagnose failures, and know what every component inputs and outputs.',
+    'Perfect! You are ready to architect production RAG systems — this is exactly the foundation the advanced track builds on.'
+  ];
+  const tier = pct === 100 ? 4 : pct >= 80 ? 3 : pct >= 60 ? 2 : pct >= 40 ? 1 : 0;
+  document.getElementById('result').innerHTML = `
+    ${progBar(100)}
+    <div class="result-card">
+      <div class="big-score">${pct}%</div>
+      <div class="result-title">${titles[tier]}</div>
+      <p class="result-sub">${subs[tier]}</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-n" style="color:#1D9E75">${totalScore}</div><div class="stat-l">Points</div></div>
+        <div class="stat-box"><div class="stat-n">${maxScore}</div><div class="stat-l">Max score</div></div>
+        <div class="stat-box"><div class="stat-n">3</div><div class="stat-l">Levels done</div></div>
+      </div>
+      <button class="replay-btn" onclick="restartGame()">Play again</button>
+    </div>
+  `;
+}
+
+function restartGame() {
+  totalScore = 0; l2Idx = 0; l2Selected = null;
+  l3Left = null; l3Matched = [];
+  show('l1'); renderL1();
+}
+
+renderL1();
+</script>
+</body>
+</html>
