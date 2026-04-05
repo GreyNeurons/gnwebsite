@@ -1,0 +1,686 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+
+        <script>
+          window.pageMetaDescription = "A structured evaluation of OpenSearch alternatives for log analytics and operational data — ZincSearch, Meilisearch, Typesense, Manticore, Quickwit, Grafana Loki, OpenObserve, and PostgreSQL with TimescaleDB.";
+          window.canonicalLink = "";
+        </script>
+
+        <script defer src="/js/head-component.js"></script>
+    </head>
+    <body>
+
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">OpenSearch Alternatives Evaluation</span>
+      </blog-header>
+
+        <DIV class="blog-container content">
+
+            <div id="content" class="blog-container content">
+                <h1>OpenSearch Alternatives: A Structured Evaluation</h1>
+                <i>OpenSearch is powerful — but it's a 4–16 GB JVM-based runtime. This document evaluates every credible lightweight alternative across two distinct workloads: log analytics and operational data storage.</i>
+            </div>
+
+            <hr class="separator"></hr>
+            <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                  <social-share></social-share>
+                </p>
+              </div>
+            <hr class="separator"></hr>
+
+        </DIV>
+
+        <div class="blog-container content">
+
+            <h2>Why This Document Exists</h2>
+            <p>OpenSearch is a heavy runtime (4–16 GB RAM, JVM-based). When evaluating infrastructure costs and on-premise deployment requirements for enterprise customers, there is a real need for a structured look at all credible alternatives.</p>
+
+            <p>OpenSearch usage typically splits into two distinct workloads — and that distinction drives every recommendation here:</p>
+
+            <table class="table is-bordered is-striped is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Workload</th>
+                        <th>Description</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Log Analytics</strong></td>
+                        <td>Syslog ingestion, full-text search, alert pattern matching</td>
+                        <td>High write, high read</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operational Data</strong></td>
+                        <td>Users, roles, JWT tokens, settings, assets, integrations</td>
+                        <td>Low volume, exact lookups</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>The second workload (operational data) should not be in OpenSearch at all — a relational database is the right tool. This is discussed in each section below.</p>
+
+            <h2>Candidates Evaluated</h2>
+            <ol>
+                <li>ZincSearch</li>
+                <li>Meilisearch</li>
+                <li>Typesense</li>
+                <li>Manticore Search</li>
+                <li>Quickwit</li>
+                <li>Grafana Loki</li>
+                <li>OpenObserve</li>
+                <li>PostgreSQL + Extensions</li>
+            </ol>
+
+            <hr class="separator"></hr>
+
+            <h2>1. ZincSearch</h2>
+            <p><strong>Language:</strong> Go &nbsp;|&nbsp; <strong>RAM at idle:</strong> ~50 MB</p>
+
+            <p>ZincSearch was positioned as a drop-in lightweight OpenSearch replacement. It uses a similar HTTP/JSON API surface.</p>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Single binary, no JVM, minimal RAM</li>
+                <li>Partial Elasticsearch-compatible API (ingest and basic search)</li>
+                <li>Easy to deploy on small VMs</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li>Aggregations are basic — <code>date_histogram</code>, <code>terms</code>, nested aggregations are missing or incomplete</li>
+                <li>No clustering / multi-node support</li>
+                <li>Actively being superseded by OpenObserve from the same team</li>
+                <li>Small community, limited documentation</li>
+            </ul>
+
+            <h3>Verdict</h3>
+            <p><strong>Not suitable.</strong> Log analytics dashboards rely on multi-level aggregations that ZincSearch cannot support. The team behind it has effectively moved on to OpenObserve, making ZincSearch a dead end.</p>
+
+            <hr class="separator"></hr>
+
+            <h2>2. Meilisearch</h2>
+            <p><strong>Language:</strong> Rust &nbsp;|&nbsp; <strong>RAM at idle:</strong> ~30 MB</p>
+
+            <p>Purpose-built for instant, user-facing search (e-commerce, autocomplete, typo-tolerant search bars).</p>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Sub-millisecond search with typo tolerance</li>
+                <li>Beautiful, simple REST API</li>
+                <li>Very low resource footprint</li>
+                <li>Excellent developer experience</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li><strong>No aggregations</strong> — cannot <code>GROUP BY</code>, no <code>date_histogram</code>, no <code>terms</code></li>
+                <li>Not designed for time-series or log data</li>
+                <li>No log ingestion pipeline support</li>
+            </ul>
+
+            <h3>Verdict</h3>
+            <p><strong>Not suitable for log analytics.</strong> Meilisearch is the right choice if you need a user-facing search bar (e.g., asset search, integration search). It is the wrong choice for log analytics.</p>
+
+            <hr class="separator"></hr>
+
+            <h2>3. Typesense</h2>
+            <p><strong>Language:</strong> C++ &nbsp;|&nbsp; <strong>RAM at idle:</strong> ~30 MB</p>
+
+            <p>Same category as Meilisearch — instant search for user-facing applications.</p>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Very fast faceted search</li>
+                <li>Low resource use</li>
+                <li>Good for structured data search with filtering</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li>Same as Meilisearch — no aggregation support, not designed for log analytics</li>
+                <li>Smaller community than Meilisearch</li>
+            </ul>
+
+            <h3>Verdict</h3>
+            <p><strong>Not suitable.</strong> Same verdict as Meilisearch.</p>
+
+            <hr class="separator"></hr>
+
+            <h2>4. Manticore Search</h2>
+            <p><strong>Language:</strong> C++ &nbsp;|&nbsp; <strong>RAM at idle:</strong> ~30–50 MB</p>
+
+            <p>The most overlooked alternative. Manticore is a full-text search engine that speaks <strong>MySQL wire protocol</strong> — you query it with standard SQL.</p>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Full-text search + aggregations in SQL</li>
+                <li>MySQL-compatible interface — any MySQL client or ORM works</li>
+                <li>Very low resource footprint</li>
+                <li>Real-time inserts, good write throughput</li>
+                <li>Columnar storage option for analytics</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li>Not Elasticsearch API compatible on the read side (writes only)</li>
+                <li>No built-in dashboards</li>
+                <li>All OpenSearch query files would need SQL rewrites</li>
+                <li>Smaller ecosystem than PostgreSQL or OpenSearch</li>
+            </ul>
+
+            <h3>Verdict</h3>
+            <p><strong>Viable but migration cost is high.</strong> Manticore could technically replace OpenSearch for log analytics. The SQL interface is a genuine advantage for a junior team. However, migrating all query code from OpenSearch DSL to Manticore SQL is the same effort as migrating to PostgreSQL — and PostgreSQL has far greater ecosystem maturity, tooling, and team familiarity.</p>
+
+            <hr class="separator"></hr>
+
+            <h2>5. Quickwit</h2>
+            <p><strong>Language:</strong> Rust &nbsp;|&nbsp; <strong>RAM at idle:</strong> ~100–200 MB</p>
+
+            <p>Specifically designed for <strong>log analytics at scale</strong>. Uses Apache Tantivy (Rust Lucene port) for indexing and stores data on object storage (S3, MinIO, local disk).</p>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Purpose-built for log search and analytics</li>
+                <li>Partial Elasticsearch-compatible search API</li>
+                <li>Object storage backend — massive cost saving on retention</li>
+                <li>Very low RAM compared to OpenSearch</li>
+                <li>Supports OpenTelemetry natively</li>
+                <li>Jaeger-compatible trace viewer</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li>Not fully Elasticsearch API compatible — some queries need rewriting</li>
+                <li>No built-in dashboard — needs Grafana</li>
+                <li>Younger project (2022), less battle-tested than OpenSearch</li>
+            </ul>
+
+            <h3>Resource Comparison</h3>
+            <table class="table is-bordered is-striped is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>OpenSearch</th>
+                        <th>Quickwit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Idle</td>
+                        <td>1.5 GB RAM</td>
+                        <td>~100 MB RAM</td>
+                    </tr>
+                    <tr>
+                        <td>10 GB logs loaded</td>
+                        <td>4–6 GB RAM</td>
+                        <td>~150 MB RAM</td>
+                    </tr>
+                    <tr>
+                        <td>100 GB logs</td>
+                        <td>8–16 GB RAM</td>
+                        <td>~200 MB RAM</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Verdict</h3>
+            <p><strong>Strong alternative if resource constraints are real.</strong> Quickwit is the closest lightweight alternative that actually covers the log analytics workload. The Elasticsearch-compatible ingest API means Fluentd config is unchanged. Read queries need partial rewriting. Most appropriate if customer hardware is severely constrained (less than 8 GB total server RAM).</p>
+
+            <hr class="separator"></hr>
+
+            <h2>6. Grafana Loki</h2>
+            <p><strong>Language:</strong> Go &nbsp;|&nbsp; <strong>RAM at idle:</strong> ~50 MB</p>
+
+            <p>Grafana's log aggregation system. Designed to complement Prometheus metrics. Uses label-based filtering rather than full-text indexing.</p>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Very low resource use (does not index log content)</li>
+                <li>Excellent Grafana integration</li>
+                <li>Good for structured / labelled log streams</li>
+                <li>Strong in Kubernetes/cloud-native environments</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li><strong>No full-text search on log message content</strong> — this is by design, not a limitation to be worked around</li>
+                <li>LogQL query language is unfamiliar</li>
+                <li>Not suitable for arbitrary grep-style search inside messages</li>
+            </ul>
+
+            <h3>Verdict</h3>
+            <p><strong>Not suitable.</strong> If your core value is full-text search inside log messages (e.g., <code>message contains "authentication failed"</code>), Loki does not index log content and cannot support this use case.</p>
+
+            <hr class="separator"></hr>
+
+            <h2>7. OpenObserve</h2>
+            <p><strong>Language:</strong> Rust &nbsp;|&nbsp; <strong>RAM at idle:</strong> ~4 MB</p>
+
+            <p>Built by the same team as ZincSearch, but a completely different product. OpenObserve is a full observability platform (logs + metrics + traces) built on Apache Arrow/Parquet and DataFusion.</p>
+
+            <h3>Architecture</h3>
+            <pre>Ingest → Apache Arrow (columnar in-memory)
+           ↓
+Store  → Apache Parquet (compressed columnar files)
+           ↓
+Query  → Apache DataFusion (SQL over Parquet)
+           ↓
+Output → Built-in UI (log explorer, dashboards, alerts)</pre>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Exceptionally low RAM (~4 MB idle vs 4+ GB for OpenSearch)</li>
+                <li>Parquet storage: 10–20x compression on log data</li>
+                <li>Elasticsearch-compatible <strong>ingest</strong> API — Fluentd unchanged</li>
+                <li>Built-in dashboards, alerts, log explorer</li>
+                <li>SQL query interface — readable for junior developers</li>
+                <li>Supports object storage backends (S3, MinIO, GCS, Azure Blob)</li>
+                <li>Single binary deployment</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li>Read queries use SQL, not Elasticsearch DSL — all query files need rewriting</li>
+                <li>Younger project (2023) — less production maturity</li>
+                <li>Full-text search on very large datasets slower than Lucene</li>
+                <li>No document store for operational data (users, roles, etc.)</li>
+            </ul>
+
+            <h3>Resource Comparison</h3>
+            <table class="table is-bordered is-striped is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>OpenSearch</th>
+                        <th>OpenObserve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Idle</td>
+                        <td>~1.5 GB RAM</td>
+                        <td>~4 MB RAM</td>
+                    </tr>
+                    <tr>
+                        <td>10 GB logs</td>
+                        <td>4–6 GB RAM</td>
+                        <td>~50 MB RAM</td>
+                    </tr>
+                    <tr>
+                        <td>100 GB logs</td>
+                        <td>8–16 GB RAM</td>
+                        <td>~150 MB RAM</td>
+                    </tr>
+                    <tr>
+                        <td>Docker image</td>
+                        <td>~600 MB</td>
+                        <td>~50 MB</td>
+                    </tr>
+                    <tr>
+                        <td>Startup time</td>
+                        <td>15–30 sec</td>
+                        <td>&lt; 1 sec</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Storage Efficiency</h3>
+            <p>The "140x less storage" claim is real in context: OpenSearch stores Lucene inverted index segments with per-field metadata overhead. OpenObserve stores Parquet files — columnar, compressed. Log data (many repeated values: IPs, hostnames, severity levels) achieves 10–20x compression. 100 GB in OpenSearch becomes 5–15 GB in OpenObserve.</p>
+
+            <h3>Fluentd Compatibility</h3>
+            <p>No config change required. OpenObserve accepts the Elasticsearch output plugin's HTTP format for ingest. Only backend read queries need migration.</p>
+
+            <h3>Verdict</h3>
+            <p><strong>Most compelling lightweight alternative for the log analytics workload.</strong> For a junior team, SQL is more accessible than OpenSearch DSL. The resource reduction is dramatic and directly reduces customer hardware requirements. The main cost is a significant query migration effort. Operational data (users, roles, JWT, settings) must move to a relational database separately.</p>
+
+            <p><strong>Recommended if:</strong> Customer hardware constraints are a priority, or the team is willing to invest in a migration.</p>
+
+            <hr class="separator"></hr>
+
+            <h2>8. PostgreSQL + Extensions</h2>
+            <p><strong>Language:</strong> C &nbsp;|&nbsp; <strong>RAM at idle:</strong> 256 MB–2 GB</p>
+
+            <p>The "PostgreSQL is the hammer" option. PostgreSQL with the right extension stack can cover the full workload — both operational data and log analytics — in a single database.</p>
+
+            <h3>Extension Stack</h3>
+            <table class="table is-bordered is-striped is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Extension</th>
+                        <th>Purpose</th>
+                        <th>OpenSearch Equivalent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Built-in <code>tsvector</code> + GIN index</td>
+                        <td>Full-text search</td>
+                        <td>Lucene inverted index</td>
+                    </tr>
+                    <tr>
+                        <td><code>pg_trgm</code></td>
+                        <td>Regex / fuzzy pattern search</td>
+                        <td><code>regexp</code> query</td>
+                    </tr>
+                    <tr>
+                        <td>TimescaleDB</td>
+                        <td>Time-series log storage + aggregations</td>
+                        <td>Date-based indices + <code>date_histogram</code></td>
+                    </tr>
+                    <tr>
+                        <td>TimescaleDB continuous aggregates</td>
+                        <td>Pre-aggregated dashboard views</td>
+                        <td>Cached aggregation results</td>
+                    </tr>
+                    <tr>
+                        <td>ParadeDB (<code>pg_search</code>)</td>
+                        <td>BM25 search (same algorithm as OpenSearch)</td>
+                        <td><code>match</code> query with scoring</td>
+                    </tr>
+                    <tr>
+                        <td><code>pg_analytics</code> (ParadeDB)</td>
+                        <td>Columnar storage inside PostgreSQL</td>
+                        <td>N/A</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Full-text Search</h3>
+            <pre><code>-- GIN index on tsvector — equivalent to Lucene inverted index
+CREATE INDEX idx_fts ON syslog_events USING GIN (
+    to_tsvector('english', message)
+);
+
+-- Full-text search query
+SELECT * FROM syslog_events
+WHERE to_tsvector('english', message) @@ to_tsquery('english', 'authentication &amp; failed')
+ORDER BY ts DESC LIMIT 100;</code></pre>
+
+            <h3>Regex / Pattern Matching (Custom Alert Patterns)</h3>
+            <pre><code>CREATE EXTENSION pg_trgm;
+CREATE INDEX idx_trgm ON syslog_events USING GIN (message gin_trgm_ops);
+
+-- JOIN patterns against log events in a single query
+-- OpenSearch cannot express this — requires application-side loop
+SELECT e.*, p.tag, p.severity
+FROM syslog_events e
+JOIN custom_patterns p ON e.message ~ p.regex_pattern
+WHERE e.ts &gt; NOW() - INTERVAL '15 minutes';</code></pre>
+
+            <h3>Time-series Analytics (TimescaleDB)</h3>
+            <pre><code>-- Equivalent to OpenSearch date_histogram aggregation
+SELECT
+    time_bucket('1 hour', ts) AS hour,
+    COUNT(*)                  AS event_count,
+    AVG(duration_seconds)     AS avg_duration
+FROM cdr_events
+WHERE ts &gt; NOW() - INTERVAL '7 days'
+GROUP BY hour ORDER BY hour;
+
+-- Continuous aggregate — pre-built, auto-updated, sub-millisecond dashboard queries
+CREATE MATERIALIZED VIEW cdr_hourly
+WITH (timescaledb.continuous) AS
+SELECT time_bucket('1 hour', ts) AS hour, ip_address, COUNT(*) AS cnt
+FROM syslog_events GROUP BY hour, ip_address;</code></pre>
+
+            <h3>Proposed Unified Architecture</h3>
+            <pre>┌────────────────────────────────────────┐
+│       Single PostgreSQL Instance        │
+│                                        │
+│  ┌──────────────┐  ┌─────────────────┐ │
+│  │ Operational  │  │  Log Analytics  │ │
+│  │    Data      │  │                 │ │
+│  │              │  │  TimescaleDB    │ │
+│  │ users        │  │  hypertables    │ │
+│  │ roles        │  │                 │ │
+│  │ jwt_tokens   │  │  GIN index      │ │
+│  │ settings     │  │  for FTS        │ │
+│  │ assets       │  │                 │ │
+│  │ integrations │  │  Continuous     │ │
+│  │              │  │  aggregates     │ │
+│  │ (relational, │  │  for dashboards │ │
+│  │  FK, ACID)   │  │                 │ │
+│  └──────────────┘  └─────────────────┘ │
+└────────────────────────────────────────┘</pre>
+
+            <p>This replaces the current fragmented state (SQLite partially used + OpenSearch partially used, mid-migration) with a single coherent database.</p>
+
+            <h3>Strengths</h3>
+            <ul>
+                <li>Single database for all data — one backup, one connection pool, one ops skill set</li>
+                <li>ACID transactions across auth + config + logs</li>
+                <li>SQL — every developer on the team already knows it</li>
+                <li>Joins across operational data and log data (impossible in OpenSearch)</li>
+                <li>TimescaleDB compression achieves 10–20x on log data</li>
+                <li>PostgreSQL is present in most enterprise environments already</li>
+                <li>30 years of battle-tested maturity</li>
+            </ul>
+
+            <h3>Weaknesses</h3>
+            <ul>
+                <li>No built-in dashboards — requires Grafana or Metabase</li>
+                <li>Write throughput at extreme scale (millions of events/minute) is lower than Lucene</li>
+                <li>MVCC creates write amplification under heavy concurrent inserts (TimescaleDB mitigates this)</li>
+                <li>Horizontal sharding requires Citus (adds complexity)</li>
+            </ul>
+
+            <h3>Verdict</h3>
+            <p><strong>Most architecturally sound long-term option.</strong> PostgreSQL + TimescaleDB eliminates both the JVM overhead of OpenSearch and the current dual-database confusion (SQLite + OpenSearch). The entire team already knows SQL. The custom alert pattern matching becomes a simple JOIN. Dashboard aggregations become readable SQL. Auth data gets proper relational integrity with foreign keys.</p>
+
+            <p>The gap is dashboards — Grafana fills this well and has native TimescaleDB support.</p>
+
+            <p><strong>Recommended if:</strong> The team is prepared for a full migration and values long-term simplicity over short-term effort.</p>
+
+            <hr class="separator"></hr>
+
+            <h2>Summary Comparison Matrix</h2>
+            <table class="table is-bordered is-striped is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>RAM (idle)</th>
+                        <th>Log Search</th>
+                        <th>Aggregations</th>
+                        <th>Dashboards Built-in</th>
+                        <th>ES API Compat (read)</th>
+                        <th>Fits the Use Case?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>OpenSearch</strong></td>
+                        <td>4–16 GB</td>
+                        <td>Excellent</td>
+                        <td>Excellent</td>
+                        <td>Yes</td>
+                        <td>Full</td>
+                        <td>Yes — current state</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ZincSearch</strong></td>
+                        <td>~50 MB</td>
+                        <td>Basic</td>
+                        <td>Partial</td>
+                        <td>No</td>
+                        <td>Partial</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Meilisearch</strong></td>
+                        <td>~30 MB</td>
+                        <td>Yes (FTS)</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No (wrong use case)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Typesense</strong></td>
+                        <td>~30 MB</td>
+                        <td>Yes (FTS)</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No (wrong use case)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manticore</strong></td>
+                        <td>~50 MB</td>
+                        <td>Yes</td>
+                        <td>Yes (SQL)</td>
+                        <td>No</td>
+                        <td>Partial</td>
+                        <td>Viable, high migration cost</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quickwit</strong></td>
+                        <td>~150 MB</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>No (Grafana)</td>
+                        <td>Partial</td>
+                        <td>Yes — best lightweight log option</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grafana Loki</strong></td>
+                        <td>~50 MB</td>
+                        <td>No (labels only)</td>
+                        <td>Limited</td>
+                        <td>Via Grafana</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenObserve</strong></td>
+                        <td>~4 MB</td>
+                        <td>Yes</td>
+                        <td>Yes (SQL)</td>
+                        <td>Yes</td>
+                        <td>Ingest only</td>
+                        <td>Yes — best lightweight full-stack option</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PostgreSQL + TimescaleDB</strong></td>
+                        <td>256 MB–2 GB</td>
+                        <td>Yes (GIN/pg_trgm)</td>
+                        <td>Yes (SQL)</td>
+                        <td>No (Grafana)</td>
+                        <td>No</td>
+                        <td>Yes — best long-term architecture</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr class="separator"></hr>
+
+            <h2>Decision Guide</h2>
+
+            <h3>Stay with OpenSearch if:</h3>
+            <ul>
+                <li>Customer hardware is not constrained (16+ GB available)</li>
+                <li>The team wants to avoid migration risk</li>
+                <li>OpenSearch Dashboards is used by customers directly</li>
+                <li>Scale requirements are high (millions of events/minute)</li>
+            </ul>
+
+            <h3>Move to OpenObserve if:</h3>
+            <ul>
+                <li>Customer hardware is the primary constraint</li>
+                <li>Resource consumption (RAM, storage) is a commercial differentiator</li>
+                <li>The team can invest in migrating query files from OpenSearch DSL to SQL</li>
+                <li>Built-in dashboards and alerts are needed without a separate Grafana deployment</li>
+            </ul>
+
+            <h3>Move to PostgreSQL + TimescaleDB if:</h3>
+            <ul>
+                <li>Long-term architecture simplicity is the priority</li>
+                <li>The current SQLite + OpenSearch split is causing operational pain</li>
+                <li>The team wants SQL across all data (auth, config, logs, analytics)</li>
+                <li>Grafana is acceptable as the dashboard layer</li>
+            </ul>
+
+            <h3>Move to Quickwit if:</h3>
+            <ul>
+                <li>Log analytics is the primary workload (no need for operational data storage)</li>
+                <li>Object storage (S3/MinIO) is available for cost-efficient log retention</li>
+                <li>Some Elasticsearch API compatibility on reads is needed to reduce migration effort</li>
+            </ul>
+
+            <hr class="separator"></hr>
+
+            <h2>Notes on Operational Data</h2>
+            <p>Regardless of which search engine is chosen for log analytics, the following data should be moved to a relational database:</p>
+
+            <table class="table is-bordered is-striped is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Current Index</th>
+                        <th>Correct Storage</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>users</code></td>
+                        <td>PostgreSQL / SQLite table</td>
+                        <td>Small dataset, relational integrity, exact lookups</td>
+                    </tr>
+                    <tr>
+                        <td><code>roles</code></td>
+                        <td>PostgreSQL / SQLite table</td>
+                        <td>Small dataset, FK relationships</td>
+                    </tr>
+                    <tr>
+                        <td><code>jwt-tokens</code></td>
+                        <td>PostgreSQL / SQLite table (or Redis)</td>
+                        <td>Ephemeral, exact token lookup only</td>
+                    </tr>
+                    <tr>
+                        <td><code>locked-users</code></td>
+                        <td>PostgreSQL / SQLite table (or Redis)</td>
+                        <td>Small dataset, TTL-based</td>
+                    </tr>
+                    <tr>
+                        <td><code>settings</code></td>
+                        <td>PostgreSQL / SQLite table</td>
+                        <td>Key-value config, no search needed</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <DIV class="blog-container content">
+            <hr class="separator"></hr>
+
+            <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                  <social-share></social-share>
+                </p>
+            </div>
+
+            <hr class="separator"></hr>
+
+            <div>
+            <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+            </div>
+        </DIV>
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
