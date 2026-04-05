@@ -23,11 +23,11 @@
   .screen.active { display: block; }
 
   .prog-bg { background: #e8e7e2; border-radius: 99px; height: 5px; margin-bottom: 1.5rem; }
-  .prog-fill { background: #1D9E75; height: 5px; border-radius: 99px; transition: width 0.4s ease; }
+  .prog-fill { background: #00d1b2; height: 5px; border-radius: 99px; transition: width 0.4s ease; }
 
   .level-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
   .level-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; }
-  .l1-badge { background: #E1F5EE; color: #0F6E56; }
+  .l1-badge { background: #e0faf7; color: #009e8e; }
   .l2-badge { background: #FAEEDA; color: #633806; }
   .l3-badge { background: #EEEDFE; color: #3C3489; }
   .level-score { font-size: 13px; color: #888; }
@@ -35,11 +35,11 @@
   .instruction { font-size: 13px; color: #666; margin-bottom: 1.25rem; line-height: 1.5; }
 
   .check-btn {
-    width: 100%; padding: 14px; background: #1D9E75; color: #fff;
+    width: 100%; padding: 14px; background: #00d1b2; color: #fff;
     border: none; border-radius: 12px; font-size: 15px; font-weight: 600;
     cursor: pointer; margin-top: 1rem; transition: background 0.15s;
   }
-  .check-btn:hover { background: #0F6E56; }
+  .check-btn:hover { background: #009e8e; }
   .check-btn:disabled { background: #e8e7e2; color: #aaa; cursor: default; }
 
   .next-btn {
@@ -50,7 +50,7 @@
   .next-btn:hover { background: #f5f5f3; }
 
   .fb { margin-top: 1rem; padding: 14px 16px; border-radius: 12px; font-size: 14px; line-height: 1.65; }
-  .fb.ok { background: #E1F5EE; border: 1px solid #5DCAA5; color: #085041; }
+  .fb.ok { background: #e0faf7; border: 1px solid #5DCAA5; color: #006b60; }
   .fb.err { background: #FCEBEB; border: 1px solid #F09595; color: #501313; }
   .fb-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
 
@@ -62,23 +62,23 @@
   }
   .step-card:active { cursor: grabbing; }
   .step-card.dragging { opacity: 0.35; }
-  .step-card.correct-card { background: #E1F5EE; border-color: #1D9E75; color: #085041; }
+  .step-card.correct-card { background: #e0faf7; border-color: #00d1b2; color: #006b60; }
   .step-card.wrong-card { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
   .step-card .sub { font-size: 12px; color: #888; margin-top: 2px; }
-  .step-card.correct-card .sub { color: #0F6E56; }
+  .step-card.correct-card .sub { color: #009e8e; }
   .step-card.wrong-card .sub { color: #A32D2D; }
 
   .slot {
     min-height: 52px; border: 1.5px dashed #ccc; border-radius: 10px;
     display: flex; align-items: center; padding: 4px; transition: all 0.15s; flex: 1;
   }
-  .slot.drag-over { border-color: #1D9E75; background: #E1F5EE; }
+  .slot.drag-over { border-color: #00d1b2; background: #e0faf7; }
 
   .bank {
     display: flex; flex-direction: column; gap: 8px;
     padding: 1rem; background: #f0ede6; border-radius: 12px; margin-bottom: 1rem;
   }
-  .bank.drag-over { background: #E1F5EE; }
+  .bank.drag-over { background: #e0faf7; }
 
   .pipeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 1rem; }
   .slot-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
@@ -94,7 +94,7 @@
   }
   .bug-card:hover { border-color: #888; }
   .bug-card.selected { border-color: #378ADD; background: #E6F1FB; }
-  .bug-card.correct-pick { background: #E1F5EE; border-color: #1D9E75; }
+  .bug-card.correct-pick { background: #e0faf7; border-color: #00d1b2; }
   .bug-card.wrong-pick { background: #FCEBEB; border-color: #E24B4A; }
   .step-num-pill {
     font-size: 11px; font-weight: 600; background: #f0ede6;
@@ -117,7 +117,7 @@
   }
   .match-item:hover { border-color: #888; }
   .match-item.selected-left { border-color: #534AB7; background: #EEEDFE; color: #3C3489; }
-  .match-item.matched-ok { background: #E1F5EE; border-color: #1D9E75; color: #085041; cursor: default; }
+  .match-item.matched-ok { background: #e0faf7; border-color: #00d1b2; color: #006b60; cursor: default; }
   .match-item.matched-err { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
 
   /* Results */
@@ -133,11 +133,11 @@
   .stat-n { font-size: 22px; font-weight: 700; }
   .stat-l { font-size: 12px; color: #888; margin-top: 2px; }
   .replay-btn {
-    background: #1D9E75; color: #fff; border: none; border-radius: 12px;
+    background: #00d1b2; color: #fff; border: none; border-radius: 12px;
     padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer;
     width: 100%; margin-bottom: 10px; transition: background 0.15s;
   }
-  .replay-btn:hover { background: #0F6E56; }
+  .replay-btn:hover { background: #009e8e; }
 
   .branding { text-align: center; margin-top: 1.5rem; font-size: 12px; color: #aaa; }
 
@@ -536,7 +536,7 @@ function showResults() {
       <div class="result-title">${titles[tier]}</div>
       <p class="result-sub">${subs[tier]}</p>
       <div class="stat-row">
-        <div class="stat-box"><div class="stat-n" style="color:#1D9E75">${totalScore}</div><div class="stat-l">Points</div></div>
+        <div class="stat-box"><div class="stat-n" style="color:#00d1b2">${totalScore}</div><div class="stat-l">Points</div></div>
         <div class="stat-box"><div class="stat-n">${maxScore}</div><div class="stat-l">Max score</div></div>
         <div class="stat-box"><div class="stat-n">3</div><div class="stat-l">Levels done</div></div>
       </div>

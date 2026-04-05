@@ -21,7 +21,7 @@
   #game { width: 100%; max-width: 680px; margin: 0 auto; padding: 2rem 1rem; }
 
   .progress-bg { background: #e8e7e2; border-radius: 99px; height: 5px; margin-bottom: 1.5rem; }
-  .progress-fill { background: #1D9E75; height: 5px; border-radius: 99px; transition: width 0.4s ease; }
+  .progress-fill { background: #00d1b2; height: 5px; border-radius: 99px; transition: width 0.4s ease; }
 
   .round-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
   .round-label { font-size: 13px; color: #888; }
@@ -39,7 +39,7 @@
 
   .spectrum-ends { display: flex; justify-content: space-between; margin-bottom: 6px; }
   .spectrum-ends span { font-size: 12px; font-weight: 600; }
-  .end-close { color: #0F6E56; }
+  .end-close { color: #009e8e; }
   .end-far { color: #A32D2D; }
 
   .slots-row { display: grid; gap: 8px; margin-bottom: 1.25rem; }
@@ -51,7 +51,7 @@
     display: flex; align-items: center; justify-content: center;
     padding: 6px; transition: all 0.15s;
   }
-  .slot-box.drag-over-zone { border-color: #1D9E75; background: #E1F5EE; }
+  .slot-box.drag-over-zone { border-color: #00d1b2; background: #e0faf7; }
 
   .bank-label { font-size: 12px; color: #888; margin-bottom: 6px; }
   .bank {
@@ -60,7 +60,7 @@
     border-radius: 12px; margin-bottom: 1.25rem;
     min-height: 64px;
   }
-  .bank.drag-over-zone { background: #E1F5EE; }
+  .bank.drag-over-zone { background: #e0faf7; }
 
   .phrase-card {
     background: #fff; border: 1px solid #ddd9d0;
@@ -71,18 +71,18 @@
   }
   .phrase-card:active { cursor: grabbing; transform: scale(1.02); }
   .phrase-card.dragging { opacity: 0.35; }
-  .phrase-card.correct-card { background: #E1F5EE; border-color: #1D9E75; color: #085041; }
+  .phrase-card.correct-card { background: #e0faf7; border-color: #00d1b2; color: #006b60; }
   .phrase-card.near-card { background: #FAEEDA; border-color: #BA7517; color: #633806; }
   .phrase-card.wrong-card { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
 
   .check-btn {
     width: 100%; padding: 14px;
-    background: #1D9E75; color: #fff;
+    background: #00d1b2; color: #fff;
     border: none; border-radius: 12px;
     font-size: 15px; font-weight: 600; cursor: pointer;
     transition: background 0.15s;
   }
-  .check-btn:hover { background: #0F6E56; }
+  .check-btn:hover { background: #009e8e; }
   .check-btn:disabled { background: #e8e7e2; color: #aaa; cursor: default; }
 
   .next-btn {
@@ -97,7 +97,7 @@
     margin-top: 1rem; padding: 14px 16px;
     border-radius: 12px; font-size: 14px; line-height: 1.6;
   }
-  .fb-correct { background: #E1F5EE; border: 1px solid #5DCAA5; color: #085041; }
+  .fb-correct { background: #e0faf7; border: 1px solid #5DCAA5; color: #006b60; }
   .fb-partial { background: #FAEEDA; border: 1px solid #FAC775; color: #633806; }
   .fb-wrong { background: #FCEBEB; border: 1px solid #F09595; color: #501313; }
   .fb-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
@@ -125,13 +125,13 @@
   .stat-l { font-size: 12px; color: #888; margin-top: 2px; }
 
   .replay-btn {
-    background: #1D9E75; color: #fff; border: none;
+    background: #00d1b2; color: #fff; border: none;
     border-radius: 12px; padding: 14px 32px;
     font-size: 15px; font-weight: 600; cursor: pointer;
     width: 100%; margin-bottom: 10px;
     transition: background 0.15s;
   }
-  .replay-btn:hover { background: #0F6E56; }
+  .replay-btn:hover { background: #009e8e; }
 
   .branding {
     text-align: center; margin-top: 1.5rem;
@@ -468,7 +468,7 @@ function showResults() {
       <div class="result-title">${titles[tier]}</div>
       <p class="result-sub">${subs[tier]}</p>
       <div class="stat-row">
-        <div class="stat-box"><div class="stat-n" style="color:#1D9E75">${totalScore}</div><div class="stat-l">Points</div></div>
+        <div class="stat-box"><div class="stat-n" style="color:#00d1b2">${totalScore}</div><div class="stat-l">Points</div></div>
         <div class="stat-box"><div class="stat-n">${perfect}</div><div class="stat-l">Perfect rounds</div></div>
         <div class="stat-box"><div class="stat-n">${ROUNDS.length}</div><div class="stat-l">Rounds played</div></div>
       </div>
