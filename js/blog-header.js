@@ -2,6 +2,12 @@ class BlogHeader extends HTMLElement {
   constructor() {
     super();
 
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/svg+xml';
+    favicon.href = '/favicon.svg';
+    document.head.appendChild(favicon);
+
     const label = this.getAttribute('breadcrumb-label') || 'Blogs';
     const url = this.getAttribute('breadcrumb-url') || '/articles.html';
 
