@@ -8,7 +8,7 @@ class BlogHeader extends HTMLElement {
     this.innerHTML = `
       <div class="section has-text-grey-light has-background-dark">
         <a href="/" style="display: inline-block; margin-bottom: 0.75rem;">
-          <img src="/img/greyneurons-logo-horizontal.svg" alt="GreyNeurons - Experience the wisdom" style="height: 46px;">
+          <img src="/img/greyneurons-logo-horizontal.svg" alt="GreyNeurons - Experience the wisdom" style="height: 54px;">
         </a>
 
         <nav class="breadcrumb" aria-label="breadcrumbs">
