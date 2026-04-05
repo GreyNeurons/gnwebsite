@@ -1,0 +1,115 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+
+        <script>
+          window.pageMetaDescription = "Practical MySQL user creation and access management best practices for production environments — from named DBA accounts to least privilege and SSL enforcement.";
+          window.canonicalLink = "";
+        </script>
+
+        <script defer src="/js/head-component.js"></script>
+    </head>
+    <body>
+
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">MySQL User Creation Best Practices</span>
+      </blog-header>
+
+            <DIV class="blog-container content">
+
+                <div id="content" class="blog-container content">
+                    <h1>MySQL User Creation Best Practices for Production</h1>
+                    <i>Practical tips on managing MySQL users securely — from named DBA accounts and IP restrictions to SSL enforcement and audit logging.</i>
+                </div>
+
+                <hr class="separator"></hr>
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                  </div>
+                <hr class="separator"></hr>
+
+            </DIV>
+
+            <div class="blog-container content">
+
+                <p>These tips came out of a real engagement with a customer who was building their MySQL environment from scratch. The question wasn't just "how do I create a user?" — it was "how do I do this in a way I won't regret six months from now?" The following seven practices are what I shared with them, and they apply to most production MySQL setups.</p>
+
+                <h2>1. Use Named DBA Users — Not Shared Accounts</h2>
+                <p>A shared account like <code>dba</code> or <code>admin</code> is an audit nightmare. When something goes wrong (and it will), you won't be able to tell who did what. Instead, create individual named accounts for each DBA. This gives you accountability and makes it easy to revoke access when someone leaves.</p>
+                <pre>CREATE USER 'john_dba'@'10.8.0.%' IDENTIFIED BY 'SecurePassword';
+GRANT ALL PRIVILEGES ON *.* TO 'john_dba'@'10.8.0.%' WITH GRANT OPTION;</pre>
+                <p>Notice the IP range <code>10.8.0.%</code> — this ties the account to your VPN or internal network. More on that next.</p>
+
+                <h2>2. Restrict Connections to Specific IPs</h2>
+                <p>MySQL lets you bind a user account to a specific IP or subnet. Use this. Your application server has a known IP — lock the app user to it. This single change blocks a huge class of attacks where compromised credentials are used from unexpected locations.</p>
+                <pre>CREATE USER 'appuser'@'192.168.1.10' IDENTIFIED BY 'AppSecurePass';
+GRANT SELECT, INSERT, UPDATE, DELETE ON app_db.* TO 'appuser'@'192.168.1.10';</pre>
+                <p>For DBAs connecting over VPN, use the VPN subnet range (<code>10.8.0.%</code>) rather than <code>%</code> (which means "anywhere").</p>
+
+                <h2>3. Enable the General Query Log — and Make It Persist</h2>
+                <p>The general query log records every SQL statement MySQL receives. It's invaluable during incidents. The catch: by default it's off, and enabling it at runtime doesn't survive a restart. Put it in your config file.</p>
+                <pre>[mysqld]
+general_log = 1
+general_log_file = /var/log/mysql/general.log</pre>
+                <p>Fair warning — this log grows fast on a busy server. Enable it with that in mind, and set up rotation (see next tip).</p>
+
+                <h2>4. Rotate Your Logs</h2>
+                <p>Unrotated logs will eventually fill your disk. On a production server, that means an outage. MySQL ships with a logrotate config — make sure it's active and test it manually at least once.</p>
+                <pre>logrotate -f /etc/logrotate.d/mysql</pre>
+                <p>Check that the rotation is set to a sane frequency (daily or weekly depending on your query volume) and that old logs are compressed.</p>
+
+                <h2>5. Apply the Principle of Least Privilege</h2>
+                <p>Grant only what a user actually needs — nothing more. A reporting user should never have <code>INSERT</code> or <code>DELETE</code>. A read-only replica user should only be able to run replication commands. Overly permissive accounts are one of the most common root causes of data loss in incidents I've seen.</p>
+                <pre>GRANT SELECT ON app_db.* TO 'readonly_user'@'192.168.1.%';</pre>
+                <p>Review your existing user grants periodically with <code>SHOW GRANTS FOR 'username'@'host';</code> and trim anything that isn't needed.</p>
+
+                <h2>6. Enforce SSL/TLS for Remote Connections</h2>
+                <p>If a user connects over any network that isn't localhost, their credentials and query data should be encrypted. MySQL supports requiring SSL at the user level — use it for any account that connects remotely.</p>
+                <pre>ALTER USER 'secure_user'@'%' REQUIRE SSL;</pre>
+                <p>After applying this, any connection attempt without SSL will be rejected. Pair this with a valid certificate setup on the server side (<code>ssl_cert</code>, <code>ssl_key</code>, <code>ssl_ca</code> in your MySQL config).</p>
+
+                <h2>7. Audit Users and Log Settings Regularly</h2>
+                <p>User accounts accumulate. Developers get added, contractors wrap up, services get decommissioned — but the MySQL accounts often outlive all of them. Make it a habit to review active accounts and current log settings.</p>
+                <pre>SELECT user, host FROM mysql.user;
+SHOW VARIABLES LIKE 'general_log';</pre>
+                <p>Add this to your regular security review or onboarding checklist. It takes two minutes and catches a lot of drift.</p>
+
+                <h2>Wrapping Up</h2>
+                <p>None of these tips are exotic — they're the basics that separate a production-grade MySQL setup from one that's an incident waiting to happen. Named users, IP restrictions, least privilege, logging, SSL, and regular audits. If you're setting up MySQL fresh or inheriting someone else's setup, running through this checklist is a good first hour of work.</p>
+
+            </div>
+
+
+            <DIV class="blog-container content">
+                <hr class="separator"></hr>
+
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                </div>
+
+                <hr class="separator"></hr>
+
+                <div>
+                <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+                </div>
+            </DIV>
+
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
