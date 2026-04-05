@@ -26,23 +26,6 @@
 <p>How to <strong>combine</strong> <code>subfinder</code>, <code>httpx</code>, <code>naabu</code>, and <code>nucliei</code> into one streamlined script that <strong>scans</strong> <strong>everytthing</strong> and generates clean reports</p>
 <p>Manually running security <strong>scans</strong> is fine for quick checks, but it doesn’t scale. It’s slow, inconsistent, and the results pile up in messy text files. A better <strong>approach</strong> is needed — one that automates the entire workflow, from <strong>subdomain discovery</strong> and <strong>port sscanning</strong> to <strong>vulnerability detection</strong>, and generates a clean report with a single command.</p>
 
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
-
 <h2>The Toolkit: Our Open-Source Arsenal</h2>
 <p>Our script is a wrapper that <strong>intelligentlhy combines</strong> three fantastic tools from the team at <strong>ProjectDiscovery</strong>:</p>
 <ul>
@@ -52,23 +35,6 @@
   <li><code>nucliei</code>: A powerful, <strong>template-based vulnerability scanner</strong>. This is the core of our <strong>scanning engine</strong>, capable of checking for <strong>thousands</strong> of CVEs, misconfigurations, and exposures.</li>
 </ul>
 <p>By <strong>combining</strong> these tools, we create a workflow that is far more powerful than any single tool on its own.</p>
-
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
 
 <h2>The Automated Scanning Workflow</h2>
 <p>Our <code>master-scanner.py</code> script follows a <strong>logicaal</strong>, <strong>multi-stage pipeline</strong> to ensure a thorough and efficient scan.</p>
@@ -108,23 +74,6 @@ httpx -l targets.txt -silent -ports 80,443,8080,8443,8000,8888 -title -tech-dete
   <li><strong>Generate Report</strong>: It parses this <strong>merged</strong> file, along with the <strong>technoloy</strong> data from <code>httpx.json</code>, to generate a clean, <strong>human-readable</strong> <strong>Markdown</strong> report ( <strong>partial sample report below</strong> ).</li>
 </ul>
 
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
-
 <h2>🌐 Technology Fingerprints</h2>
 <p>The following <strong>technologies</strong> were identified by <code>httpx</code> on the web servers.</p>
 <pre><code>| URL | Technologies Detected |
@@ -132,46 +81,12 @@ httpx -l targets.txt -silent -ports 80,443,8080,8443,8000,8888 -title -tech-dete
 | <code>https://example.com:443</code> | Bootstrap, Google Hosted Libraries, Kestrel, Microsoft ASP.NET, Unpkg, jQuery CDN, jQuery:3.6.0 |
 </code></pre>
 
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
-
 <h2>📝 Summary</h2>
 <pre><code>| Severity | Count |
 | — -| — -|
 | Low | 1 |
 | Info | 11 |
 </code></pre>
-
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
 
 <h2>📋 Detailed Findings</h2>
 <pre><code>| Severity | CVE ID(s) | Finding Name | Details / Veersion | Matched At |
@@ -182,27 +97,6 @@ httpx -l targets.txt -silent -ports 80,443,8080,8443,8000,8888 -title -tech-dete
 <p><strong>Conclusion</strong>
 By <strong>combining</strong> the power of <code>subfinder</code>, <code>httpx</code>, <code>naabuand nucliei</code> with the Python, we’ve created a script that transforms a series of manual steps into a single, automated, and powerful <strong>security workflow</strong>. It’s a perfect example of how one can build custom <strong>tooling</strong> to fit exact needs, improve <strong>consistency</strong>, and save a <strong>massive</strong> amount of time.</p>
 </article>
-
-
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-    
-            <hr class = "separator" />
-  
-          </div>
-          <!-- end ad block -->
       <DIV class="blog-container content">
           <hr class="separator"></hr>
 
