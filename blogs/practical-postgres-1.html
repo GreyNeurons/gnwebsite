@@ -1,0 +1,140 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+    
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+    
+        <script>
+          // Set page-specific meta description
+          window.pageMetaDescription = "Practical Postgres";
+        </script>
+    
+        <script defer src="/js/head-component.js"></script>  
+    </head>
+    
+    <body>
+        
+        <blog-header>
+            <span slot="bread-crumb-current-page">Practical Postgres #1</span>
+        </blog-header>
+
+        <!-- INSERT CONTENT HERE -->
+        <section>
+        <div class = "blog-container">
+            <h1 class ="title is-1">
+                Practical PostgreSQL: Essential Tips and Tricks for Developers Volume 1 
+            </h1>
+            <div class ="content">
+                We recently started developing a new product that uses PostgreSQL as its database. Our team has a mix of experience levels — some members are fresh out of college with no prior database exposure, while others have decades of software development experience but primarily with MySQL, MSSQL, or Oracle. In this Practical PostgreSQL series, we won’t follow a strict beginner-to-advanced progression. Instead, we’ll document real-world discussions as they unfold within our team at GreyNeurons Consulting. As such, you will see us covering topics from PostgreSQL syntax to comparisons with other databases like MySQL, as well as deeper dives into database design principles.
+            </div>
+            <div class="content">
+                In this first installation from the Practical PostgreSQL we will look at installing & doing basic configurations for PostgreSQL on a Ubuntu Linux.
+            </div>
+            <h2 class="title is-2">
+                📌 Introduction to PostgreSQL: The World’s Most Advanced Open-Source Database
+            </h2>
+            <div class="content">
+                PostgreSQL, often referred to as Postgres, is an enterprise-class open-source relational database that has been evolving for over 35 years. Originally developed at the University of California, Berkeley in 1986 by Michael Stonebraker, it was designed to overcome the limitations of traditional databases by implementing advanced object-relational features. Today, PostgreSQL is known for its stability, extensibility, and strict adherence to SQL standards, making it the go-to choice for organizations requiring high performance, scalability, and security.
+            </div>
+            <div class="content">
+                Ranked consistently among the top three databases in the DB-Engines Ranking, PostgreSQL has outperformed commercial databases like Oracle and Microsoft SQL Server in many real-world scenarios. It has received multiple accolades, including being named DBMS of the Year (2017, 2018, 2020, and 2023) by DB-Engines.
+            </div>
+            <div class="content">
+                PostgreSQL boasts a vast ecosystem, enriched by powerful extensions such as PostGIS for geospatial data, TimescaleDB for time-series data, Citus for horizontal scaling, pgvector for vector similarity search, HLL for hyperloglog-based approximate counting, and pg_partman for automated table partitioning. Its flexibility and extensibility have earned it the reputation of being the “hammer of the database world.”
+            </div>
+
+            <div class ="content">
+                Beyond its core capabilities, PostgreSQL’s influence has led to the rise of several databases built to be PostgreSQL-compatible, offering additional features while maintaining compatibility with its SQL dialect and tooling. Examples include CockroachDB, which provides distributed SQL with high resilience, YugabyteDB, which delivers a globally scalable, cloud-native database, and Neon, a serverless PostgreSQL alternative. This compatibility allows developers to leverage PostgreSQL’s ecosystem while choosing a database tailored to their specific scalability and performance needs.
+            </div>
+
+            <div class ="content">
+                Many developers who prefer a simple yet scalable stack strongly advocate for PostgreSQL, as it can handle nearly every data storage use case imaginable — while continuing to evolve with new capabilities.
+            </div>
+            
+            <div class="content">
+                Many developers who prefer a simple yet scalable stack strongly advocate for PostgreSQL, as it can handle nearly every data storage use case imaginable — while continuing to evolve with new capabilities.
+            </div>
+
+            <div class ="content">
+                With strong backing from an active open-source community and major tech giants like Google, AWS, and Microsoft, PostgreSQL’s future remains bright. As cloud adoption and distributed computing grow, PostgreSQL continues to evolve with JSONB for NoSQL-like functionality, native logical replication, and enhanced parallel query execution. With version 17 on the horizon, PostgreSQL is poised to further strengthen its position as the leading open-source database of choice for modern applications. 🚀
+            </div>
+
+            <div class = "content">
+                Given all of the above it was no brainer GreyNeurons Consulting strongly recommends Postgres to its customer and also is the de-facto standard for the product(s) it is currently building.
+            </div>
+
+            <div class="content">
+                Note : PostgreSQL is available on all major operating systems, including Linux, Windows, and macOS. However, since Linux is the preferred choice for running production database servers due to its stability, performance, and security, most of the examples in this series assume Ubuntu Linux as the operating system. While the core PostgreSQL commands remain the same across platforms, some installation and configuration steps may vary slightly for other operating systems.
+            </div>
+
+            
+
+            <h2 class="title is-2">
+                📌 Practical PostgreSQL: Installation, User Management, and Security Basics
+            </h2>
+
+            <div class="content">
+                This section covers following aspects:
+                <ul>
+                    <li>Checking if PostgreSQL is installed on Linux</li>
+                    <li>Installing PostgreSQL on Linux</li>
+                    <li>Creating and managing users (the right way)</li>
+                    <li>Why you should avoid using the postgres superuser</li>
+                    <li>Basic security best practices</li>
+                </ul>
+                
+                <br>
+
+                ✅ <strong>Check the PostgreSQL Version by running the following command:</strong>
+                        <pre><code class="is-family-monospace">
+                            pssql --version
+                        </code></pre>
+
+                    📌 If PostgreSQL is <span class="has-text-success">installed</span>, you’ll see an output like this:
+
+                        
+                        <pre><code class="is-family-monospace">
+                            psql (PostgreSQL) 15.2
+                        </code></pre>
+
+                    📌 If PostgreSQL is <span class="has-text-danger">NOT installed</span>, you will see:
+                        <pre><code class="is-family-monospace">
+                            Command 'psql' not found
+                        </code></pre>
+                        
+                
+                ✅ <strong>Check If the PostgreSQL Service Is Running</strong>
+                    
+                    <pre><code class="is-family-monospace">
+                        sudo systemctl status postgresql
+                    </code></pre>
+
+                    📌 If PostgreSQL is <span class="has-text-success">running</span>, you’ll see an output like:
+                    <pre><code class="is-family-monospace">
+                        ● postgresql.service - PostgreSQL RDBMS
+                        Loaded: loaded (/lib/systemd/system/postgresql.service; enabled)
+                        Active: active (running)                    
+                    </code></pre>
+
+                    📌 If PostgreSQL is <span class="has-text-danger">not running</span>, start it with:
+                    <pre><code class="is-family-monospace">
+                        sudo systemctl start postgresql                   
+                    </code></pre>
+
+            </div>
+
+        </div>
+        </section>
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+
+    </body>
+</html>
+

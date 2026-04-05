@@ -58,23 +58,6 @@ print(embeddings[0][:5]) # Print the first 5 dimensions of the first vector
 
 <p>Chroma uses an embedding function like this under the hood to convert all your data and queries into these numerical vectors.</p>
 
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
-
 <h2>Organizing Data: Collections</h2>
 <p>In Chroma, all data is stored within a Collection. A collection is analogous to a table in a traditional SQL database or an index in <a href="https://www.elastic.co/" target="_blank">Elasticsearch</a>. It’s a container for your documents and their correspondiing embeddings.</p>
 <p>Each collection is configured with a specific embedding model. This ensures that all data within that collection is represented in the same vector space, making compaisons meaningful.</p>
@@ -91,23 +74,6 @@ client = chromadb.PersistentClient(path="/tmp/my_chroma_db")
 # You can let Chroma use its default embedding model or specify your own.
 collection = client.get_or_create_collection(name="tech_articles")
 </code></pre>
-
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
 
 <h2>Storing Data: Documents, Metadata, and IDs</h2>
 <p>When you add data to a collection, you are adding Documents. A Chroma document is a rich object containing three key pieces of information:</p>
@@ -135,23 +101,6 @@ collection.add(
 )</code>
 </pre>
 <p>Chroma’s add method is actually an "upsert." If you call add again with an ID that already exists, Chroma will overwrite the existing document with the new data.</p>
-
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
 
 <h2>Retrieving Data: The Power of Search and Filter</h2>
 <p>This is where Chroma’s capabilities truly shine. You can retrieve data in several powerful ways.</p>
@@ -199,23 +148,6 @@ print(f"Found {len(retrieved_docs['ids'])} database documents.")
 # Ouput: Found 2 database documents.
 </code></pre>
 
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
-
 <h2>Architecture: In-Process vs. Client/Server</h2>
 <p>Chroma can be deployed in different ways depending on your needs:</p>
 <p><em>In-Process (PersistentClient):</em> The database runs as a library within your Python application and writes its files to a local directory. </p>
@@ -225,23 +157,6 @@ print(f"Found {len(retrieved_docs['ids'])} database documents.")
 <p>Pros: The production-standard. It properlly manages state, handles concurrent requests gracefully, and can be scaled independentlly of your application.</p>
 <p>Cons: Requires slightly more setuup (running a separate server process).</p>
 <p>For any serious application that will have more than one user or process interacting with the database at once, the Client/Server architecture is the recommended approaach.</p>
-
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-            <hr class = "separator" />
-          </div>
-          <!-- end ad block -->
 
 <h2>Conclusion: The Semantic Layer for AI</h2>
 <p>ChromaDB is more than just a database; it’s a foundational component for buildiing the next generation of AI-powered applications.</p>
@@ -254,27 +169,6 @@ print(f"Found {len(retrieved_docs['ids'])} database documents.")
 </ul>
 <p>As the AI landscape increasiingly moves towaards patterns like Retrieval-Augmented Generation (RAG), having a robusst and efficient vector database is no longer a luxury — it’s a necessity. ChromaDB fills this role perfectly, acting as the long-term memory or “semantic layer” that allows Large Language Models to work with your specific data, making them more accuraate, rellevant, and powerful.</p>
 </article>
-
-
-          <!-- start ad block -->
-          <div class="has-text-centered">
-            <hr class = "separator" />
-            
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '660d8a9251dc959ac46a45e1fb3d7a6b',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/660d8a9251dc959ac46a45e1fb3d7a6b/invoke.js"></script>
-    
-            <hr class = "separator" />
-  
-          </div>
-          <!-- end ad block -->
       <DIV class="blog-container content">
           <hr class="separator"></hr>
 
