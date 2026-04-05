@@ -1,0 +1,26 @@
+<svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+  <rect width="280" height="280" fill="#1e1e2a" rx="20"/>
+
+  <!-- Icon mark -->
+  <g transform="translate(140, 128)">
+    <polygon points="0,-58 50,-29 50,29 0,58 -50,29 -50,-29" fill="#2e2e4e"/>
+    <line x1="0" y1="-13" x2="0" y2="-44" stroke="#8888b8" stroke-width="2" stroke-linecap="round"/>
+    <line x1="11" y1="7" x2="34" y2="20" stroke="#8888b8" stroke-width="2" stroke-linecap="round"/>
+    <line x1="-11" y1="7" x2="-34" y2="20" stroke="#8888b8" stroke-width="2" stroke-linecap="round"/>
+    <line x1="0" y1="-13" x2="21" y2="-33" stroke="#6060a0" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="0" y1="-13" x2="-21" y2="-33" stroke="#6060a0" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="11" y1="7" x2="-11" y2="7" stroke="#6060a0" stroke-width="1.2" stroke-linecap="round"/>
+    <circle cx="0" cy="-44" r="5.5" fill="#9090c0"/>
+    <circle cx="34" cy="20" r="5.5" fill="#9090c0"/>
+    <circle cx="-34" cy="20" r="5.5" fill="#9090c0"/>
+    <circle cx="21" cy="-33" r="3.5" fill="#7070a8"/>
+    <circle cx="-21" cy="-33" r="3.5" fill="#7070a8"/>
+    <circle cx="0" cy="0" r="13" fill="#ffffff" fill-opacity="0.1"/>
+    <circle cx="0" cy="0" r="7" fill="#ffffff" fill-opacity="0.3"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="140" y="214" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="bold" fill="#e0e0ec">Grey<tspan fill="#9090c4">Neurons</tspan></text>
+  <line x1="50" y1="226" x2="230" y2="226" stroke="#333350" stroke-width="0.7"/>
+  <text x="140" y="248" text-anchor="middle" font-family="Arial, 'Helvetica Neue', sans-serif" font-size="9" fill="#666688" letter-spacing="0.22em">EXPERIENCE THE WISDOM</text>
+</svg>

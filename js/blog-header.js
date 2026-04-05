@@ -7,10 +7,9 @@ class BlogHeader extends HTMLElement {
 
     this.innerHTML = `
       <div class="section has-text-grey-light has-background-dark">
-        <div class="content has-text-white is-family-monospace">
-          <p class="title is-size-5 has-text-white is-uppercase">Grey Neurons</p>
-          <p class="subtitle has-text-grey-light">Experience the wisdom</p>
-        </div>
+        <a href="/" style="display: inline-block; margin-bottom: 0.75rem;">
+          <img src="/img/greyneurons-logo-horizontal.svg" alt="GreyNeurons - Experience the wisdom" style="height: 46px;">
+        </a>
 
         <nav class="breadcrumb" aria-label="breadcrumbs">
           <ul>
