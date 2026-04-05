@@ -37,6 +37,18 @@
         document.head.appendChild(metaTag);
     });
 
+    // Add favicon
+    const faviconSvg = document.createElement('link');
+    faviconSvg.setAttribute('rel', 'icon');
+    faviconSvg.setAttribute('type', 'image/svg+xml');
+    faviconSvg.setAttribute('href', '/img/greyneurons-icon-mark.svg');
+    document.head.appendChild(faviconSvg);
+
+    const faviconIco = document.createElement('link');
+    faviconIco.setAttribute('rel', 'icon');
+    faviconIco.setAttribute('href', '/favicon.ico');
+    document.head.appendChild(faviconIco);
+
     // Add canonical link if defined
     if (canonicalLink) {
         const linkTag = document.createElement('link');
