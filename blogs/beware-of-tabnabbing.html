@@ -1,101 +1,74 @@
 <!doctype html>
 <html class="no-js" lang="en">
+  <head>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/bulma.css">
+    <link rel="stylesheet" href="/css/main.css">
 
-<head>
-  <meta charset="utf-8">
-  <title>GreyNeurons Article - Beware of Tabnabbing</title>
-  <meta name="description" content="A software engineering blog about anything everything on software development 
-  right from requirements, estimation architecture, design , coding to QA & support. 
-  We talk about python, java,Elixir, Erlang. We cover functional programming paradigms vs imperative. 
-  We talk about people issues effecting most software teams. We look at full stack development equally 
-  focusing on backend and frontend. ">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      window.pageMetaDescription = "That innocent target='_blank' on your anchor tags can open the door to tabnabbing — a sneaky phishing attack. One extra attribute is all it takes to close it.";
+    </script>
 
-  <meta property="og:title" content="Grey Neurons Article - Beware of Tabnabbing">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.greyneuronsconsulting.com/blogs/beware-of-tabnabbing.html">
-  <meta property="og:image" content="">
+    <script defer src="/js/head-component.js"></script>
+  </head>
+  <body>
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
+    <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+      <span slot="bread-crumb-current-page">Beware of Tabnabbing</span>
+    </blog-header>
 
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="stylesheet" href="/css/bulma.css">
-  <link rel="stylesheet" href="/css/main.css">
+    <div id="content" class="blog-container content">
+      <h1>Beware When You Use target="_blank"</h1>
+      <p>That innocent <code>target="_blank"</code> on your anchor tags can open the door to tabnabbing — a sneaky phishing attack. One extra attribute is all it takes to close it.</p>
 
-  <meta name="theme-color" content="#fafafa">
-  
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Grey Neurons Article - Beware of Tabnabbing" />
-  <meta name="twitter:site" content="@GreyNeurons" />
-
-</head>
-
-<body class ="has-background-dark has-text-centered is-family-primary">
-
-  <div class = "section">
-
-    <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-          <li class="is-dark"><a  href="/">Home</a></li>
-          <li class="is-dark"><a  href="/articles.html">Blogs</a></li>
-          <li class="is-active"><a  href="#" aria-current="page">Tabnabbing</a></li>
-        </ul>
-    </nav>
-
-    <div id = "02042022" class='block has-text-left has-background-dark has-text-light mx-6'>
-
-        <header class="card-header">
-          <p class="card-header-title has-text-primary">
-            Beware when you use target="_blank" next time
-          </p>  
-        </header>
-  
-        <div class="content mx-6">
-          <p>Setting target attribute of anchor tag to '_blank' is quite common when you want 
-          to open the link in a new tab of the browser. What is not commonly understood is this
-          can lead to a vulnerability known as <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Tabnabbing" target="_blank" rel="noopener noreferrer">tabnabbing</a>. 
-          </p>
-          <p>You can easily avoid this potential vulnerability
-          by adding a <b>rel</b> attribute to anchor tag and setting it to <b>"noreferrer noopener"</b>
-          </p>  
-          So next time you write a code which looks like
-              
-              <xmp class="code-border">
-                <a href="https://www.greyneuronconsulting.com" target="_blank">Grey Neurons consulting</a>
-              </xmp>  
-          
-              take an extra moment and don't forget to add the rel attribute
-              <xmp class="code-border">
-                <a href="https://www.greyneuronconsulting.com" target="_blank" rel="noopener noreferrer">
-                  Grey Neurons consulting</a>
-              </xmp>
-          
-        </div>
-  
-        <div class="block mx-3">
-          <span class = 'tag'>HTML</span>
-          <span class = 'tag'>Software Engineering</span>
-          <span class = 'tag'>cyber security</span>
-          <span class = 'tag'>Tips</span>
-          <p class="has-text-centered">
-            <a href="https://twitter.com/greyNeurons?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-show-count="false">Follow @greyNeurons</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-  
-          </p>                      
-          <hr class="gn-section">
-        </div>
-        
+      <hr class="separator">
+      <div class="field is-grouped is-grouped-centered">
+        <p class="control">
+          <social-share></social-share>
+        </p>
       </div>
-  
+      <hr class="separator">
+    </div>
 
-  </div>
- 
+    <article class="blog-container content">
 
-  <a title="Privacy-friendly Web Analytics" href="https://clicky.com/101362676"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
-  <script async src="//static.getclicky.com/101362676.js"></script>
-  <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101362676ns.gif" /></p></noscript>
+      <h2>What is Tabnabbing?</h2>
+      <p>Setting the <code>target</code> attribute of an anchor tag to <code>_blank</code> is quite common when you want to open a link in a new browser tab. What is not commonly understood is that this can lead to a vulnerability known as <a href="https://en.wikipedia.org/wiki/Tabnabbing" target="_blank" rel="noopener noreferrer">tabnabbing</a>.</p>
 
-</body>
+      <p>When a page is opened via <code>target="_blank"</code>, the newly opened page gains partial access to the originating page through the <code>window.opener</code> object. A malicious site can exploit this to silently redirect your original tab to a fake login page — and users, switching back to that tab, often don't notice and hand over their credentials.</p>
 
+      <h2>The Fix is Simple</h2>
+      <p>You can easily avoid this vulnerability by adding a <code>rel</code> attribute to the anchor tag and setting it to <code>"noopener noreferrer"</code>.</p>
+
+      <p>So next time you write code like this:</p>
+
+      <pre class="code-border"><code>&lt;a href="https://example.com" target="_blank"&gt;Example&lt;/a&gt;</code></pre>
+
+      <p>Take an extra moment and add the <code>rel</code> attribute:</p>
+
+      <pre class="code-border"><code>&lt;a href="https://example.com" target="_blank" rel="noopener noreferrer"&gt;Example&lt;/a&gt;</code></pre>
+
+      <h2>What do these values do?</h2>
+      <ul>
+        <li><strong>noopener</strong> — prevents the new page from accessing <code>window.opener</code>, cutting off the attack vector entirely.</li>
+        <li><strong>noreferrer</strong> — additionally hides the referrer header, so the destination site doesn't know which page sent the user there.</li>
+      </ul>
+
+      <p>Modern browsers have started defaulting to <code>noopener</code> behaviour for <code>target="_blank"</code> links, but not all versions and not all browsers do. Being explicit costs nothing and protects everyone.</p>
+
+      <hr class="separator">
+
+      <div>
+        <p><strong><i>Hungry for more security tips and engineering insights? Join our newsletter — new content delivered every week. Sign up below 👇</i></strong></p>
+      </div>
+
+    </article>
+
+    <blog-footer></blog-footer>
+
+    <script defer src="/js/blog-footer.js"></script>
+    <script defer src="/js/blog-header.js"></script>
+    <script defer src="/js/social-share.js"></script>
+
+  </body>
 </html>
