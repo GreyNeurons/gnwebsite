@@ -1,0 +1,284 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+
+        <script>
+          window.pageMetaDescription = "How we built an AI-powered git commit review tool that runs a two-pass LLM analysis, integrates with JIRA for ticket alignment, and posts structured findings directly to Bitbucket — all from a single YAML config.";
+          window.canonicalLink = "";
+        </script>
+
+        <script defer src="/js/head-component.js"></script>
+    </head>
+    <body>
+
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">AI Code Review on Every Commit: What We Built and Why</span>
+      </blog-header>
+
+            <DIV class="blog-container content">
+
+                <div id="content" class="blog-container content">
+                    <h1>AI Code Review on Every Commit: What We Built and Why</h1>
+                    <i>A two-pass LLM reviewer that reads git diffs, checks JIRA ticket alignment, and posts structured findings to Bitbucket — built for startup teams where code review is always the bottleneck.</i>
+                </div>
+
+                <hr class="separator"></hr>
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                  </div>
+                <hr class="separator"></hr>
+
+            </DIV>
+
+            <div class="blog-container content">
+
+                <p>Every startup engineering team hits the same wall. The developers are productive — commits are landing, features are shipping. But code review is piling up. Nobody has time to review every commit carefully. Things slip through: a hardcoded secret, a missing null check, a SQL query that will fall over at 10x data, a frontend link without <code>rel="noopener noreferrer"</code>.</p>
+
+                <p>This is the <strong>AI productivity paradox</strong> in practice. AI coding assistants make developers faster at writing code. They do not make reviewers faster at reviewing it. The bottleneck moves downstream.</p>
+
+                <p>As a fractional CTO serving multiple startup clients simultaneously, this is not a hypothetical — it's a daily operational constraint. I can't be a first-pass reviewer on every commit for every client. Neither can a small team's tech lead who is also writing code, handling escalations, and sitting in product discussions.</p>
+
+                <p>So we built a tool to be that first-pass reviewer. This is what it does, how it works, and what we learned building it.</p>
+
+                <h2>What the Tool Does</h2>
+
+                <p>The tool is a Python script — <code>git-commit-reviews.py</code> — that runs on a schedule (or on-demand for a specific commit). It does five things:</p>
+
+                <ol>
+                    <li><strong>Fetches recent commits</strong> from one or more git repositories, within a configurable time window.</li>
+                    <li><strong>Extracts the unified diff</strong> for each commit using <code>git show</code>, with configurable context lines around each change.</li>
+                    <li><strong>Pulls JIRA context</strong> if the commit subject contains a ticket reference — fetching the issue summary, type, status, and description to give the LLM intent context.</li>
+                    <li><strong>Runs a two-pass LLM review</strong>: a draft pass that generates findings, followed by a reflection pass that removes anything not directly evidenced by changed code.</li>
+                    <li><strong>Posts the structured review</strong> as a commit comment on Bitbucket, and saves it locally as a JSON file.</li>
+                </ol>
+
+                <p>The output is a structured JSON review — commit metadata, list of changed files, and a set of observations each with a title, classification, severity, description, code snippet, and actionable suggestions.</p>
+
+                <h2>Why Two Passes?</h2>
+
+                <p>The single biggest quality problem with LLM code reviews is <strong>speculative findings</strong>. A model reads a diff and notices, say, a function that calls an external API. It flags "this could throw an unhandled exception if the network is down." Technically possible. But the diff didn't change exception handling — that's pre-existing code. The observation is noise, not signal.</p>
+
+                <p>Noisy reviews are worse than no reviews. Engineers stop reading them.</p>
+
+                <p>The reflection pass fixes this. After the draft review is generated, a second LLM call is made with a focused instruction:</p>
+
+                <blockquote>
+                    <p>For each observation, check whether the problematic code is directly visible in the "+" lines of the diff. Remove any finding that references unchanged context lines, uses speculative language ("might", "could potentially", "may cause") without pointing to a concrete added line, or flags something that existed before this commit.</p>
+                </blockquote>
+
+                <p>The reflection model is allowed to be a different (and potentially cheaper) model than the draft reviewer. In practice, the reflection pass removes 20–40% of observations from a typical review — almost all of them speculative. What remains is grounded findings about code that was actually changed.</p>
+
+                <p>One implementation detail worth noting: the reflection pass rewrites the full observations array and updates the summary counts. But it doesn't know about JIRA alignment — that's a separate field added by the first pass. So before returning the refined review, we stash the <code>jira_alignment</code> array from the draft and re-inject it into the reflected output. The model never touches it.</p>
+
+                <h2>JIRA Alignment: Did the Code Actually Do What the Ticket Asked?</h2>
+
+                <p>For teams using JIRA, every commit should relate to a ticket. In practice, this relationship is often assumed rather than verified. A developer closes a ticket and the PR is approved, but nobody checked whether the code change actually addresses the acceptance criteria.</p>
+
+                <p>When JIRA integration is enabled, the tool:</p>
+
+                <ol>
+                    <li>Extracts ticket keys from the commit subject using a configurable regex pattern (e.g. <code>PROJ-\d+</code>).</li>
+                    <li>Fetches the issue details from JIRA — summary, type, status, and up to 800 characters of description.</li>
+                    <li>Prepends this context to the review prompt before the diff.</li>
+                    <li>Instructs the LLM to return a <code>jira_alignment</code> array alongside observations, with one entry per referenced ticket.</li>
+                </ol>
+
+                <p>Each alignment verdict is one of four values:</p>
+
+                <ul>
+                    <li><strong>aligned</strong> — the code changes clearly implement or fix what the ticket describes.</li>
+                    <li><strong>misaligned</strong> — the changes appear unrelated to the ticket — flagged as a concern.</li>
+                    <li><strong>partial</strong> — the changes only partially address the ticket requirements.</li>
+                    <li><strong>unverifiable</strong> — the ticket description is too vague to determine alignment.</li>
+                </ul>
+
+                <p>A commit that's <em>misaligned</em> with its ticket is a genuine signal worth acting on. Either the commit is going to the wrong branch, the ticket reference is wrong, or the developer is solving a different problem than the ticket describes. Any of these is worth a conversation before the code gets merged.</p>
+
+                <p>JIRA is optional — the tool works without it, and individual clients can disable it. The per-run in-memory cache ensures the same ticket is fetched at most once per execution, regardless of how many commits reference it.</p>
+
+                <h2>What It Reviews</h2>
+
+                <p>The review prompt is configurable per customer, but the default covers seven dimensions:</p>
+
+                <ul>
+                    <li><strong>Security</strong> — hardcoded credentials, injection vectors, authentication gaps</li>
+                    <li><strong>Functional correctness</strong> — logic errors, edge cases, incorrect assumptions</li>
+                    <li><strong>Non-functional concerns</strong> — performance, scalability, maintainability, resiliency</li>
+                    <li><strong>Coding style and readability</strong> — naming, structure, complexity</li>
+                    <li><strong>Error handling and logging</strong> — missing null checks, swallowed exceptions, insufficient log context</li>
+                    <li><strong>User experience</strong> — for frontend code: accessibility, responsive images, loading performance</li>
+                    <li><strong>Resource management</strong> — potential memory leaks, unclosed handles</li>
+                </ul>
+
+                <p>For frontend code specifically (HTML, JS, TS, CSS, JSX, TSX), the prompt adds a set of privacy and security checks:</p>
+
+                <ul>
+                    <li>Input fields handling PII or credentials must have <code>spellcheck="false"</code>, <code>autocomplete="off"</code>, <code>autocorrect="off"</code>, and <code>autocapitalize="off"</code> — missing any of these is flagged as a privacy concern.</li>
+                    <li>External links must include <code>rel="noopener noreferrer"</code> to prevent TabNabbing.</li>
+                    <li>Images should use <code>srcset</code> and <code>loading="lazy"</code> where appropriate.</li>
+                </ul>
+
+                <p>The instruction "If a category or check does not apply, skip it — do not speculate" is explicit in the prompt. Combined with the reflection pass, this keeps the output tight.</p>
+
+                <h2>Architecture and Configuration</h2>
+
+                <p>The tool is designed around a per-customer YAML configuration file. Each client gets their own config that specifies which repositories to monitor, which LLM to use, what time window to review, and their Bitbucket workspace details.</p>
+
+<pre>
+┌─────────────────────────────────────┐
+│         gcr-client.yaml             │
+│  repositories, time window, LLM     │
+│  service, JIRA config, Bitbucket    │
+└──────────────────┬──────────────────┘
+                   │
+         ┌─────────▼─────────┐
+         │  git-commit-       │
+         │  reviews.py        │
+         └──┬────────────┬───┘
+            │            │
+    ┌───────▼──┐   ┌─────▼──────┐
+    │ git show  │   │ JIRA API   │
+    │ (diff)    │   │ (context)  │
+    └───────┬──┘   └─────┬──────┘
+            │            │
+         ┌──▼────────────▼──┐
+         │  LiteLLM Router   │
+         │  (Pass 1: Draft)  │
+         └──────────┬────────┘
+                    │
+         ┌──────────▼────────┐
+         │  LiteLLM Router   │
+         │  (Pass 2: Reflect) │
+         └──────────┬────────┘
+                    │
+         ┌──────────▼────────┐
+         │  Bitbucket API    │
+         │  (commit comment) │
+         └───────────────────┘
+</pre>
+
+                <p>The LLM layer is a LiteLLM router, so the actual model is swappable without touching the review code. Different passes can use different models — for example, a fast cheap model for reflection and a more capable model for the initial draft. The <code>review_service</code> and <code>reflection_service</code> keys in the config control this independently.</p>
+
+                <p>Token safety is built in: the tool estimates diff size (characters ÷ 4 ≈ tokens) before sending to the LLM. If the diff exceeds the model's effective token limit, the commit is skipped with a warning rather than truncating and producing a partial review. The limit is either set explicitly in the config or inferred from the model's <code>max_tokens</code> setting in the LLM router config.</p>
+
+                <h2>How You Can Run It</h2>
+
+                <p>The tool is flexible about when and how it gets triggered. There are three deployment modes, and they're not mutually exclusive.</p>
+
+                <h3>1. On-Demand — Review a Specific Commit</h3>
+
+                <p>Pass a commit hash directly to review a single commit immediately. This is useful when a PR is raised and you want AI feedback before the peer review starts, or when you want to re-review a commit after refining the prompt:</p>
+
+                <pre><code>python git-commit-reviews.py -c gcr-client.yaml --commit-id &lt;hash&gt;</code></pre>
+
+                <h3>2. Scheduled — Cron Job on a Time Window</h3>
+
+                <p>The most common production setup. A cron job runs the tool every few hours (or nightly), picking up all commits since a configured <code>since</code> timestamp across one or more repositories. No manual trigger needed — every commit gets reviewed automatically as a background process:</p>
+
+                <pre><code>python git-commit-reviews.py -c gcr-client.yaml</code></pre>
+
+                <p>The <code>since</code> value in the config controls the lookback window — it can be a relative duration like <code>24 hours ago</code> or an absolute UTC timestamp for a fixed start point.</p>
+
+                <h3>3. Event-Driven — Triggered by a Commit or Pull Request</h3>
+
+                <p>For tighter integration, the tool can be wired into your CI/CD pipeline or source control webhook so it fires automatically on specific events:</p>
+
+                <ul>
+                    <li><strong>On commit push</strong> — a Bitbucket webhook triggers the review pipeline the moment code lands on the branch. The developer sees the AI review comment within minutes of pushing.</li>
+                    <li><strong>On pull request creation</strong> — the review runs when a PR is opened, so findings are visible to both the author and reviewers before any human review begins. The AI acts as a pre-screen, letting human reviewers focus on design and intent rather than catching mechanical issues.</li>
+                </ul>
+
+                <p>In all three modes, the output is the same: a structured review posted as a Bitbucket commit comment and saved locally. The only difference is what pulls the trigger.</p>
+
+                <p>Reviews are saved locally to a <code>reviews/</code> directory as <code>{repo}-{hash}-{service}.txt</code> files — useful for audit trails, trend analysis, or re-running with a different prompt.</p>
+
+                <h2>Automatic Bitbucket Comments — Review Where the Code Lives</h2>
+
+                <p>The most visible part of the workflow is not the local file — it's the automatic comment posted against the commit in Bitbucket. After the two-pass review completes, the tool calls the Bitbucket API and attaches the full structured review as a commit comment, right where the developer (and their team lead) will naturally look.</p>
+
+                <p>This matters for adoption. If a review lives in a log file on a server, nobody reads it. If it appears as a comment on the commit in Bitbucket — the same place where peer review comments go — it becomes part of the natural development workflow. Developers see it when they check their commit. Tech leads see it when they browse recent activity. No separate dashboard to check, no extra tool to learn.</p>
+
+                <p>The Bitbucket integration is configured per customer in the YAML:</p>
+
+<pre><code>bitbucket:
+  enabled: true
+  workspace: "your-workspace"</code></pre>
+
+                <p>The repo slug is derived automatically from the repository path, so a single config covers multiple repositories without manual mapping for each one. The integration appends rather than replaces — if a commit is reviewed twice (e.g. after refining the prompt), both reviews appear as separate comments with their own timestamp. Nothing is silently overwritten.</p>
+
+                <h2>Security Findings Mapped to Industry Standards</h2>
+
+                <p>For security observations, the prompt instructs the LLM to map each finding to three frameworks — but only when the mapping is clearly defensible:</p>
+
+                <ul>
+                    <li><strong>OWASP Top 10 (2021)</strong> — the widely recognised web application security risk categories (e.g. A03 – Injection, A07 – Identification and Authentication Failures)</li>
+                    <li><strong>CWE</strong> — Common Weakness Enumeration IDs that precisely identify the weakness class (e.g. CWE-89 for SQL Injection, CWE-79 for XSS)</li>
+                    <li><strong>CIS Critical Security Controls v8</strong> — the control(s) from the CIS framework that apply (e.g. CIS Control 16.1 – Establish and Maintain a Secure Application Development Process)</li>
+                </ul>
+
+                <p>The instruction is explicit: <em>"Apply mappings only when clearly defensible. If a mapping is weak or speculative, omit it rather than guessing."</em> This matters in practice — a LLM will happily invent a plausible-sounding OWASP category for almost any finding if you let it. Forcing it to only map when confident keeps the output useful for actual security conversations, audit discussions, or compliance reviews.</p>
+
+                <p>For mobile code (iOS/Android SDKs), the tool maps to the <strong>OWASP Mobile Top 10 (2024)</strong> instead of the web Top 10. The framework used is configurable per customer in the YAML prompt.</p>
+
+                <p>The practical benefit of these mappings: when a security finding lands on a developer's desk, they can immediately look up the CWE for a precise definition, the OWASP category for broader context, and the CIS control for what a remediation programme should look like. It turns a review comment into a traceable, standard-referenced finding — the kind a security auditor or CTO can act on.</p>
+
+                <h2>What It Catches in Practice</h2>
+
+                <p>Across several months running this across client repositories, the findings that appear most consistently:</p>
+
+                <p><strong>Security:</strong> Hardcoded API keys and tokens in configuration files, missing input validation on user-supplied parameters, JWT tokens stored in <code>localStorage</code> (a known XSS risk), and missing CSRF protection on state-changing endpoints.</p>
+
+                <p><strong>Frontend privacy:</strong> Login forms without <code>autocomplete="off"</code> on password fields — surprisingly common and a GDPR concern on EU-facing products. External links without <code>rel="noopener noreferrer"</code>.</p>
+
+                <p><strong>Functional:</strong> Off-by-one errors in pagination logic, null reference paths in newly added conditional branches, missing error handling after <code>await</code> calls.</p>
+
+                <p><strong>JIRA misalignment:</strong> Commits referencing a bug ticket but changing unrelated infrastructure code — usually a copy-paste error in the commit message, but occasionally a developer working in the wrong branch.</p>
+
+                <p>The reflection pass is what makes these findings actionable. Without it, the list would also include warnings about the rest of the file — exception handling in code that wasn't touched, performance concerns in methods that weren't changed. With it, the findings are tightly scoped to what was actually committed.</p>
+
+                <h2>What It Is Not</h2>
+
+                <p>This is a first-pass reviewer, not a replacement for human review on significant changes. For large architectural commits, complex business logic, or cross-cutting refactors, a human reviewer who knows the domain is irreplaceable.</p>
+
+                <p>The tool also doesn't understand runtime behaviour — it can't know whether a code path is actually reachable, what a variable will contain at runtime, or whether a performance concern materialises at real traffic levels. It reasons only from the diff.</p>
+
+                <p>What it reliably does is catch the mechanical issues — the security hygiene, the missing attributes, the unchecked nulls — that reviewers tend to miss when they're reading quickly. It raises the floor of review quality across every commit, without adding load to the people doing reviews.</p>
+
+                <p>For a fractional CTO managing multiple client codebases, or a tech lead who is also building features, that floor-raising is the practical value. Not replacing judgement — removing the noise that makes judgement harder.</p>
+
+            </div>
+
+
+            <DIV class="blog-container content">
+                <hr class="separator"></hr>
+
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                </div>
+
+                <hr class="separator"></hr>
+
+                <div>
+                <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+                </div>
+            </DIV>
+
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
