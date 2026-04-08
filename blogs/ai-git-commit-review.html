@@ -242,6 +242,64 @@
 
                 <p>The reflection pass is what makes these findings actionable. Without it, the list would also include warnings about the rest of the file — exception handling in code that wasn't touched, performance concerns in methods that weren't changed. With it, the findings are tightly scoped to what was actually committed.</p>
 
+                <h2>This Is Not a Product — It's a Point About What's Possible</h2>
+
+                <p>Before the comparison: this tool is not a commercial product competing with CodeRabbit or Rovo. We built it as part of our fractional CTO practice — it runs on client infrastructure, is configured per client, and is one of several AI-assisted engineering tools we deploy as part of an engagement. We are not selling it as a SaaS.</p>
+
+                <p>The reason we're comparing it to commercial alternatives is a different point: <strong>the gap between what a small, focused engineering effort can produce and what you'd pay $20–$30/developer/month for is smaller than most teams realise.</strong> If your team has the appetite to own a lightweight tool, the building blocks — LiteLLM, a git diff, a JIRA API client — are all accessible. If you'd rather have a managed product with enterprise controls and a vendor to call, the commercial options are good and the comparison below will help you choose.</p>
+
+                <p>With that framing, here is an honest, fact-based look at the landscape.</p>
+
+                <h3>vs. CodeRabbit ($24/developer/month)</h3>
+
+                <p>CodeRabbit is a polished commercial product with 2M+ connected repositories and SOC 2 Type II certification. It supports GitHub, GitLab, Bitbucket, and Azure DevOps, posts inline PR comments, and allows model selection across OpenAI, Anthropic, and Google providers. It learns from team feedback to reduce false positives over time. For teams that want a managed, enterprise-ready solution with RBAC, no infrastructure to run, and a vendor to call, CodeRabbit is a strong choice.</p>
+
+                <p>Where the tools differ:</p>
+
+                <ul>
+                    <li><strong>Security standard mappings:</strong> CodeRabbit provides natural-language security findings but does not natively output OWASP Top 10 category codes, CWE IDs, or CIS control references in its review comments. Our tool explicitly maps each security finding to OWASP (2021), CWE, and CIS Controls v8 — and only does so when the mapping is clearly defensible. For teams running compliance programmes, security audits, or working toward certifications, named standard references are the currency that matters.</li>
+                    <li><strong>Reflection pass:</strong> CodeRabbit offers incremental reviews and learns from feedback over time to reduce future false positives. Our tool removes speculative findings at generation time — the reflection pass runs on every review, eliminating findings not directly evidenced by the diff before they ever reach the developer.</li>
+                    <li><strong>Pricing model:</strong> At $24/developer/month, CodeRabbit is a per-seat subscription. Our tool's cost is purely LLM API usage — roughly $0.01–0.05 per commit review depending on diff size and model. For a 10-developer team committing daily, the difference is significant at the scale most startups operate.</li>
+                    <li><strong>What CodeRabbit has that we don't:</strong> SOC 2 certification, RBAC, enterprise SSO, managed infrastructure, 40+ integrated linters running in parallel, and a product team maintaining it full-time.</li>
+                </ul>
+
+                <h3>vs. Atlassian Rovo Dev ($20/user/month)</h3>
+
+                <p>Rovo Dev is Atlassian's AI assistant suite, not a standalone code review product. The code review component (Rovo Dev) integrates tightly with JIRA — validating code changes against acceptance criteria and business objectives from linked JIRA issues, which is genuine value for Atlassian-native teams. It supports model selection (Claude, GPT series) and runs on Atlassian's cloud infrastructure with an option for Atlassian-hosted LLMs on Enterprise plans.</p>
+
+                <p>The distinction: Rovo Dev is designed for teams already inside the Atlassian ecosystem. Its JIRA integration is deep but tightly coupled to that platform. Our tool's JIRA integration is configurable and optional — it works equally well on repositories with no JIRA at all. The per-seat pricing applies regardless of how heavily individual developers use the review feature.</p>
+
+                <h3>vs. Traditional Static Analysis (SonarQube, Semgrep)</h3>
+
+                <p>Static analysis tools and AI code review are solving different problems and are best understood as complementary rather than competing.</p>
+
+                <p>SonarQube and Semgrep are pattern-based and deterministic — they apply rules to code and flag violations. They are excellent at what they do: detecting known vulnerability patterns, code smells, test coverage gaps, and rule violations consistently and at scale. SonarQube's Enterprise Edition and Semgrep both map findings to OWASP Top 10 and CWE standards. SonarQube Enterprise starts at ~$16,000/year; Semgrep Team is $35/contributor/month.</p>
+
+                <p>What static analysis cannot do is understand <em>intent</em>. A static analyser sees code patterns. It cannot read a diff and ask "does this change actually implement what the JIRA ticket described?" It cannot notice that a new API endpoint follows the correct pattern but is missing a business logic check that is only obvious when you read the requirement. It cannot flag that a JWT is being stored in <code>localStorage</code> as a <em>deliberate architectural choice worth questioning</em> rather than a simple rule violation.</p>
+
+                <p>AI review catches semantic and contextual issues. Static analysis catches pattern violations. For teams that can run both, they cover different ground. For teams that can run only one, the choice depends on whether rule-violation detection or contextual reasoning is the bigger gap in their current process.</p>
+
+                <h3>vs. GitHub Copilot Code Review (Business: $19/user/month)</h3>
+
+                <p>GitHub Copilot's code review feature reached 60 million reviews by March 2026 and uses an agentic approach that gathers full repository context before commenting — not just the diff. It deliberately stays silent on 29% of reviews where it has low confidence, producing roughly 5 comments per review on average. It is tightly integrated with GitHub but not with Bitbucket.</p>
+
+                <p>The key limitation for teams evaluating model flexibility: Copilot's code review uses OpenAI's models. There is no documented ability to swap to Anthropic, Google, or open-weight models. Our tool routes through LiteLLM, so the underlying model is a configuration choice — useful when a client has specific data residency requirements, cost constraints, or a preference for a particular model's reasoning style.</p>
+
+                <h3>Where We Are Honest About the Gaps</h3>
+
+                <p>Commercial tools have years of investment and dedicated teams. The gaps are real:</p>
+
+                <ul>
+                    <li><strong>No SSO or RBAC:</strong> Enterprise identity management and access controls are not implemented. Commercial tools handle this.</li>
+                    <li><strong>No SOC 2 or compliance certification:</strong> CodeRabbit is SOC 2 Type II certified. We are not a certified product.</li>
+                    <li><strong>No integrated linters:</strong> CodeRabbit runs 40+ deterministic linters (ESLint, Pylint, etc.) alongside AI review. We run only the LLM review pass.</li>
+                    <li><strong>Self-hosted infrastructure:</strong> You run it. There is no managed SaaS — which is both a flexibility advantage and an operational responsibility.</li>
+                    <li><strong>No learning from feedback:</strong> Commercial tools learn from how teams respond to findings over time. Our tool starts fresh on every review.</li>
+                </ul>
+
+                <p>For teams that want enterprise procurement, compliance certification, and a managed product with dedicated vendor support — CodeRabbit or Rovo Dev are the right choices. For teams that want to understand what's inside the box, control their own AI infrastructure, and build something that fits their exact workflow — the building blocks are all there. This article is the blueprint.</p>
+
+
                 <h2>What It Is Not</h2>
 
                 <p>This is a first-pass reviewer, not a replacement for human review on significant changes. For large architectural commits, complex business logic, or cross-cutting refactors, a human reviewer who knows the domain is irreplaceable.</p>
