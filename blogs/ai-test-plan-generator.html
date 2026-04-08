@@ -1,0 +1,257 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/bulma.css">
+        <link rel="stylesheet" href="/css/main.css">
+
+        <script>
+          window.pageMetaDescription = "How we built an AI test plan generator that reads JIRA issues — including comments, sub-tasks, and linked tickets — and produces structured, executable test cases through a three-pass LLM pipeline with smart token management.";
+          window.canonicalLink = "";
+        </script>
+
+        <script defer src="/js/head-component.js"></script>
+    </head>
+    <body>
+
+      <blog-header breadcrumb-label="Blogs" breadcrumb-url="/articles.html">
+        <span slot="bread-crumb-current-page">From JIRA Ticket to Test Plan in Minutes: What We Built and Why</span>
+      </blog-header>
+
+            <DIV class="blog-container content">
+
+                <div id="content" class="blog-container content">
+                    <h1>From JIRA Ticket to Test Plan in Minutes: What We Built and Why</h1>
+                    <i>A three-pass LLM pipeline that reads JIRA issues — comments, sub-tasks, linked tickets — and produces structured, executable test cases. No copy-paste. No missed edge cases. No vague steps.</i>
+                </div>
+
+                <hr class="separator"></hr>
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                  </div>
+                <hr class="separator"></hr>
+
+            </DIV>
+
+            <div class="blog-container content">
+
+                <p>Writing test plans is one of the most important things a QA engineer or developer does — and one of the most consistently under-resourced. Under deadline pressure, test planning is what gets squeezed. A ticket gets marked "done", the feature ships, and the test plan is a half-page of bullet points someone wrote in fifteen minutes.</p>
+
+                <p>The problem is not that people don't know how to write test plans. It's that turning a JIRA ticket — with its requirements text, acceptance criteria buried in comments, sub-tasks spread across linked issues — into a set of specific, sequential, verifiable test cases is slow, tedious work. It requires reading everything, synthesising it, and then writing steps precise enough for someone else to follow.</p>
+
+                <p>That's exactly the kind of work LLMs are good at. So we built a tool to do it.</p>
+
+                <h2>What the Tool Does</h2>
+
+                <p>The tool is a Python script — <code>test_plan_generator.py</code> — that takes one or more JIRA issue IDs, pulls everything relevant from JIRA, and produces a structured test plan in Markdown with test cases grouped by priority. The full pipeline has five stages:</p>
+
+                <ol>
+                    <li><strong>Collect JIRA data</strong> — fetches the main issue, its comments, sub-tasks, and linked issues.</li>
+                    <li><strong>Filter linked issues intelligently</strong> — uses an LLM to pre-screen linked tickets by summary before fetching full details, so only relevant context reaches the test generator.</li>
+                    <li><strong>Compress and extract signal</strong> — runs TF-IDF key sentence extraction on requirements text and trims comments and child items to prevent token explosion.</li>
+                    <li><strong>Generate individual then synthesise</strong> — generates a test plan for each JIRA item separately, then synthesises all of them into one unified, deduplicated plan grouped by priority.</li>
+                    <li><strong>Reflect and clean</strong> — runs a reflection pass to remove vague or untestable cases before saving the final output.</li>
+                </ol>
+
+                <p>The output is a Markdown test plan saved to the configured output directory, alongside a JSON file containing the individual per-item plans and the final comprehensive plan — useful for integration with other tooling or for reviewing how each sub-task contributed to the overall test coverage.</p>
+
+                <h2>Why Not Just Send the Whole Ticket to the LLM?</h2>
+
+                <p>The obvious approach — dump the JIRA ticket into a prompt and ask for test cases — works for simple tickets. It breaks down quickly in practice.</p>
+
+                <p>Real JIRA issues are noisy. A story might have a long requirements description with redundant phrasing, ten comments (half of which are status updates), four sub-tasks, and twelve linked issues — some functional requirements, some deployment tickets, some administrative triaging noise. Sending all of that raw to an LLM produces two problems: the prompt exceeds the context window, and the LLM gets distracted by irrelevant content.</p>
+
+                <p>The pipeline solves both problems systematically before any test generation happens.</p>
+
+                <h3>Step 1: Filter Linked Issues Before Fetching Them</h3>
+
+                <p>Fetching full details for every linked issue is wasteful when many of them are irrelevant. A JIRA story for a login feature might be linked to a deployment pipeline ticket, a legal compliance tracking ticket, and two actual feature requirements. Only the feature requirements are useful for test generation.</p>
+
+                <p>Before fetching full details, the tool calls the LLM with just the summaries of all linked issues and asks it to select which ones are worth fetching in full. The prompt is explicit about what to include (feature requirements, acceptance criteria, related bugs) and what to exclude (administrative, deployment, tracking tickets). This keeps the context clean and avoids wasting API calls on irrelevant content.</p>
+
+                <h3>Step 2: Compress Requirements with TF-IDF</h3>
+
+                <p>Long requirements descriptions contain a lot of repetition. The <code>JiraDataCompressor</code> runs TF-IDF key sentence extraction on the requirements text to pull out the most information-dense sentences. Up to 25 key sentences are extracted and placed prominently at the top of the prompt, with the full structured data following as context.</p>
+
+                <p>This serves two purposes: it reduces token count, and it ensures the LLM sees the most important requirements first rather than having to extract signal from a wall of text.</p>
+
+                <p>Comments are trimmed to the three longest (on the assumption that more detailed comments carry more signal), capped at 200 characters each. Child items and linked items are compressed to key and summary only, unless their description is very short.</p>
+
+                <h2>Individual Plans First, Then Synthesise</h2>
+
+                <p>Rather than sending the entire JIRA issue — main ticket plus all sub-tasks plus all linked issues — as one giant prompt, the tool generates a test plan for each item individually, then synthesises them.</p>
+
+                <p>This design handles scale. A sprint ticket might have eight sub-tasks. Each sub-task has its own requirements. Generating test cases for all of them in a single prompt produces either a truncated result (context limit) or an unfocused one (the LLM loses track of which sub-task it's writing for). Generating them separately and synthesising produces better individual coverage and a cleaner final output.</p>
+
+                <p>The synthesis pass takes all the individual plans and produces a single unified test case list that:</p>
+
+                <ul>
+                    <li>Eliminates duplicate test cases across items</li>
+                    <li>Groups test cases by priority: High, Medium, Low</li>
+                    <li>Renumbers all cases sequentially (TC-001, TC-002, ...) across all priority groups</li>
+                </ul>
+
+                <p>If the combined individual plans are too large for the synthesis prompt, the tool compresses each individual plan using TF-IDF before passing it to the synthesis LLM — the same sentence-scoring approach used on requirements. Each plan gets a proportional token budget based on the available context window.</p>
+
+                <h2>The Reflection Pass: Removing Untestable Cases</h2>
+
+                <p>LLMs writing test cases have a consistent failure mode: vague steps and unobservable expected results. A generated test case might say:</p>
+
+                <blockquote>
+                    <p><strong>Steps:</strong> Verify the feature works correctly.<br>
+                    <strong>Expected:</strong> The feature behaves as expected.</p>
+                </blockquote>
+
+                <p>That's not a test case. It's a placeholder. Nobody can execute it. It adds bulk to the plan while providing zero testable coverage.</p>
+
+                <p>The reflection pass is a dedicated second LLM call that reviews every test case and removes any that fail these checks:</p>
+
+                <ul>
+                    <li>Test steps use vague language without specific actions ("verify it works", "check the feature", "ensure functionality")</li>
+                    <li>Expected results are not measurable or observable ("should work correctly", "behaves as expected")</li>
+                    <li>Preconditions are undefined or impossible to set up</li>
+                    <li>The test case duplicates another more specific case in the same plan</li>
+                </ul>
+
+                <p>Cases are kept only if steps describe specific sequential actions (Navigate, Enter, Click, Submit, Select, Observe) and expected results describe exact observable behaviour — a specific message, a state change, a value in a field. The reflection pass also re-numbers the remaining cases sequentially after removal.</p>
+
+                <p>In practice, the reflection pass removes 15–30% of generated cases, almost all of them the placeholder-style cases that would waste a QA engineer's time.</p>
+
+                <h2>What the Output Looks Like</h2>
+
+                <p>Each test case follows a structured block format:</p>
+
+<pre>
+**TC-001** — Login fails with invalid credentials
+**Preconditions:** User exists in the system with valid credentials
+**Steps:**
+1. Navigate to the login page
+2. Enter a valid username in the Username field
+3. Enter an incorrect password in the Password field
+4. Click the Login button
+**Expected:** An error message "Invalid username or password" is displayed.
+          The user remains on the login page. No session is created.
+**Priority:** High
+
+---
+</pre>
+
+                <p>Every case has a precondition, specific numbered steps with action verbs, and an expected result describing exact observable behaviour. The plan is saved as both Markdown (for QA engineers to read and execute) and JSON (for integration with test management tooling).</p>
+
+                <h2>Architecture and Configuration</h2>
+
+                <p>The tool is configured per project via a YAML file. The key sections:</p>
+
+<pre><code>jira:
+  issue_id: "PROJ-837"           # single or comma-separated list
+  include_comments: true
+  include_subitems: true
+  include_linked_items: true
+
+llm:
+  provider: "testgen-1"          # LiteLLM router service name
+
+output:
+  directory: "test-plans"</code></pre>
+
+                <p>The <code>issue_id</code> field accepts a comma-separated list — so a single run can generate test plans for an entire sprint's worth of tickets. Each issue is processed independently through the full pipeline, with its own output files.</p>
+
+                <p>The LLM provider is a named service in the LiteLLM router config, making the underlying model swappable without touching the generator code. The same fallback and retry logic that applies to the code reviewer applies here.</p>
+
+<pre>
+┌─────────────────────────────────────┐
+│       project-config.yaml           │
+│  issue IDs, LLM provider, output    │
+└──────────────────┬──────────────────┘
+                   │
+         ┌─────────▼─────────┐
+         │  test_plan_        │
+         │  generator.py      │
+         └──┬──────────────┬──┘
+            │              │
+    ┌───────▼──┐   ┌────────▼────────┐
+    │ JIRA API  │   │ LLM: linked     │
+    │ (collect) │   │ issue filter    │
+    └───────┬──┘   └────────┬────────┘
+            │               │
+         ┌──▼───────────────▼──┐
+         │   TF-IDF Compressor  │
+         │   (key sentences)    │
+         └──────────┬───────────┘
+                    │
+         ┌──────────▼────────┐
+         │  LLM: Individual   │
+         │  plans (per item)  │
+         └──────────┬────────┘
+                    │
+         ┌──────────▼────────┐
+         │  LLM: Synthesis    │
+         │  (dedupe + group)  │
+         └──────────┬────────┘
+                    │
+         ┌──────────▼────────┐
+         │  LLM: Reflection   │
+         │  (remove vague)    │
+         └──────────┬────────┘
+                    │
+         ┌──────────▼────────┐
+         │  Markdown + JSON   │
+         │  output files      │
+         └───────────────────┘
+</pre>
+
+                <h2>What It Catches That Manual Plans Miss</h2>
+
+                <p>The most consistent gap in manually written test plans is coverage of negative and edge cases. Developers and QA engineers under time pressure write the happy path and a couple of obvious error cases. The LLM, working from the full requirements text and linked context, reliably surfaces:</p>
+
+                <ul>
+                    <li><strong>Boundary conditions</strong> — minimum and maximum field lengths, zero-value inputs, empty states</li>
+                    <li><strong>Negative paths</strong> — invalid inputs, permission errors, network failure scenarios</li>
+                    <li><strong>Integration scenarios</strong> — behaviour when a linked dependency is unavailable or returns unexpected data</li>
+                    <li><strong>Regression scenarios</strong> — when a linked issue is a bug fix, the tool generates test cases that verify the bug is resolved and hasn't regressed</li>
+                    <li><strong>Security scenarios</strong> — for authentication or data-handling features: unauthorised access attempts, session handling edge cases</li>
+                </ul>
+
+                <p>These aren't scenarios the LLM invents — they come from the JIRA requirements, comments, and linked context. The tool's value is making sure none of that context gets lost between the ticket and the test plan.</p>
+
+                <h2>What It Is Not</h2>
+
+                <p>This is a starting point, not a finished artefact. A QA engineer should review the output, remove cases that don't apply to the current sprint scope, and add domain-specific scenarios the JIRA ticket didn't capture. The tool raises the floor — it produces a complete, structured first draft in minutes rather than hours — but human judgement on what to prioritise and what to skip remains essential.</p>
+
+                <p>The tool also doesn't execute tests, integrate with test management platforms like TestRail or Zephyr, or track test results. It generates the plan. What you do with it is up to your team's workflow.</p>
+
+                <p>For startup engineering teams and QA engineers who are writing test plans manually today — copying requirements out of JIRA, reformatting them into test cases, checking each one for completeness — this tool removes most of that mechanical work and lets them focus on what actually requires judgement.</p>
+
+            </div>
+
+
+            <DIV class="blog-container content">
+                <hr class="separator"></hr>
+
+                <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <social-share></social-share>
+                    </p>
+                </div>
+
+                <hr class="separator"></hr>
+
+                <div>
+                <p><strong><i>Hungry for more hands‑on guides on coding, security, and open‑source? Join our newsletter community—new insights delivered every week. Sign up below 👇</i></strong></p>
+                </div>
+            </DIV>
+
+
+        <!-- Custom Footer Component -->
+        <blog-footer></blog-footer>
+
+        <!-- Include the JS file where BlogFooter is defined -->
+        <script defer src="/js/blog-footer.js"></script>
+        <script defer src="/js/blog-header.js"></script>
+        <script defer src="/js/social-share.js"></script>
+
+    </body>
+</html>
