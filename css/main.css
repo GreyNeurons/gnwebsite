@@ -132,6 +132,13 @@ hr.gn-main {
   .navbar-menu.is-active {
     display: block;  /* Show menu when active */
   }
+  /* Logo is 600x88 SVG — at 54px height it's ~368px wide, leaving no room for burger.
+     Cap width on mobile so burger stays visible. */
+  .navbar-brand .navbar-item img {
+    max-width: 200px;
+    height: auto !important;
+    max-height: none !important;
+  }
 }
 
 .container {
